@@ -19,11 +19,14 @@ package com.theaigames.tron.player;
 
 import com.theaigames.engine.io.IOPlayer;
 import com.theaigames.game.player.AbstractPlayer;
+import com.theaigames.tron.field.Field;
 
 public class Player extends AbstractPlayer {
 	
 	int mId;
 	String mLastMove;
+	int mDirection;
+	int mX, mY;
 	
 	public Player(String name, IOPlayer bot, long maxTimeBank, long timePerMove, int id) {
 		super(name, bot, maxTimeBank, timePerMove);
@@ -41,5 +44,32 @@ public class Player extends AbstractPlayer {
 	
 	public String getLastMove() {
 		return mLastMove;
+	}
+
+	public int getDirection() {
+		return mDirection;
+	}
+	
+	public int getX() {
+		return mX;
+	}
+	
+	public int getY() {
+		return mY;
+	}
+	
+	/**
+	 * Turns player in the absolute direction given.
+	 * @param args : 
+	 * @return : True if direction is allowed, false if otherwise.
+	 */
+	public boolean turnDirection(int newDirection) {
+		boolean allowed = false;
+		if (mDirection == Field.DIR_UP && (newDirection == Field.DIR_LEFT || newDirection == Field.DIR_RIGHT)) allowed = true;
+		if (mDirection == Field.DIR_RIGHT && (newDirection == Field.DIR_UP || newDirection == Field.DIR_DOWN)) allowed = true;
+		if (mDirection == Field.DIR_DOWN && (newDirection == Field.DIR_LEFT || newDirection == Field.DIR_RIGHT)) allowed = true;
+		if (mDirection == Field.DIR_LEFT && (newDirection == Field.DIR_UP || newDirection == Field.DIR_DOWN)) allowed = true;
+		if (allowed) mDirection = newDirection;
+		return allowed;
 	}
 }

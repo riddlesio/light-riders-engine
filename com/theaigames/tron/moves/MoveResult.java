@@ -25,23 +25,10 @@ public class MoveResult {
 	private Player mPlayer;
 	private Move mMove;
 	private String mString;
-	private int totalStones[] = new int[3];
-	private int stonesTaken[] = new int[3];
-	private double totalScore[] = new double[3];
-
 	public MoveResult(Player player, Player opponent, Move move, int roundNumber, Field field) {
-	    int pId = player.getId();
-	    int oId = opponent.getId();
-	    
 		mPlayer = player;
 		mMove = move;
 		mRoundNumber = roundNumber;
-		totalStones[pId] = field.getPlayerStones(pId);
-		totalStones[oId] = field.getPlayerStones(oId);
-		stonesTaken[pId] = field.getTotalStonesTaken(pId);
-		stonesTaken[oId] = field.getTotalStonesTaken(oId);
-		totalScore[pId] = field.getPlayerScore(pId);
-		totalScore[oId] = field.getPlayerScore(oId);
 		mString = field.toString();
 	}
 	
@@ -61,15 +48,4 @@ public class MoveResult {
 	    return mString;
 	}
 	
-	public int getTotalStones(int playerId) {
-	    return totalStones[playerId];
-	}
-	
-	public int getStonesTaken(int playerId) {
-	    return stonesTaken[playerId];
-	}
-	
-	public double getTotalScore(int playerId) {
-	    return totalScore[playerId];
-	}
 }

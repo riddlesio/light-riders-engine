@@ -32,6 +32,7 @@ import com.theaigames.tron.moves.Move;
 import com.theaigames.tron.moves.MoveResult;
 import com.theaigames.tron.player.Player;
 import com.theaigames.tron.testsuite.Testsuite;
+import com.theaigames.util.Util;
 
 public class Processor implements GameHandler {
 	
@@ -89,27 +90,25 @@ public class Processor implements GameHandler {
 	    
 	    player.sendUpdate("round", mRoundNumber);
         player.sendUpdate("move", mMoveNumber);
-        player.sendUpdate("points", player, mField.getPlayerScore(player.getId()) + "");
-        player.sendUpdate("points", opponent, mField.getPlayerScore(opponent.getId()) + "");
         player.sendUpdate("field", mField.toString());
-        player.sendUpdate("last_move", opponent, opponent.getLastMove());
+        player.sendUpdate("your_location", player.getX() + "," + player.getY());
+        player.sendUpdate("opponent_location", opponent.getX() + "," + opponent.getY());
+        player.sendUpdate("your_direction", Util.directionToString(player.getDirection()));
+        player.sendUpdate("opponent_direction", Util.directionToString(opponent.getDirection()));
 	}
 	
 	/**
-	 * Parses player response and inserts disc in field
-	 * @param args : command line arguments passed on running of application
-	 * @return : true if valid move, otherwise false
+	 * Parses player response and executes action
+	 * @param args : command line arguments passed on running of application, Player involved
+	 * @return : true if valid action, otherwise false
 	 */
 	private Boolean parseResponse(String r, Player player) {
 		String[] parts = r.split(" ");
-		if (parts[0].equals("place_move")) {
+		if (parts[0].equals("turn_direction")) {
 			try {
-				int column = (int) Double.parseDouble(parts[1]);
-				int row = (int) Double.parseDouble(parts[2]);
-				
-				if (mField.addMove(column, row, player.getId())) {
+				String direction = parts[1];
+				if (player.turnDirection(Util.directionToInt(direction))) {
 					recordMove(player);
-					mPassesInARow = 0;
 					return true;
 				} else {
 					player.getBot().outputEngineWarning(mField.getLastError());
@@ -119,14 +118,8 @@ public class Processor implements GameHandler {
 			}
 			recordMove(player);
 		} else if (parts[0].equals("pass")) {
-			mPassesInARow++;
 			Move move = new Move(player);
-			move.setMove("pass", mField.getLastX(), mField.getLastY());
-			if (mPassesInARow == 2) {
-				move.setIllegalMove("Second pass");
-			} else {
-				move.setIllegalMove("Pass");
-			}
+			move.setMove("pass", player.getX(), player.getY());
 			MoveResult moveResult = new MoveResult(player, getOpponent(player), move, mRoundNumber, mField);
 			mMoveResults.add(moveResult);
 			return true;
@@ -144,7 +137,7 @@ public class Processor implements GameHandler {
 	
 	private void recordMove(Player player) {
 		Move move = new Move(player);
-		move.setMove("move", mField.getLastX(), mField.getLastY());
+		move.setMove("move", player.getX(), player.getY());
 		move.setIllegalMove(mField.getLastError());
 		
 		MoveResult moveResult = new MoveResult(player, getOpponent(player), move, mRoundNumber, mField);
@@ -161,15 +154,7 @@ public class Processor implements GameHandler {
 	public AbstractPlayer getWinner() {
 	    if (mGameOverByPlayerErrorPlayer != null)
 	        return getOpponent(mGameOverByPlayerErrorPlayer);
-	    
-	    int p1Index = 0;
-	    int p2Index = 1;
-		double scorePlayer1 = mField.getPlayerScore(mPlayers.get(p1Index).getId());
-		double scorePlayer2 = mField.getPlayerScore(mPlayers.get(p2Index).getId());
-
-		if (scorePlayer1 > scorePlayer2) return mPlayers.get(p1Index);
-		if (scorePlayer2 > scorePlayer1) return mPlayers.get(p2Index);
-
+	    /* If only one player is still going, that player is the winner */
 		return null;
 	}
 
@@ -226,11 +211,6 @@ public class Processor implements GameHandler {
 	    for (Player player : mPlayers) {
 	        int playerId = player.getId();
 	        JSONObject playerState = new JSONObject();
-	        
-	        playerState.put("stones", mr.getTotalStones(playerId));
-	        playerState.put("stonestaken", mr.getStonesTaken(playerId));
-	        playerState.put("score", mr.getTotalScore(playerId));
-	        
 	        players.put(playerState);
 	    }
 	    
@@ -251,9 +231,9 @@ public class Processor implements GameHandler {
 	 * @return : player's opponent
 	 */
 	private Player getOpponent(Player player) {
-	    if (mPlayers.get(0).equals(player))
-	        return mPlayers.get(1);
-	    return mPlayers.get(0);
+		if (mPlayers.get(0).equals(player))
+			return mPlayers.get(1);
+		return mPlayers.get(0);
 	}
 
 	public Field getField() {
@@ -262,7 +242,7 @@ public class Processor implements GameHandler {
 
 	@Override
 	public boolean isGameOver() {
-		return (!mField.isMoveAvailable() || mPassesInARow >=2 
-		        || mGameOverByPlayerErrorPlayer != null);
+		Boolean moreThanOnePlayerAlive = true; 
+		return !moreThanOnePlayerAlive;
 	}
 }

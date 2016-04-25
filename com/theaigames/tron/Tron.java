@@ -30,10 +30,8 @@ public class Tron extends AbstractGame {
 	
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
-	private final int FIELD_HEIGHT = 19;
-	private final int FIELD_WIDTH = 19;
-	private final double KOMI = 7.5;
-	private static final int MAX_ROUNDS = 250;
+	private final int FIELD_HEIGHT = 64;
+	private final int FIELD_WIDTH = 64;
 	private List<Player> players;
 	private Field mField;
 
@@ -54,7 +52,7 @@ public class Tron extends AbstractGame {
 		}
 		
 		// create the playing field
-        this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, KOMI, this.players);
+        this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, this.players);
 		
 		// create the processor
 		super.processor = new Processor(this.players, this.mField);
@@ -69,7 +67,6 @@ public class Tron extends AbstractGame {
 		player.sendSetting("your_botid", player.getId());
 		player.sendSetting("field_width", FIELD_WIDTH);
 		player.sendSetting("field_height", FIELD_HEIGHT);
-		player.sendSetting("max_rounds", MAX_ROUNDS);
 	}
 
 	@Override
@@ -82,11 +79,10 @@ public class Tron extends AbstractGame {
 	
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
-//		AbstractGame.DEV_MODE = true;
-//		game.TEST_BOT = "java -cp /home/jim/workspace/go-starterbot/bin/ bot.BotStarter";
-//		game.NUM_TEST_BOTS = 2;
+		AbstractGame.DEV_MODE = true;
+		game.TEST_BOT = "java -cp /home/jim/workspace/go-starterbot/bin/ bot.BotStarter";
+		game.NUM_TEST_BOTS = 2;
 		game.setupEngine(args);
-		game.maxRounds = MAX_ROUNDS;
 		game.runEngine();
 	}
 

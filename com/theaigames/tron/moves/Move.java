@@ -22,7 +22,7 @@ import com.theaigames.game.player.AbstractPlayer;
 
 public class Move extends AbstractMove {
 
-	private int mColumn = 0, mRow = 0;
+	private int mX = 0, mY = 0;
 	private String mAction = "move";
 	
 	public Move(AbstractPlayer player) {
@@ -32,24 +32,24 @@ public class Move extends AbstractMove {
 	/**
 	 * @param column : Sets the column of a move
 	 */
-	public void setMove(String move, int column, int row) {
-		this.mColumn = column;
-		this.mRow = row;
+	public void setMove(String move, int x, int y) {
+		this.mX = x;
+		this.mY = y;
 		this.mAction = move;
 	}
 	
 	/**
 	 * @return : Column of move
 	 */
-	public int getColumn() {
-		return mColumn;
+	public int getX() {
+		return mX;
 	}
 
 	/**
 	 * @return : Row of move
 	 */
-	public int getRow() {
-		return mRow;
+	public int getY() {
+		return mY;
 	}
 
 	/**
