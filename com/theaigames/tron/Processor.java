@@ -41,7 +41,6 @@ public class Processor implements GameHandler {
 	private List<Player> mPlayers;
 	private List<MoveResult> mMoveResults;
 	private Field mField;
-	private Player mGameOverByPlayerErrorPlayer = null;
 
 	public Processor(List<Player> players, Field field) {
 		mPlayers = players;
@@ -67,10 +66,12 @@ public class Processor implements GameHandler {
 					if (!parseResponse(response, player)) {
 						response = player.requestMove("move");
 						if (!parseResponse(response, player)) {
-							mGameOverByPlayerErrorPlayer = player; /* Too many errors, other player wins */
+							player.die();
 						}
 						player.setLastMove(response);
 					}
+				} else {
+					recordMove(player);
 				}
 				mMoveNumber++;
 				if (Tron.DEV_MODE) {
@@ -160,10 +161,21 @@ public class Processor implements GameHandler {
 
 	@Override
 	public AbstractPlayer getWinner() {
-	    if (mGameOverByPlayerErrorPlayer != null)
-	        return getOpponent(mGameOverByPlayerErrorPlayer);
 	    /* If only one player is still going, that player is the winner */
+		if (getNrPlayersAlive() == 1) {
+			for (Player player : mPlayers) {
+				if (player.isAlive()) return player;
+			}
+		}
 		return null;
+	}
+	
+	public int getNrPlayersAlive() {
+		int nrPlayersAlive = 0;
+		for (Player player : mPlayers) {
+			if (player.isAlive()) nrPlayersAlive++;
+		}
+		return nrPlayersAlive;
 	}
 
 	@Override
@@ -188,9 +200,7 @@ public class Processor implements GameHandler {
 			JSONArray states = new JSONArray();
 			int counter = 0;
 			for (MoveResult mr : mMoveResults) {
-				/* Show update when both player have moved */
-				if (counter%mPlayers.size() == mPlayers.size()-1) 
-					states.put(getOutputState(mr, false));
+				states.put(getOutputState(mr, false));
 				if (counter == mMoveResults.size()-1) { // final overlay state with winner
 					states.put(getOutputState(mr, true));
 				}
@@ -251,10 +261,6 @@ public class Processor implements GameHandler {
 
 	@Override
 	public boolean isGameOver() {
-		int nrPlayersAlive = 0;
-		for (Player player : mPlayers) {
-			if (player.isAlive()) nrPlayersAlive++;
-		}
-		return ( nrPlayersAlive <= 1 );
+		return ( getNrPlayersAlive() <= 1 );
 	}
 }
