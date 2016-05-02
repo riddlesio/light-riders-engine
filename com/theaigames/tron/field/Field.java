@@ -43,10 +43,11 @@ public class Field {
 		mRows = height;
 		mBoard = new int[mCols][mRows];
 		mPlayerDirections = new int[players.size() + 1];
+		clearBoard();
 		for (Player player : players) {
 			mPlayerDirections[player.getId()] = 0;
+			mBoard[player.getX()][player.getY()] = player.getId();
 		}
-		clearBoard();
 	}
 	
 	public void clearBoard() {
@@ -119,6 +120,64 @@ public class Field {
 	
 	public int getNrRows() {
 		return mRows;
+	}
+	
+	/**
+	 * Set direction of Player player. 
+	 * @param args : Player involved, int direction
+	 * @return : 
+	 */
+	public void setPlayerDirection(Player player, int direction) {
+		mPlayerDirections[player.getId()] = direction;
+	}
+	
+	/**
+	 * Updates the board one tick, moving the player involved one step forward. 
+	 * @param args : Player involved, int direction
+	 * @return : true if player moved okay, false if player crashed
+	 */
+	public boolean update(Player player) {
+		boolean result = false;
+		int x = player.getX(), y = player.getY();
+		switch (player.getDirection()) {
+			case DIR_UP:
+				if (y > 0) {
+					if (mBoard[x][y-1] == 0) {
+						mBoard[x][y-1] = player.getId();
+						player.setY(y-1);
+						result = true;
+					}
+				}
+				break;
+			case DIR_RIGHT:
+				if (x < mCols - 1) {
+					if (mBoard[x+1][y] == 0) {
+						mBoard[x+1][y] = player.getId();
+						player.setX(x+1);
+						result = true;
+					}
+				}
+				break;
+			case DIR_DOWN:
+				if (y < mRows - 1) {
+					if (mBoard[x][y+1] == 0) {
+						mBoard[x][y+1] = player.getId();
+						player.setY(y+1);
+						result = true;
+					}
+				}
+				break;
+			case DIR_LEFT:
+				if (x > 0) {
+					if (mBoard[x-1][y] == 0) {
+						mBoard[x-1][y] = player.getId();
+						player.setX(x-1);
+						result = true;
+					}
+				}
+				break;
+		}
+		return result;
 	}
 }
 

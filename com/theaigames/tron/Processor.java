@@ -47,6 +47,7 @@ public class Processor implements GameHandler {
 		mPlayers = players;
 		mField = field;
 		mMoveResults = new ArrayList<MoveResult>();
+		
 		if (Tron.DEV_MODE) {
 			System.out.println("Running in DEV_MODE");
 			//Testsuite t = new Testsuite();
@@ -60,19 +61,19 @@ public class Processor implements GameHandler {
 		mRoundNumber = roundNumber;
 		for (Player player : mPlayers) {
 			if (!isGameOver()) {
-			    sendUpdates(player);
+				sendUpdates(player);
 				String response = player.requestMove("move");
 				if (!parseResponse(response, player)) {
 					response = player.requestMove("move");
 					if (!parseResponse(response, player)) {
-					    mGameOverByPlayerErrorPlayer = player; /* Too many errors, other player wins */
+						mGameOverByPlayerErrorPlayer = player; /* Too many errors, other player wins */
 					}
 				}
 				player.setLastMove(response);
 				mMoveNumber++;
-				//if (Go.DEV_MODE) {
+				if (Tron.DEV_MODE) {
 					//mField.dumpBoard();
-				//}
+				}
 			}
 		}
 	}
@@ -103,9 +104,10 @@ public class Processor implements GameHandler {
 		if (parts[0].equals("turn_direction")) {
 			try {
 				String direction = parts[1];
-				System.out.println(player.getId() + " " + direction);
 				if (player.turnDirection(Util.directionToInt(direction))) {
 					recordMove(player);
+					mField.setPlayerDirection(player, Util.directionToInt(direction));
+					mField.update(player);
 					return true;
 				} else {
 					player.getBot().outputEngineWarning(mField.getLastError());
@@ -119,6 +121,7 @@ public class Processor implements GameHandler {
 			move.setMove("pass", player.getX(), player.getY());
 			MoveResult moveResult = new MoveResult(player, getOpponent(player), move, mRoundNumber, mField);
 			mMoveResults.add(moveResult);
+			mField.update(player);
 			return true;
 		} else {
 			createParseError(player, r);

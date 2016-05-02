@@ -37,11 +37,11 @@ public class Tron extends AbstractGame {
 
 	@Override
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {			
-		// create all the players and everything they need
+		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
 
 		for(int i=0; i<ioPlayers.size(); i++) {
-			// create the player
+			// Create the player
 			String playerName = String.format("player%d", i+1);
 			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
 			this.players.add(player);
@@ -51,10 +51,28 @@ public class Tron extends AbstractGame {
 			sendSettings(player);
 		}
 		
-		// create the playing field
-        this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, this.players);
+		/* Initialise player positions */
+		int counter = 0;
+		for (Player player : this.players) {
+			switch (counter) {
+				case 0:
+					player.setX(16);
+					player.setY(32);
+					player.setDirection(Field.DIR_RIGHT);
+					break;
+				default:
+					player.setX(48);
+					player.setY(32);
+					player.setDirection(Field.DIR_LEFT);
+					break;
+			}
+			counter ++;
+		}
+
+		// Create the playing field
+		this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, this.players);
 		
-		// create the processor
+		// Create the processor
 		super.processor = new Processor(this.players, this.mField);
 	}
 

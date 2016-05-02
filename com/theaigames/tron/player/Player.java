@@ -46,8 +46,20 @@ public class Player extends AbstractPlayer {
 		return mLastMove;
 	}
 
+	public void setDirection(int direction) {
+		mDirection = direction;
+	}
+	
 	public int getDirection() {
 		return mDirection;
+	}
+	
+	public void setX(int x) {
+		mX = x;
+	}
+	
+	public void setY(int y) {
+		mY = y;
 	}
 	
 	public int getX() {
@@ -69,9 +81,7 @@ public class Player extends AbstractPlayer {
 		if (mDirection == Field.DIR_RIGHT && (newDirection == Field.DIR_UP || newDirection == Field.DIR_DOWN)) allowed = true;
 		if (mDirection == Field.DIR_DOWN && (newDirection == Field.DIR_LEFT || newDirection == Field.DIR_RIGHT)) allowed = true;
 		if (mDirection == Field.DIR_LEFT && (newDirection == Field.DIR_UP || newDirection == Field.DIR_DOWN)) allowed = true;
-		if (mDirection == newDirection) allowed = true;
-		System.out.println(mDirection + " : " + newDirection + " " + allowed);
-		
+		if (mDirection == newDirection) allowed = true;		
 		if (allowed) mDirection = newDirection;
 		return allowed;
 	}
