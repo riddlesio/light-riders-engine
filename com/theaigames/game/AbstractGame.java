@@ -18,6 +18,8 @@
 package com.theaigames.game;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,8 +102,10 @@ public abstract class AbstractGame implements Logic {
         // get the bot id's and location of bot program
         for(int i=1; i <= (args.length - 1) / 2; i++) { // first arguments are the bot ids
             botIds.add(args[i]);
+            botIds.add(args[i]);
         }
         for(int i=((args.length - 1) / 2) + 1; i < args.length; i++) { // last arguments are the bot dirs
+            botDirs.add(args[i]);
             botDirs.add(args[i]);
         }
         
@@ -158,8 +162,11 @@ public abstract class AbstractGame implements Logic {
 		Thread.sleep(100);
 		
 		if(DEV_MODE) { // print the game file when in DEV_MODE
-//			String playedGame = this.processor.getPlayedGame();
-//			System.out.println(playedGame);
+			String playedGame = this.processor.getPlayedGame();
+			
+			System.out.println(playedGame);
+			Files.write(Paths.get("/home/joost/dev/tron-frontend/web/data/dummyData.json"), playedGame.getBytes());
+			
 //			System.out.println(this.engine.getPlayers().get(0).getDump());
 //			System.out.println(this.engine.getPlayers().get(0).getStderr());
 //			System.out.println(this.engine.getPlayers().get(1).getStderr());

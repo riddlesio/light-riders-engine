@@ -44,6 +44,7 @@ public class Field {
 		mBoard = new int[mCols][mRows];
 		mPlayerDirections = new int[players.size() + 1];
 		clearBoard();
+		addMaze();
 		for (Player player : players) {
 			mPlayerDirections[player.getId()] = 0;
 			mBoard[player.getX()][player.getY()] = player.getId();
@@ -55,6 +56,15 @@ public class Field {
 			for (int y = 0; y < mRows; y++) {
 				mBoard[x][y] = 0;
 			}
+		}
+	}
+	
+	public void addMaze() {
+		for (int i = 0; i < mCols; i++) {
+			mBoard[i][0] = 4;
+			mBoard[i][mRows-1] = 4;
+			mBoard[0][i] = 4;
+			mBoard[mCols-1][i] = 4;
 		}
 	}
 	
@@ -104,11 +114,11 @@ public class Field {
 				if (counter > 0) {
 					r += ",";
 				}
-				r += mBoard[x][y];
+				int d = mBoard[x][y];
+				r += d;
 				counter++;
 			}
 		}
-//		System.out.println(r);
 		return r;
 	}
 	

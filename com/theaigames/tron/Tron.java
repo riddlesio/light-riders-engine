@@ -19,6 +19,7 @@ package com.theaigames.tron;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.theaigames.engine.io.IOPlayer;
 import com.theaigames.game.AbstractGame;
@@ -30,8 +31,8 @@ public class Tron extends AbstractGame {
 	
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
-	private final int FIELD_HEIGHT = 64;
-	private final int FIELD_WIDTH = 64;
+	private final int FIELD_HEIGHT = 32;
+	private final int FIELD_WIDTH = 32;
 	private List<Player> players;
 	private Field mField;
 
@@ -56,15 +57,20 @@ public class Tron extends AbstractGame {
 		for (Player player : this.players) {
 			switch (counter) {
 				case 0:
-					player.setX(16);
-					player.setY(32);
+					player.setX(FIELD_WIDTH/4);
+					player.setY(FIELD_HEIGHT/2);
 					player.setDirection(Field.DIR_RIGHT);
 					break;
-				default:
-					player.setX(48);
-					player.setY(32);
+				case 1:
+					player.setX(FIELD_WIDTH/4*3);
+					player.setY(FIELD_HEIGHT/2);
 					player.setDirection(Field.DIR_LEFT);
 					break;
+				default:
+					Random r = new Random();
+					player.setX(r.nextInt(FIELD_WIDTH));
+					player.setY(r.nextInt(FIELD_HEIGHT));
+					player.setDirection(r.nextInt(4)*90);
 			}
 			counter ++;
 		}

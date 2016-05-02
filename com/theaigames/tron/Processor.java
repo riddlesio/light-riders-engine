@@ -72,7 +72,7 @@ public class Processor implements GameHandler {
 				player.setLastMove(response);
 				mMoveNumber++;
 				if (Tron.DEV_MODE) {
-					//mField.dumpBoard();
+					if (isGameOver()) mField.dumpBoard();
 				}
 			}
 		}
@@ -112,7 +112,8 @@ public class Processor implements GameHandler {
 					}
 					return true;
 				} else {
-					player.getBot().outputEngineWarning(mField.getLastError());
+					player.getBot().outputEngineWarning("Illegal turn");
+					mField.setLastError("Illegal turn");
 				}
 			} catch (Exception e) {
 				createParseError(player, r);
@@ -185,7 +186,9 @@ public class Processor implements GameHandler {
 			JSONArray states = new JSONArray();
 			int counter = 0;
 			for (MoveResult mr : mMoveResults) {
-				states.put(getOutputState(mr, false));
+				/* Show update when both player have moved */
+				if (counter%2 == 1) 
+					states.put(getOutputState(mr, false));
 				if (counter == mMoveResults.size()-1) { // final overlay state with winner
 					states.put(getOutputState(mr, true));
 				}
@@ -214,7 +217,6 @@ public class Processor implements GameHandler {
 	    
 	    JSONArray players = new JSONArray();
 	    for (Player player : mPlayers) {
-	        int playerId = player.getId();
 	        JSONObject playerState = new JSONObject();
 	        players.put(playerState);
 	    }
@@ -225,7 +227,7 @@ public class Processor implements GameHandler {
         state.put("winner", winnerstring);
         state.put("player", mr.getPlayer().getId());
         state.put("players", players);
-        state.put("illegalMove", mr.getMove().getIllegalMove());
+        state.put("illegalMove", mr.getMove().getIllegalMove() + " emsg");
         
         return state;
 	}
@@ -251,7 +253,6 @@ public class Processor implements GameHandler {
 		for (Player player : mPlayers) {
 			if (player.isAlive()) nrPlayersAlive++;
 		}
-			
 		return ( nrPlayersAlive <= 1 );
 	}
 }
