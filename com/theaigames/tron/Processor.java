@@ -107,7 +107,9 @@ public class Processor implements GameHandler {
 				if (player.turnDirection(Util.directionToInt(direction))) {
 					recordMove(player);
 					mField.setPlayerDirection(player, Util.directionToInt(direction));
-					mField.update(player);
+					if (!mField.update(player)) {
+						player.die();
+					}
 					return true;
 				} else {
 					player.getBot().outputEngineWarning(mField.getLastError());
@@ -121,7 +123,9 @@ public class Processor implements GameHandler {
 			move.setMove("pass", player.getX(), player.getY());
 			MoveResult moveResult = new MoveResult(player, getOpponent(player), move, mRoundNumber, mField);
 			mMoveResults.add(moveResult);
-			mField.update(player);
+			if (!mField.update(player)) {
+				player.die();
+			}
 			return true;
 		} else {
 			createParseError(player, r);
@@ -243,7 +247,11 @@ public class Processor implements GameHandler {
 
 	@Override
 	public boolean isGameOver() {
-		Boolean moreThanOnePlayerAlive = true; 
-		return !moreThanOnePlayerAlive;
+		int nrPlayersAlive = 0;
+		for (Player player : mPlayers) {
+			if (player.isAlive()) nrPlayersAlive++;
+		}
+			
+		return ( nrPlayersAlive <= 1 );
 	}
 }

@@ -27,11 +27,13 @@ public class Player extends AbstractPlayer {
 	String mLastMove;
 	int mDirection;
 	int mX, mY;
+	boolean mAlive;
 	
 	public Player(String name, IOPlayer bot, long maxTimeBank, long timePerMove, int id) {
 		super(name, bot, maxTimeBank, timePerMove);
 		mId = id;
 		mLastMove = "Null";
+		mAlive = true;
 	}
 
 	public int getId() {
@@ -68,6 +70,14 @@ public class Player extends AbstractPlayer {
 	
 	public int getY() {
 		return mY;
+	}
+	
+	public void die() {
+		mAlive = false;
+	}
+	
+	public boolean isAlive() {
+		return mAlive;
 	}
 	
 	/**
