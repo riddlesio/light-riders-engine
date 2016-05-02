@@ -162,7 +162,6 @@ public abstract class AbstractGame implements Logic {
 		if(DEV_MODE) { // print the game file when in DEV_MODE
 			String playedGame = this.processor.getPlayedGame();
 			
-			System.out.println(playedGame);
 			Files.write(Paths.get("/home/joost/dev/tron-frontend/web/data/dummyData.json"), playedGame.getBytes());
 			
 //			System.out.println(this.engine.getPlayers().get(0).getDump());

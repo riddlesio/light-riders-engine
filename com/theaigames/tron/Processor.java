@@ -230,6 +230,8 @@ public class Processor implements GameHandler {
 	    JSONArray players = new JSONArray();
 	    for (Player player : mPlayers) {
 	        JSONObject playerState = new JSONObject();
+	        playerState.put("name", mr.getPlayer().getName());
+	        playerState.put("alive", mr.getPlayer().isAlive());
 	        players.put(playerState);
 	    }
 	    
@@ -239,7 +241,7 @@ public class Processor implements GameHandler {
         state.put("winner", winnerstring);
         state.put("player", mr.getPlayer().getId());
         state.put("players", players);
-        state.put("illegalMove", mr.getMove().getIllegalMove() + " emsg");
+        state.put("illegalMove", mr.getMove().getIllegalMove());
         
         return state;
 	}

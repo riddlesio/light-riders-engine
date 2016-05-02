@@ -25,6 +25,9 @@ public class MoveResult {
 	private Player mPlayer;
 	private Move mMove;
 	private String mString;
+	
+	private boolean[] mPlayerAlive;
+	
 	public MoveResult(Player player, Player opponent, Move move, int roundNumber, Field field) {
 		mPlayer = player;
 		mMove = move;
@@ -48,4 +51,9 @@ public class MoveResult {
 	    return mString;
 	}
 	
+	public void setPlayerStates(boolean[] playerAlive) {
+		for(int i = 0; i< playerAlive.length; i++) {
+			mPlayerAlive[i] = playerAlive[i];
+		}
+	}
 }
