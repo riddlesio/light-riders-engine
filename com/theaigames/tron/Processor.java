@@ -61,15 +61,17 @@ public class Processor implements GameHandler {
 		mRoundNumber = roundNumber;
 		for (Player player : mPlayers) {
 			if (!isGameOver()) {
-				sendUpdates(player);
-				String response = player.requestMove("move");
-				if (!parseResponse(response, player)) {
-					response = player.requestMove("move");
+				if (player.isAlive()) {
+					sendUpdates(player);
+					String response = player.requestMove("move");
 					if (!parseResponse(response, player)) {
-						mGameOverByPlayerErrorPlayer = player; /* Too many errors, other player wins */
+						response = player.requestMove("move");
+						if (!parseResponse(response, player)) {
+							mGameOverByPlayerErrorPlayer = player; /* Too many errors, other player wins */
+						}
+						player.setLastMove(response);
 					}
 				}
-				player.setLastMove(response);
 				mMoveNumber++;
 				if (Tron.DEV_MODE) {
 					if (isGameOver()) mField.dumpBoard();
@@ -187,7 +189,7 @@ public class Processor implements GameHandler {
 			int counter = 0;
 			for (MoveResult mr : mMoveResults) {
 				/* Show update when both player have moved */
-				if (counter%2 == 1) 
+				if (counter%mPlayers.size() == mPlayers.size()-1) 
 					states.put(getOutputState(mr, false));
 				if (counter == mMoveResults.size()-1) { // final overlay state with winner
 					states.put(getOutputState(mr, true));

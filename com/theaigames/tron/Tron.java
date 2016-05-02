@@ -31,8 +31,8 @@ public class Tron extends AbstractGame {
 	
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
-	private final int FIELD_HEIGHT = 32;
-	private final int FIELD_WIDTH = 32;
+	private final int FIELD_HEIGHT = 64;
+	private final int FIELD_WIDTH = 64;
 	private List<Player> players;
 	private Field mField;
 
@@ -105,7 +105,7 @@ public class Tron extends AbstractGame {
 		Tron game = new Tron();
 		AbstractGame.DEV_MODE = true;
 		game.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		game.NUM_TEST_BOTS = 2;
+		game.NUM_TEST_BOTS = 4;
 		game.setupEngine(args);
 		game.runEngine();
 	}

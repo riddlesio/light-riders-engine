@@ -61,10 +61,10 @@ public class Field {
 	
 	public void addMaze() {
 		for (int i = 0; i < mCols; i++) {
-			mBoard[i][0] = 4;
-			mBoard[i][mRows-1] = 4;
-			mBoard[0][i] = 4;
-			mBoard[mCols-1][i] = 4;
+			mBoard[i][0] = 5;
+			mBoard[i][mRows-1] = 5;
+			mBoard[0][i] = 5;
+			mBoard[mCols-1][i] = 5;
 		}
 	}
 	
