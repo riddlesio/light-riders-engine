@@ -80,7 +80,7 @@ public class Tron extends AbstractGame {
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
 		AbstractGame.DEV_MODE = true;
-		game.TEST_BOT = "java -cp /home/jim/workspace/go-starterbot/bin/ bot.BotStarter";
+		game.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
 		game.NUM_TEST_BOTS = 2;
 		game.setupEngine(args);
 		game.runEngine();

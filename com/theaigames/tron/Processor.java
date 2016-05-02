@@ -42,7 +42,6 @@ public class Processor implements GameHandler {
 	private List<MoveResult> mMoveResults;
 	private Field mField;
 	private Player mGameOverByPlayerErrorPlayer = null;
-	private int mPassesInARow = 0;
 
 	public Processor(List<Player> players, Field field) {
 		mPlayers = players;
@@ -52,15 +51,12 @@ public class Processor implements GameHandler {
 			System.out.println("Running in DEV_MODE");
 			//Testsuite t = new Testsuite();
 			//t.dbgTestKoRule(mField);
-			//t.dbgTestCapture(mField);
-			//t.dbgTestSuicideRule(mField);
-			//t.dbgTestScore(mField);
 		}
 	}
 	
 	@Override
 	public void playRound(int roundNumber) {
-		System.out.println(String.format("playing round %d", roundNumber));
+		//System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
 		for (Player player : mPlayers) {
 			if (!isGameOver()) {
@@ -107,6 +103,7 @@ public class Processor implements GameHandler {
 		if (parts[0].equals("turn_direction")) {
 			try {
 				String direction = parts[1];
+				System.out.println(player.getId() + " " + direction);
 				if (player.turnDirection(Util.directionToInt(direction))) {
 					recordMove(player);
 					return true;
@@ -133,6 +130,7 @@ public class Processor implements GameHandler {
 	private void createParseError(Player player, String input) {
 		mField.setLastError("Error: failed to parse input");
 		player.getBot().outputEngineWarning(String.format("Failed to parse input '%s'", input));
+		System.out.println("Error: failed to parse input");
 	}
 	
 	private void recordMove(Player player) {

@@ -17,11 +17,12 @@
 
 package com.theaigames.tron.field;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.ArrayList;
+
 
 import com.theaigames.tron.player.Player;
-import com.theaigames.util.Util;
 
 public class Field {
 	
@@ -34,10 +35,17 @@ public class Field {
 	public static final int DIR_DOWN = 180;
 	public static final int DIR_LEFT = 270;
 	
+	private int[] mPlayerDirections;
+
+			
 	public Field(int width, int height, List<Player> players) {
 		mCols = width;
 		mRows = height;
 		mBoard = new int[mCols][mRows];
+		mPlayerDirections = new int[players.size() + 1];
+		for (Player player : players) {
+			mPlayerDirections[player.getId()] = 0;
+		}
 		clearBoard();
 	}
 	
