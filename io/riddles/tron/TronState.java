@@ -1,12 +1,14 @@
 package io.riddles.tron;
 
-import io.riddles.gridgame.Board;
+import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.AbstractModel;
 import io.riddles.game.model.Stateful;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
 import io.riddles.tron.moves.Move;
+import io.riddles.tron.player.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,11 +26,10 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     private Optional<Move> move;
     private int moveNumber;
     private Optional<TronState> previousState;
-
+    
     public TronState(Board board) {
 
         this.board = board;
-
         exception       = Optional.empty();
         move            = Optional.empty();
         moveNumber      = -1;
@@ -85,12 +86,10 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     }
 
     public Boolean hasMove() {
-
         return move.map(move -> true).orElse(false);
     }
 
     public Boolean hasPreviousState() {
-
         return previousState.map(previousState -> true).orElse(false);
     }
 }

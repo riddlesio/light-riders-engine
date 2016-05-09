@@ -1,4 +1,4 @@
-package io.riddles.boardgame;
+package io.riddles.boardgame.model;
 
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Field;

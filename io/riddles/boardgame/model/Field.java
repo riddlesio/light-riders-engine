@@ -13,19 +13,4 @@ import java.util.Optional;
  */
 public class Field extends AbstractModel {
 
-    protected Optional<Piece> maybePiece;
-
-    public Field(Optional<Piece> maybePiece) {
-
-        this.maybePiece = maybePiece;
-    }
-
-    public Optional<Piece> getPiece() {
-
-        return maybePiece;
-    }
-
-    public void setPiece(Optional<Piece> maybePiece) {
-        this.maybePiece = maybePiece;
-    }
 }
