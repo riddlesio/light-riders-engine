@@ -18,6 +18,7 @@
 package com.theaigames.tron;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.json.JSONArray;
@@ -31,10 +32,10 @@ import com.theaigames.tron.field.Field;
 import com.theaigames.tron.moves.Move;
 import com.theaigames.tron.moves.MoveResult;
 import com.theaigames.tron.player.Player;
-import com.theaigames.tron.testsuite.Testsuite;
 import com.theaigames.util.Util;
 
-public class Processor implements GameHandler {
+/* Class to glue processor to new TronProcessor */ 
+public class TronGameHandler implements GameHandler {
 	
 	private int mMoveNumber = 1;
 	private int mRoundNumber = -1;
@@ -42,7 +43,7 @@ public class Processor implements GameHandler {
 	private List<MoveResult> mMoveResults;
 	private Field mField;
 
-	public Processor(List<Player> players, Field field) {
+	public TronGameHandler(List<Player> players, Field field) {
 		mPlayers = players;
 		mField = field;
 		mMoveResults = new ArrayList<MoveResult>();

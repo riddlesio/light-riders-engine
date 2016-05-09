@@ -79,7 +79,7 @@ public class Tron extends AbstractGame {
 		this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, this.players);
 		
 		// Create the processor
-		super.processor = new Processor(this.players, this.mField);
+		super.processor = new TronGameHandler(this.players, this.mField);
 	}
 
 	public void sendSettings(Player player) {
