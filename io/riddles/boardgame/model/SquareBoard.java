@@ -1,5 +1,6 @@
 package io.riddles.boardgame.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.riddles.boardgame.model.Board;
@@ -17,6 +18,21 @@ public final class SquareBoard extends AbstractModel implements Board {
      */
     public SquareBoard(List<Field> fields) {
 
+        this.fields = fields;
+    }
+    
+    /**
+     * Board constructor for board filled with fields
+     * @param fields
+     */
+    public SquareBoard(int width, int height) {
+    	List<Field> fields = new ArrayList<Field>();
+    	for (int x = 0; x < width; x++) {
+    		for (int y = 0; y < height; y++) {
+    			fields.add(new Field(null));
+    		}
+    	}
+    	
         this.fields = fields;
     }
 
