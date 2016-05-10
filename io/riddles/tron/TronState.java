@@ -26,6 +26,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     private Optional<Move> move;
     private int moveNumber;
     private Optional<TronState> previousState;
+    private int playerId;
     
     public TronState(Board board) {
 
@@ -33,6 +34,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         exception       = Optional.empty();
         move            = Optional.empty();
         moveNumber      = -1;
+        playerId = -1;
         previousState   = Optional.empty();
     }
 
@@ -44,6 +46,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         board       = previousState.getBoard();
         move        = Optional.empty();
         moveNumber  = previousState.getMoveNumber();
+        playerId = previousState.getPlayerId();
     }
 
     public TronState(TronState previousState, Board board, Move move) {
@@ -54,6 +57,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 
         exception      = Optional.empty();
         moveNumber     = previousState.getMoveNumber() + 1;
+        playerId = -1;
     }
 
     @Override
@@ -92,4 +96,12 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     public Boolean hasPreviousState() {
         return previousState.map(previousState -> true).orElse(false);
     }
+    
+    public int getPlayerId() {
+    	return playerId;
+    }
+    
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
+	}
 }

@@ -22,7 +22,7 @@ import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.GameHandler;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.Tron;
-import io.riddles.tron.field.Field;
+import io.riddles.boardgame.model.Field;
 import io.riddles.tron.moves.Move;
 import io.riddles.tron.moves.MoveResult;
 import io.riddles.tron.player.Player;
@@ -63,9 +63,11 @@ public class TronGameHandler implements GameHandler {
 		//System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
 		TronProcessor<TronState> processor = new TronProcessor<TronState>();
+		List<Field> l;
+		Board s = new SquareBoard(l);
+		
 		for (Player player : mPlayers) {
-			TronState state = new TronState(new SquareBoard());
-			state.setPlayerId(player.getId());
+			TronState state = new TronState();
 			
 			if (!isGameOver()) {
 				if (player.isAlive()) {
@@ -73,7 +75,7 @@ public class TronGameHandler implements GameHandler {
 					
 					String input = player.requestMove("move");
 					try {
-						processor.processInput(state, input);
+						processor.processInput(state, player.getId(), input);
 					} catch (Exception e) {
 						System.out.println("Exception: " + e.toString());
 					}
