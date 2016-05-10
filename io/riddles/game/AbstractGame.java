@@ -211,8 +211,8 @@ public abstract class AbstractGame implements Logic {
 		int botNr = 0;
 		for(IOPlayer ioPlayer : this.engine.getPlayers()) {
 			botNr++;
-			errors.append(ioPlayer.getIdString(), Amazon.saveToAmazon(ioPlayer.getStderr(), String.format("%s/bot%dErrors", gamePath, botNr)));
-			dumps.append(ioPlayer.getIdString(), Amazon.saveToAmazon(ioPlayer.getDump(), String.format("%s/bot%dDump", gamePath, botNr)));
+			//errors.append(ioPlayer.getIdString(), Amazon.saveToAmazon(ioPlayer.getStderr(), String.format("%s/bot%dErrors", gamePath, botNr)));
+			//dumps.append(ioPlayer.getIdString(), Amazon.saveToAmazon(ioPlayer.getDump(), String.format("%s/bot%dDump", gamePath, botNr)));
 		}
 		
 		// store everything in the database

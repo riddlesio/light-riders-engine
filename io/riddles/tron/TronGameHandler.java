@@ -23,8 +23,6 @@ import io.riddles.game.GameHandler;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.Tron;
 import io.riddles.boardgame.model.Field;
-import io.riddles.tron.moves.Move;
-import io.riddles.tron.moves.MoveResult;
 import io.riddles.tron.player.Player;
 import io.riddles.util.Util;
 
@@ -43,13 +41,11 @@ public class TronGameHandler implements GameHandler {
 	private int mMoveNumber = 1;
 	private int mRoundNumber = -1;
 	private List<Player> mPlayers;
-	private List<MoveResult> mMoveResults;
-	private Field mField;
+	private Board mBoard;
 	
-	public TronGameHandler(List<Player> players, Field field) {
+	public TronGameHandler(List<Player> players, Board board) {
 		mPlayers = players;
-		mField = field;
-		mMoveResults = new ArrayList<MoveResult>();
+		mBoard = board;
 		
 		if (Tron.DEV_MODE) {
 			System.out.println("Running in DEV_MODE");
@@ -63,11 +59,12 @@ public class TronGameHandler implements GameHandler {
 		//System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
 		TronProcessor<TronState> processor = new TronProcessor<TronState>();
-		List<Field> l;
-		Board s = new SquareBoard(l);
+		
+		
 		
 		for (Player player : mPlayers) {
-			TronState state = new TronState();
+			TronState state = new TronState(mBoard);
+			state.setPlayerId(player.getId());
 			
 			if (!isGameOver()) {
 				if (player.isAlive()) {
@@ -75,18 +72,15 @@ public class TronGameHandler implements GameHandler {
 					
 					String input = player.requestMove("move");
 					try {
-						processor.processInput(state, player.getId(), input);
+						processor.processInput(state, input);
 					} catch (Exception e) {
 						System.out.println("Exception: " + e.toString());
 					}
 					
 				} else {
-					recordMove(player);
+					//recordMove(player);
 				}
 				mMoveNumber++;
-				if (Tron.DEV_MODE) {
-					if (isGameOver()) mField.dumpBoard();
-				}
 			}
 		}
 	}
@@ -100,7 +94,7 @@ public class TronGameHandler implements GameHandler {
 	    
 	    player.sendUpdate("round", mRoundNumber);
         player.sendUpdate("move", mMoveNumber);
-        player.sendUpdate("field", mField.toString());
+        //player.sendUpdate("field", mField.toString());
         player.sendUpdate("your_location", player.getX() + "," + player.getY());
         player.sendUpdate("opponent_location", opponent.getX() + "," + opponent.getY());
         player.sendUpdate("your_direction", Util.directionToString(player.getDirection()));
@@ -112,6 +106,7 @@ public class TronGameHandler implements GameHandler {
 	 * @param args : command line arguments passed on running of application, Player involved
 	 * @return : true if valid action, otherwise false
 	 */
+	/*
 	private Boolean parseResponse(String r, Player player) {
 		String[] parts = r.split(" ");
 		if (parts[0].equals("turn_direction")) {
@@ -163,6 +158,7 @@ public class TronGameHandler implements GameHandler {
 
 		mMoveResults.add(moveResult);
 	}
+	*/
 	
 	@Override
 	public int getRoundNumber() {
@@ -190,6 +186,7 @@ public class TronGameHandler implements GameHandler {
 
 	@Override
 	public String getPlayedGame() {
+		/*
 		JSONObject output = new JSONObject();
 
 		try {
@@ -222,10 +219,14 @@ public class TronGameHandler implements GameHandler {
 			e.printStackTrace();
 		}
 		return output.toString();
+		*/
+		return "";
 	}
 	
+	/*
 	private JSONObject getOutputState(MoveResult mr, boolean finalState) throws JSONException {
 	    JSONObject state = new JSONObject();
+		
 	    AbstractPlayer winner = getWinner();
 	    
 	    String winnerstring = "";
@@ -253,8 +254,10 @@ public class TronGameHandler implements GameHandler {
         state.put("players", players);
         state.put("illegalMove", mr.getMove().getIllegalMove());
         
+		
         return state;
 	}
+	*/
 	
 	/**
 	 * Returns player's opponent given player
@@ -267,8 +270,8 @@ public class TronGameHandler implements GameHandler {
 		return mPlayers.get(0);
 	}
 
-	public Field getField() {
-		return mField;
+	public Board getBoard() {
+		return mBoard;
 	}
 
 	@Override

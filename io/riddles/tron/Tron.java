@@ -20,7 +20,9 @@ package io.riddles.tron;
 import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.AbstractGame;
 import io.riddles.game.player.AbstractPlayer;
-import io.riddles.tron.field.Field;
+import io.riddles.boardgame.model.Board;
+import io.riddles.boardgame.model.Field;
+import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.tron.player.Player;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class Tron extends AbstractGame {
 	private final int FIELD_HEIGHT = 64;
 	private final int FIELD_WIDTH = 64;
 	private List<Player> players;
-	private Field mField;
+	private List<Field> mFields;
 
 	@Override
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {			
@@ -54,6 +56,7 @@ public class Tron extends AbstractGame {
 		}
 		
 		/* Initialise player positions */
+		/*
 		int counter = 0;
 		for (Player player : this.players) {
 			switch (counter) {
@@ -75,12 +78,15 @@ public class Tron extends AbstractGame {
 			}
 			counter ++;
 		}
+		*/
 
 		// Create the playing field
-		this.mField = new Field(FIELD_WIDTH, FIELD_HEIGHT, this.players);
+		List<Field> fields = new ArrayList<Field>();
+		fields.add(new Field());
+		Board b = new SquareBoard(fields);
 		
 		// Create the processor
-		super.processor = new TronGameHandler(this.players, this.mField);
+		super.processor = new TronGameHandler(this.players, b);
 	}
 
 	public void sendSettings(Player player) {

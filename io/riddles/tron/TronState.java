@@ -5,10 +5,8 @@ import io.riddles.boardgame.model.AbstractModel;
 import io.riddles.game.model.Stateful;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
-import io.riddles.tron.moves.Move;
-import io.riddles.tron.player.Player;
+import io.riddles.boardgame.model.Move;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
