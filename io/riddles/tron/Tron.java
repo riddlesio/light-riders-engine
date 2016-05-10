@@ -21,12 +21,16 @@ import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.AbstractGame;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.boardgame.model.Board;
+import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.SquareBoard;
+import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.player.Player;
+import io.riddles.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -81,7 +85,9 @@ public class Tron extends AbstractGame {
 		// Create the playing field
 		
 		Board b = new SquareBoard(BOARD_SIZE);
-		
+		b.getFieldAt(new Coordinate(1,1)).setPiece(Optional.of(new TronPiece(PieceColor.YELLOW)));
+		Util.dumpBoard(b);
+		System.exit(0);
 		// Create the processor
 		super.processor = new TronGameHandler(this.players, b);
 	}

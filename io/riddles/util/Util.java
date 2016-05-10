@@ -17,6 +17,11 @@
 
 package io.riddles.util;
 
+import java.util.Optional;
+
+import io.riddles.boardgame.model.Board;
+import io.riddles.boardgame.model.Coordinate;
+import io.riddles.boardgame.model.Piece;
 import io.riddles.tron.field.Field;
 
 public final class Util {
@@ -54,5 +59,15 @@ public final class Util {
 				return Field.DIR_LEFT;
 		}
 		return -1;
+	}
+	
+	public static void dumpBoard(Board b) {
+		for (int x = 0; x < b.size(); x++) {
+			for (int y = 0; y < b.size(); y++) {
+				Optional<Piece> p = b.getFieldAt(new Coordinate(x,y)).getPiece();
+				if(p.isPresent()) System.out.print(p.get().toString().charAt(0));
+			}
+			System.out.println("");
+		}
 	}
 }

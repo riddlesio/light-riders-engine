@@ -2,8 +2,11 @@ package io.riddles.boardgame.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import io.riddles.boardgame.model.Board;
+import io.riddles.tron.TronPiece;
+import io.riddles.tron.TronPiece.PieceColor;
 
 /**
  * @author Niko van Meurs <niko@riddles.io>
@@ -29,7 +32,7 @@ public final class SquareBoard extends AbstractModel implements Board {
     	List<Field> fields = new ArrayList<Field>();
     	for (int x = 0; x < size; x++) {
     		for (int y = 0; y < size; y++) {
-    			fields.add(new Field(null));
+    			fields.add(new Field(Optional.of(new TronPiece(PieceColor.CYAN))));
     		}
     	}
         this.fields = fields;
@@ -57,8 +60,7 @@ public final class SquareBoard extends AbstractModel implements Board {
         return fields.get(index);
     }
 
-    @Override
-    public void setFieldAt(Coordinate coordinate, Field field) {
+    public void setPieceAt(Coordinate coordinate, Piece piece) {
     	
     	int x = coordinate.getX();
         int y = coordinate.getY();
@@ -69,7 +71,8 @@ public final class SquareBoard extends AbstractModel implements Board {
         if (index >= fieldSize) {
             throw new IndexOutOfBoundsException("Coordinate out of bounds");
         }
-        fields.set(index, field);
+        fields.get(index).setPiece(Optional.of(piece));
+        
     }
     
     public int size() {
@@ -81,4 +84,10 @@ public final class SquareBoard extends AbstractModel implements Board {
 
         return new SquareBoard(fields);
     }
+
+	@Override
+	public void setFieldAt(Coordinate coordinate, Piece piece) throws IndexOutOfBoundsException {
+		// TODO Auto-generated method stub
+		
+	}
 }

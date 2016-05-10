@@ -2,6 +2,8 @@ package io.riddles.boardgame.model;
 
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Field;
+import io.riddles.game.model.Stateful;
+import io.riddles.tron.TronState;
 
 import java.util.List;
 
@@ -16,6 +18,6 @@ public interface Board {
 
     List<Field> getFields();
     Field getFieldAt(Coordinate coordinate) throws IndexOutOfBoundsException;
-    void setFieldAt(Coordinate coordinate) throws IndexOutOfBoundsException;
+    void setFieldAt(Coordinate coordinate, Piece piece) throws IndexOutOfBoundsException;
     int size();
 }

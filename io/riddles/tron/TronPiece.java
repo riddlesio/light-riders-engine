@@ -15,4 +15,8 @@ public class TronPiece extends Piece {
     public enum PieceType {
     	LIGHTCYCLE
     }
+    
+    public String toString() {
+    	return this.color.toString();
+    }
 }
