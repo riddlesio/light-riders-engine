@@ -22,17 +22,16 @@ public final class SquareBoard extends AbstractModel implements Board {
     }
     
     /**
-     * Board constructor for board filled with fields
+     * Board constructor for board filled with empty fields
      * @param fields
      */
-    public SquareBoard(int width, int height) {
+    public SquareBoard(int size) {
     	List<Field> fields = new ArrayList<Field>();
-    	for (int x = 0; x < width; x++) {
-    		for (int y = 0; y < height; y++) {
+    	for (int x = 0; x < size; x++) {
+    		for (int y = 0; y < size; y++) {
     			fields.add(new Field(null));
     		}
     	}
-    	
         this.fields = fields;
     }
 
@@ -58,6 +57,21 @@ public final class SquareBoard extends AbstractModel implements Board {
         return fields.get(index);
     }
 
+    @Override
+    public void setFieldAt(Coordinate coordinate, Field field) {
+    	
+    	int x = coordinate.getX();
+        int y = coordinate.getY();
+        int boardSize = this.size();
+
+        int index = boardSize * y + x;
+        int fieldSize = fields.size();
+        if (index >= fieldSize) {
+            throw new IndexOutOfBoundsException("Coordinate out of bounds");
+        }
+        fields.set(index, field);
+    }
+    
     public int size() {
 
         return (int) Math.sqrt(fields.size());

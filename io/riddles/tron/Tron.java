@@ -34,10 +34,8 @@ public class Tron extends AbstractGame {
 	
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
-	private final int BOARD_WIDTH = 64;
-	private final int BOARD_HEIGHT = 64;
+	private final int BOARD_SIZE = 64;
 	private List<Player> players;
-	private List<Field> mFields;
 
 	@Override
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {			
@@ -82,7 +80,7 @@ public class Tron extends AbstractGame {
 
 		// Create the playing field
 		
-		Board b = new SquareBoard(BOARD_WIDTH, BOARD_HEIGHT);
+		Board b = new SquareBoard(BOARD_SIZE);
 		
 		// Create the processor
 		super.processor = new TronGameHandler(this.players, b);
@@ -95,8 +93,7 @@ public class Tron extends AbstractGame {
 		player.sendSetting("player_names", playerString);
 		player.sendSetting("your_bot", player.getName());
 		player.sendSetting("your_botid", player.getId());
-		player.sendSetting("board_width", BOARD_WIDTH);
-		player.sendSetting("board_height", BOARD_HEIGHT);
+		player.sendSetting("board_size", BOARD_SIZE);
 	}
 
 	@Override

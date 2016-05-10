@@ -7,8 +7,6 @@ public class TronPiece extends Piece {
 	public TronPiece(PieceColor color) {
 		super(PieceType.LIGHTCYCLE, color);
 	}
-	
-
     
     public enum PieceColor {
         YELLOW, GREEN, CYAN, PURPLE
