@@ -30,10 +30,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 /* Class to glue processor to new TronProcessor */ 
 public class TronGameHandler implements GameHandler {
@@ -60,11 +56,9 @@ public class TronGameHandler implements GameHandler {
 		mRoundNumber = roundNumber;
 		TronProcessor<TronState> processor = new TronProcessor<TronState>();
 		
-		
-		
 		for (Player player : mPlayers) {
 			TronState state = new TronState(mBoard);
-			state.setPlayerId(player.getId());
+			state.setActivePieceColor(player.getPieceColor());
 			
 			if (!isGameOver()) {
 				if (player.isAlive()) {

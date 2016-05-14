@@ -5,6 +5,7 @@ import io.riddles.boardgame.model.AbstractModel;
 import io.riddles.game.model.Stateful;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
+import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.boardgame.model.Move;
 
 import java.util.Optional;
@@ -24,7 +25,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     private Optional<Move> move;
     private int moveNumber;
     private Optional<TronState> previousState;
-    private int playerId;
+    private PieceColor pieceColor;
     
     public TronState(Board board) {
 
@@ -32,7 +33,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         exception       = Optional.empty();
         move            = Optional.empty();
         moveNumber      = -1;
-        playerId = -1;
         previousState   = Optional.empty();
     }
 
@@ -44,7 +44,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         board       = previousState.getBoard();
         move        = Optional.empty();
         moveNumber  = previousState.getMoveNumber();
-        playerId = previousState.getPlayerId();
     }
 
     public TronState(TronState previousState, Board board, Move move) {
@@ -55,7 +54,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 
         exception      = Optional.empty();
         moveNumber     = previousState.getMoveNumber() + 1;
-        playerId = -1;
     }
 
     @Override
@@ -95,11 +93,12 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         return previousState.map(previousState -> true).orElse(false);
     }
     
-    public int getPlayerId() {
-    	return playerId;
-    }
-    
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
+
+	public PieceColor getActivePieceColor() {
+		return pieceColor;
+	}
+	
+	public void setActivePieceColor(PieceColor pieceColor) {
+		this.pieceColor = pieceColor;
 	}
 }

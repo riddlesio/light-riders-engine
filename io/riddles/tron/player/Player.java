@@ -19,6 +19,7 @@ package io.riddles.tron.player;
 
 import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.player.AbstractPlayer;
+import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.field.Field;
 
 
@@ -29,6 +30,7 @@ public class Player extends AbstractPlayer {
 	int mDirection;
 	int mX, mY;
 	boolean mAlive;
+	PieceColor mPieceColor;
 	
 	public Player(String name, IOPlayer bot, long maxTimeBank, long timePerMove, int id) {
 		super(name, bot, maxTimeBank, timePerMove);
@@ -95,5 +97,13 @@ public class Player extends AbstractPlayer {
 		if (mDirection == newDirection) allowed = true;		
 		if (allowed) mDirection = newDirection;
 		return allowed;
+	}
+
+	public PieceColor getPieceColor() {
+		return mPieceColor;
+	}
+	
+	public void setPieceColor(PieceColor pieceColor) {
+		mPieceColor = pieceColor;
 	}
 }

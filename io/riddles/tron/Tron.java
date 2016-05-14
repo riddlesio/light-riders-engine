@@ -46,10 +46,16 @@ public class Tron extends AbstractGame {
 		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
 
+		List<PieceColor> pieceColors = new ArrayList<PieceColor>();
+		pieceColors.add(PieceColor.CYAN);
+		pieceColors.add(PieceColor.YELLOW);
+		pieceColors.add(PieceColor.GREEN);
+		pieceColors.add(PieceColor.PURPLE);
 		for(int i=0; i<ioPlayers.size(); i++) {
 			// Create the player
 			String playerName = String.format("player%d", i+1);
 			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
+			player.setPieceColor(pieceColors.get(i)); /* Maxed out at 4 players */
 			this.players.add(player);
 
 		}
@@ -58,34 +64,33 @@ public class Tron extends AbstractGame {
 		}
 		
 		/* Initialise player positions */
-		/*
 		int counter = 0;
 		for (Player player : this.players) {
 			switch (counter) {
 				case 0:
-					player.setX(FIELD_WIDTH/4);
-					player.setY(FIELD_HEIGHT/2);
-					player.setDirection(Field.DIR_RIGHT);
+					player.setX(BOARD_SIZE/4);
+					player.setY(BOARD_SIZE/2);
+					player.setDirection(TronPiece.DIR_RIGHT);
 					break;
 				case 1:
-					player.setX(FIELD_WIDTH/4*3);
-					player.setY(FIELD_HEIGHT/2);
-					player.setDirection(Field.DIR_LEFT);
+					player.setX(BOARD_SIZE/4*3);
+					player.setY(BOARD_SIZE/2);
+					player.setDirection(TronPiece.DIR_LEFT);
 					break;
 				default:
 					Random r = new Random();
-					player.setX(r.nextInt(FIELD_WIDTH));
-					player.setY(r.nextInt(FIELD_HEIGHT));
+					player.setX(r.nextInt(BOARD_SIZE));
+					player.setY(r.nextInt(BOARD_SIZE));
 					player.setDirection(r.nextInt(4)*90);
 			}
 			counter ++;
 		}
-		*/
 
 		// Create the playing field
 		
 		Board b = new SquareBoard(BOARD_SIZE);
 		b.getFieldAt(new Coordinate(1,1)).setPiece(Optional.of(new TronPiece(PieceColor.YELLOW)));
+		
 		Util.dumpBoard(b);
 		System.exit(0);
 		// Create the processor
