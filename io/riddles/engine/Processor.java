@@ -1,7 +1,7 @@
 package io.riddles.engine;
 
 import io.riddles.engine.io.Command;
-import io.riddles.exception.InvalidMoveException;
+import io.riddles.game.exception.InvalidMoveException;
 
 
 /**

@@ -3,6 +3,7 @@ package io.riddles.tron.move.validator;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.move.MoveValidator;
+import io.riddles.tron.TronMove;
 
 import java.util.ArrayList;
 
@@ -30,12 +31,12 @@ public final class TronMoveValidator implements MoveValidator {
     }
 
     @Override
-    public Boolean isApplicable(Move move, Board board) {
+    public Boolean isApplicable(TronMove move, Board board) {
         return true;
     }
 
     @Override
-    public Boolean isValid(Move move, Board board) {
+    public Boolean isValid(TronMove move, Board board) {
 
         for (MoveValidator validator : validators) {
 
