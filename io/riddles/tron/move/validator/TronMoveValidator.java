@@ -31,12 +31,12 @@ public final class TronMoveValidator implements MoveValidator {
     }
 
     @Override
-    public Boolean isApplicable(TronMove move, Board board) {
+    public Boolean isApplicable(Move move, Board board) {
         return true;
     }
 
     @Override
-    public Boolean isValid(TronMove move, Board board) {
+    public Boolean isValid(Move move, Board board) {
 
         for (MoveValidator validator : validators) {
 
@@ -47,4 +47,5 @@ public final class TronMoveValidator implements MoveValidator {
 
         return true;
     }
+
 }

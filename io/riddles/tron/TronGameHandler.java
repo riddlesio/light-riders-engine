@@ -54,7 +54,7 @@ public class TronGameHandler implements GameHandler {
 	public void playRound(int roundNumber) {
 		//System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
-		TronProcessor<TronState> processor = new TronProcessor<TronState>();
+		TronProcessor processor = new TronProcessor();
 		
 		for (Player player : mPlayers) {
 			TronState state = new TronState(mBoard);

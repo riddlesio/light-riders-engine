@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.exception.InvalidInputException;
+import io.riddles.tron.field.Field;
 
 public class TronMoveDeserializer {
 
@@ -17,50 +18,33 @@ public class TronMoveDeserializer {
 
     private TronMove visit(String[] tokens) throws InvalidInputException {
 
-        if (tokens.length != 2) {
-            throw new InvalidInputException("Input contains more than two tokens");
+        if (tokens.length != 1) {
+            throw new InvalidInputException("Input contains more than one token");
         }
-
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-
+        
+        int direction = 0;
         for (String token : tokens) {
         	System.out.println(token);
-            //Coordinate coordinate = this.visit(token);
-            //coordinates.add(coordinate);
+            direction  = this.visit(token);
         }
-
-        Coordinate from = coordinates.get(0);
-        Coordinate to   = coordinates.get(1);
-
-        return new TronMove();
+        return new TronMove(direction);
     }
 
-    private Coordinate visit(String token) throws InvalidInputException {
-
+    private int visit(String token) throws InvalidInputException {
+    	
         if (!token.matches("^[A-Za-z][0-9]$")) {
             throw new InvalidInputException("Token has invalid format");
         }
-
-        ArrayList<Integer> digits = new ArrayList<>();
-
-        for (Character character : token.toCharArray()) {
-            digits.add(this.visit(character));
-        }
-
-        Integer x = digits.get(0);
-        Integer y = digits.get(1);
-
-        return new Coordinate(x, y);
-    }
-
-    private Integer visit(Character c) {
-
-        if (Character.isDigit(c)) {
-            return c.hashCode() - "0".hashCode();
-        }
-
-        c = Character.toLowerCase(c);
-
-        return c.hashCode() - "a".hashCode();
+		switch (token) {
+			case "up":
+				return TronPiece.DIR_UP;
+			case "right":
+				return TronPiece.DIR_RIGHT;
+			case "down":
+				return TronPiece.DIR_DOWN;
+			case "left":
+				return TronPiece.DIR_LEFT;
+		}
+		return -1;
     }
 }
