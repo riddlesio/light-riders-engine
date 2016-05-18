@@ -1,40 +1,37 @@
 package io.riddles.tron;
 
-import java.util.ArrayList;
 
-import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.exception.InvalidInputException;
-import io.riddles.tron.field.Field;
 
 public class TronMoveDeserializer {
 
-    public TronMove traverse(String input) throws InvalidInputException {
+    public Move traverse(String input) throws InvalidInputException {
 
         String[] tokens = input.trim().split(" ");
 
         return this.visit(tokens);
     }
 
-    private TronMove visit(String[] tokens) throws InvalidInputException {
+    private Move visit(String[] tokens) throws InvalidInputException {
 
-        if (tokens.length != 1) {
-            throw new InvalidInputException("Input contains more than one token");
-        }
+    	if (tokens[0].equals("pass")) {
+    		return new TronPassMove();
+    	}
+    	if (tokens[0].equals("turn_direction")) {
+    		int direction = visit(tokens[1]);
+
+    		System.out.println(direction);;
+    		if (direction >= 0) {
+    			return new TronMove(direction);
+    		}
+    	}
+    	throw new InvalidInputException("Token has invalid format");
         
-        int direction = 0;
-        for (String token : tokens) {
-        	System.out.println(token);
-            direction  = this.visit(token);
-        }
-        return new TronMove(direction);
     }
 
     private int visit(String token) throws InvalidInputException {
-    	
-        if (!token.matches("^[A-Za-z][0-9]$")) {
-            throw new InvalidInputException("Token has invalid format");
-        }
+
 		switch (token) {
 			case "up":
 				return TronPiece.DIR_UP;

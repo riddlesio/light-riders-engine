@@ -20,6 +20,7 @@ package io.riddles.tron;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.GameHandler;
+import io.riddles.game.exception.NoMoreMovesException;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.Tron;
 import io.riddles.boardgame.model.Field;
@@ -38,6 +39,7 @@ public class TronGameHandler implements GameHandler {
 	private int mRoundNumber = -1;
 	private List<Player> mPlayers;
 	private Board mBoard;
+	private boolean mGameOver = false;
 	
 	public TronGameHandler(List<Player> players, Board board) {
 		mPlayers = players;
@@ -52,15 +54,28 @@ public class TronGameHandler implements GameHandler {
 	
 	@Override
 	public void playRound(int roundNumber) {
-		//System.out.println(String.format("playing round %d", roundNumber));
+		System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
 		TronProcessor processor = new TronProcessor();
 		
 		for (Player player : mPlayers) {
-			TronState state = new TronState(mBoard);
-			state.setActivePieceColor(player.getPieceColor());
-			
 			if (!isGameOver()) {
+				TronState state = new TronState(mBoard);
+				state.setActivePieceColor(player.getPieceColor());
+				sendUpdates(player);
+				player.requestMove("move");
+				String input = player.requestMove("move");
+				try {
+					TronState s = processor.processInput(state, input);
+				} catch (Exception e) {
+					if (e instanceof NoMoreMovesException) {
+						mGameOver = true;
+					}
+					System.out.println("Exception: " + e.toString());
+				}
+			}
+			
+			/*
 				if (player.isAlive()) {
 					sendUpdates(player);
 					
@@ -76,6 +91,7 @@ public class TronGameHandler implements GameHandler {
 				}
 				mMoveNumber++;
 			}
+			*/
 		}
 	}
 	
@@ -270,7 +286,6 @@ public class TronGameHandler implements GameHandler {
 
 	@Override
 	public boolean isGameOver() {
-		if (mMoveNumber > 10) return true;
-		return ( getNrPlayersAlive() <= 1 );
+		return mGameOver;
 	}
 }

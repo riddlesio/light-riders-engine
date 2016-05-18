@@ -27,6 +27,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     private Optional<TronState> previousState;
     private PieceColor pieceColor;
     
+    
     public TronState(Board board) {
 
         this.board = board;

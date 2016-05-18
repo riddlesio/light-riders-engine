@@ -30,15 +30,12 @@ public class TronProcessor implements Processor<TronState> {
 
 	@Override
 	public TronState processInput(TronState state, String input) throws Exception {
-		System.out.println("input: " + input);
-		
 
 		MoveValidator validator = new TronMoveValidator();
 
         Board board = state.getBoard();
-
 		TronMoveDeserializer moveDeserializer = new TronMoveDeserializer();
-        TronMove move = moveDeserializer.traverse(input);
+        Move move = moveDeserializer.traverse(input);
 
         if (!validator.isValid(move, board)) {
             // FIXME: throw a more descriptive error

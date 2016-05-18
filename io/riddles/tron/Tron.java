@@ -42,7 +42,7 @@ public class Tron extends AbstractGame {
 	private List<Player> players;
 
 	@Override
-	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {			
+	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {		
 		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
 
@@ -91,8 +91,7 @@ public class Tron extends AbstractGame {
 		Board b = new SquareBoard(BOARD_SIZE);
 		b.getFieldAt(new Coordinate(1,1)).setPiece(Optional.of(new TronPiece(PieceColor.YELLOW)));
 		
-		Util.dumpBoard(b);
-		System.exit(0);
+		//Util.dumpBoard(b);
 		// Create the processor
 		super.processor = new TronGameHandler(this.players, b);
 	}
@@ -118,7 +117,7 @@ public class Tron extends AbstractGame {
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
 		AbstractGame.DEV_MODE = true;
-		game.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		game.TEST_BOT = "java -cp /home/joost/workspace/tronbot/bin/ bot.BotStarter";
 		game.NUM_TEST_BOTS = 4;
 		game.setupEngine(args);
 		game.runEngine();

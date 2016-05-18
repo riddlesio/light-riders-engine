@@ -1,6 +1,5 @@
 package io.riddles.tron;
 
-import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 
 public class TronMove extends Move {
