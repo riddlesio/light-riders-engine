@@ -11,9 +11,9 @@ import io.riddles.tron.TronPiece.PieceColor;
 /**
  * @author Niko van Meurs <niko@riddles.io>
  */
-public final class SquareBoard extends AbstractModel implements Board {
+public class SquareBoard extends AbstractModel implements Board {
 
-    private List<Field> fields;
+    protected List<Field> fields;
 
     /**
      * Board constructor
@@ -32,7 +32,7 @@ public final class SquareBoard extends AbstractModel implements Board {
     	List<Field> fields = new ArrayList<Field>();
     	for (int x = 0; x < size; x++) {
     		for (int y = 0; y < size; y++) {
-    			fields.add(new Field(Optional.of(new TronPiece(PieceColor.CYAN))));
+    			fields.add(new Field(Optional.empty()));
     		}
     	}
         this.fields = fields;

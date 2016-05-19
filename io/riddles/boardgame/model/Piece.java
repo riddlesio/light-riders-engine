@@ -13,6 +13,9 @@ public abstract class Piece<PieceType extends Enum<PieceType>, PieceColor extend
     protected PieceColor color;
     protected PieceType type;
 
+    public Piece() {
+    }
+    
     public Piece(PieceType type, PieceColor color) {
         this.type = type;
         this.color = color;

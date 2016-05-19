@@ -21,7 +21,7 @@ public class TronPiece extends Piece {
     }
     
     public enum PieceType {
-    	LIGHTCYCLE
+    	LIGHTCYCLE, WALL
     } 
     
     public String toString() {

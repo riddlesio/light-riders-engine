@@ -91,7 +91,7 @@ public class Tron extends AbstractGame {
 		Board b = new SquareBoard(BOARD_SIZE);
 		b.getFieldAt(new Coordinate(1,1)).setPiece(Optional.of(new TronPiece(PieceColor.YELLOW)));
 		
-		//Util.dumpBoard(b);
+
 		// Create the processor
 		super.processor = new TronGameHandler(this.players, b);
 	}

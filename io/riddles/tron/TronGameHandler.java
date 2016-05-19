@@ -100,15 +100,15 @@ public class TronGameHandler implements GameHandler {
 	 * @param player : player to send updates to
 	 */
 	private void sendUpdates(Player player) {
-	    Player opponent = getOpponent(player);
+	    //Player opponent = getOpponent(player);
 	    
 	    player.sendUpdate("round", mRoundNumber);
         player.sendUpdate("move", mMoveNumber);
         //player.sendUpdate("field", mField.toString());
         player.sendUpdate("your_location", player.getX() + "," + player.getY());
-        player.sendUpdate("opponent_location", opponent.getX() + "," + opponent.getY());
+        //player.sendUpdate("opponent_location", opponent.getX() + "," + opponent.getY());
         player.sendUpdate("your_direction", Util.directionToString(player.getDirection()));
-        player.sendUpdate("opponent_direction", Util.directionToString(opponent.getDirection()));
+        //player.sendUpdate("opponent_direction", Util.directionToString(opponent.getDirection()));
 	}
 	
 	/**
