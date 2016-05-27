@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
+import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Piece;
 import io.riddles.tron.field.Field;
 
@@ -33,32 +34,33 @@ public final class Util {
 		return String.format("%1$-" + n + "s", s);  
 	}
 	
-	public static String directionToString(int direction) {
+	public static String directionToString(Direction direction) {
 		switch (direction) {
-			case Field.DIR_UP:
+			case UP:
 				return "up";
-			case Field.DIR_RIGHT:
+			case RIGHT:
 				return "right";
-			case Field.DIR_DOWN:
+			case DOWN:
 				return "down";
-			case Field.DIR_LEFT:
+			case LEFT:
 				return "left";
+			default:
+				return "unknown";
 		}
-		return "unknown";
 	}	
 	
-	public static int directionToInt(String direction) {
+	public static Direction stringToDirection(String direction) {
 		switch (direction) {
 			case "up":
-				return Field.DIR_UP;
+				return Direction.UP;
 			case "right":
-				return Field.DIR_RIGHT;
+				return Direction.RIGHT;
 			case "down":
-				return Field.DIR_DOWN;
+				return Direction.DOWN;
 			case "left":
-				return Field.DIR_LEFT;
+				return Direction.LEFT;
 		}
-		return -1;
+		return null;
 	}
 	
 	public static void dumpBoard(Board b) {

@@ -1,47 +1,49 @@
 package io.riddles.tron.visitor;
 
 
+import io.riddles.boardgame.model.Direction;
 import io.riddles.game.exception.InvalidInputException;
 import io.riddles.tron.TronPiece;
 
 public class TronDirectionDeserializer {
 
-    public int traverse(String input) throws InvalidInputException {
+    public Direction traverse(String input) throws InvalidInputException {
 
         String[] tokens = input.trim().split(" ");
 
         return this.visit(tokens);
     }
 
-    private int visit(String[] tokens) throws InvalidInputException {
+    private Direction visit(String[] tokens) throws InvalidInputException {
 
     	if (tokens[0].equals("pass")) {
-			return -1;
+			return null;
     	}
     	if (tokens[0].equals("move")) {
-    		int direction = visit(tokens[1]);
+    		Direction direction = visit(tokens[1]);
 
     		System.out.println(direction);
-    		if (direction >= 0) {
-    			return 0;
+    		if (direction == null) {
+    			return null;
     		}
+    		return direction;
     	}
     	throw new InvalidInputException("Token has invalid format");
         
     }
 
-    private int visit(String token) throws InvalidInputException {
+    private Direction visit(String token) throws InvalidInputException {
 
 		switch (token) {
 			case "up":
-				return TronPiece.DIR_UP;
+				return Direction.UP;
 			case "right":
-				return TronPiece.DIR_RIGHT;
+				return Direction.RIGHT;
 			case "down":
-				return TronPiece.DIR_DOWN;
+				return Direction.DOWN;
 			case "left":
-				return TronPiece.DIR_LEFT;
+				return Direction.LEFT;
 		}
-		return -1;
+		return null;
     }
 }

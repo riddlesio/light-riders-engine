@@ -31,10 +31,6 @@ public class Field {
 	
 	private int mCols = 0, mRows = 0;
 	private String mLastError = "";
-	public static final int DIR_UP = 0;
-	public static final int DIR_RIGHT = 90;
-	public static final int DIR_DOWN = 180;
-	public static final int DIR_LEFT = 270;
 	
 	private int[] mPlayerDirections;
 
@@ -150,6 +146,7 @@ public class Field {
 	public boolean update(Player player) {
 		boolean result = false;
 		int x = player.getX(), y = player.getY();
+		/*
 		switch (player.getDirection()) {
 			case DIR_UP:
 				if (y > 0) {
@@ -188,6 +185,7 @@ public class Field {
 				}
 				break;
 		}
+		*/
 		return result;
 	}
 }

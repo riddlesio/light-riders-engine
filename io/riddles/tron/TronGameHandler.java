@@ -107,7 +107,7 @@ public class TronGameHandler implements GameHandler {
         //player.sendUpdate("field", mField.toString());
         player.sendUpdate("your_location", player.getX() + "," + player.getY());
         //player.sendUpdate("opponent_location", opponent.getX() + "," + opponent.getY());
-        player.sendUpdate("your_direction", Util.directionToString(player.getDirection()));
+        player.sendUpdate("your_direction", "left"); /* TODO */
         //player.sendUpdate("opponent_direction", Util.directionToString(opponent.getDirection()));
 	}
 	

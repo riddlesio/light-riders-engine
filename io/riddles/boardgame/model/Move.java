@@ -17,8 +17,8 @@ public final class Move {
 
     /**
      *
-     * @param Coordinate from
-     * @param Coordinate to
+     * @param from Points to the field from which the move is executed
+     * @param to   Points to the field to which the move is executed
      */
     public Move(Coordinate from, Coordinate to) {
 

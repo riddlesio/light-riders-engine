@@ -22,6 +22,7 @@ import io.riddles.game.AbstractGame;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
+import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.tron.TronPiece.PieceColor;
@@ -70,18 +71,18 @@ public class Tron extends AbstractGame {
 				case 0:
 					player.setX(BOARD_SIZE/4);
 					player.setY(BOARD_SIZE/2);
-					player.setDirection(TronPiece.DIR_RIGHT);
+					player.setDirection(Direction.RIGHT);
 					break;
 				case 1:
 					player.setX(BOARD_SIZE/4*3);
 					player.setY(BOARD_SIZE/2);
-					player.setDirection(TronPiece.DIR_LEFT);
+					player.setDirection(Direction.LEFT);
 					break;
 				default:
 					Random r = new Random();
 					player.setX(r.nextInt(BOARD_SIZE));
 					player.setY(r.nextInt(BOARD_SIZE));
-					player.setDirection(r.nextInt(4)*90);
+					player.setDirection(Direction.RIGHT);
 			}
 			counter ++;
 		}

@@ -3,11 +3,6 @@ package io.riddles.tron;
 import io.riddles.boardgame.model.Piece;
 
 public class TronPiece extends Piece {
-	public static final int DIR_UP = 0;
-	public static final int DIR_RIGHT = 90;
-	public static final int DIR_DOWN = 180;
-	public static final int DIR_LEFT = 270;
-	public static final int DIR_NONE = -1;
 	
     protected int direction;
 
