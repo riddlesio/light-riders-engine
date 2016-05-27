@@ -9,6 +9,7 @@ import io.riddles.game.exception.InvalidMoveException;
 import io.riddles.game.move.MoveValidator;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.move.validator.TronMoveValidator;
+import io.riddles.tron.visitor.TronDirectionDeserializer;
 
 
 public class TronProcessor implements Processor<TronState> {
@@ -33,8 +34,11 @@ public class TronProcessor implements Processor<TronState> {
 
 		MoveValidator validator = new TronMoveValidator();
 
-		TronMoveDeserializer moveDeserializer = new TronMoveDeserializer();
-        Move move = moveDeserializer.traverse(input);
+		TronDirectionDeserializer moveDeserializer = new TronDirectionDeserializer();
+        int direction = moveDeserializer.traverse(input);
+        
+        Move move = TronLogic.DirectionToMoveTransformer(state, direction);
+
         
         if (!validator.isValid(move, state.getBoard())) {
             // FIXME: throw a more descriptive error

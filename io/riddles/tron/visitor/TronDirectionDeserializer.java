@@ -1,30 +1,29 @@
-package io.riddles.tron;
+package io.riddles.tron.visitor;
 
 
-import io.riddles.boardgame.model.Coordinate;
-import io.riddles.boardgame.model.Move;
 import io.riddles.game.exception.InvalidInputException;
+import io.riddles.tron.TronPiece;
 
-public class TronMoveDeserializer {
+public class TronDirectionDeserializer {
 
-    public Move traverse(String input) throws InvalidInputException {
+    public int traverse(String input) throws InvalidInputException {
 
         String[] tokens = input.trim().split(" ");
 
         return this.visit(tokens);
     }
 
-    private Move visit(String[] tokens) throws InvalidInputException {
+    private int visit(String[] tokens) throws InvalidInputException {
 
     	if (tokens[0].equals("pass")) {
-			return new Move(new Coordinate(1,1), new Coordinate(2,2));
+			return -1;
     	}
     	if (tokens[0].equals("move")) {
     		int direction = visit(tokens[1]);
 
     		System.out.println(direction);
     		if (direction >= 0) {
-    			return TronLogic.DirectionToMoveTransformer(state, direction);
+    			return 0;
     		}
     	}
     	throw new InvalidInputException("Token has invalid format");
