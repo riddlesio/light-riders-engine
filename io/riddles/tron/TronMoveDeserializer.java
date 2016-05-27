@@ -24,7 +24,7 @@ public class TronMoveDeserializer {
 
     		System.out.println(direction);
     		if (direction >= 0) {
-    			return new Move(new Coordinate(1,1), new Coordinate(2,2));
+    			return TronLogic.DirectionToMoveTransformer(state, direction);
     		}
     	}
     	throw new InvalidInputException("Token has invalid format");
