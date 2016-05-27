@@ -18,6 +18,5 @@ public interface Board {
 
     List<Field> getFields();
     Field getFieldAt(Coordinate coordinate) throws IndexOutOfBoundsException;
-    void setFieldAt(Coordinate coordinate, Piece piece) throws IndexOutOfBoundsException;
     int size();
 }

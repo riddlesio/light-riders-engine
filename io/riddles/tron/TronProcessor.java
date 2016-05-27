@@ -3,8 +3,6 @@ package io.riddles.tron;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
-import io.riddles.boardgame.visitor.BoardGameMoveDeserializer;
-import io.riddles.boardgame.visitor.SimpleBoardGameMoveDeserializer;
 import io.riddles.engine.Processor;
 import io.riddles.engine.io.Command;
 import io.riddles.game.exception.InvalidMoveException;

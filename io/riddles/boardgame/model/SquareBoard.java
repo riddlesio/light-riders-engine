@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import io.riddles.boardgame.model.Board;
-import io.riddles.tron.TronPiece;
-import io.riddles.tron.TronPiece.PieceColor;
 
 /**
  * @author Niko van Meurs <niko@riddles.io>
  */
-public class SquareBoard extends AbstractModel implements Board {
+public final class SquareBoard extends AbstractModel implements Board {
 
     protected List<Field> fields;
 
@@ -59,21 +57,6 @@ public class SquareBoard extends AbstractModel implements Board {
 
         return fields.get(index);
     }
-
-    public void setPieceAt(Coordinate coordinate, Piece piece) {
-    	
-    	int x = coordinate.getX();
-        int y = coordinate.getY();
-        int boardSize = this.size();
-
-        int index = boardSize * y + x;
-        int fieldSize = fields.size();
-        if (index >= fieldSize) {
-            throw new IndexOutOfBoundsException("Coordinate out of bounds");
-        }
-        fields.get(index).setPiece(Optional.of(piece));
-        
-    }
     
     public int size() {
 
@@ -84,10 +67,4 @@ public class SquareBoard extends AbstractModel implements Board {
 
         return new SquareBoard(fields);
     }
-
-	@Override
-	public void setFieldAt(Coordinate coordinate, Piece piece) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		
-	}
 }

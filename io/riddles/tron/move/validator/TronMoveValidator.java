@@ -3,7 +3,6 @@ package io.riddles.tron.move.validator;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.move.MoveValidator;
-import io.riddles.tron.TronMove;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ public final class TronMoveValidator implements MoveValidator {
 
 		ArrayList<MoveValidator> validators = new ArrayList<>();
 
-		validators.add(new PassValidator());
 		validators.add(new DirectionValidator());
 		
 		this.validators = validators;
