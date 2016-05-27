@@ -12,6 +12,7 @@ public abstract class Piece<PieceType extends Enum<PieceType>, PieceColor extend
 
     protected PieceColor color;
     protected PieceType type;
+    protected int direction;
 
     public Piece() {
     }
@@ -35,5 +36,13 @@ public abstract class Piece<PieceType extends Enum<PieceType>, PieceColor extend
 
     public PieceType getType() {
         return type;
+    }
+    
+    public void setDirection(int direction) {
+    	this.direction = direction;
+    }
+    
+    public int getDirection() {
+    	return this.direction;
     }
 }

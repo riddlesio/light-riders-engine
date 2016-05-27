@@ -37,10 +37,7 @@ public class TronProcessor implements Processor<TronState> {
 
 		TronMoveDeserializer moveDeserializer = new TronMoveDeserializer();
         Move move = moveDeserializer.traverse(input);
-        if (move instanceof TronPassMove) {
-        	state.getBoard().setFieldAt(new Coordinate(10, 10), new TronPiece(PieceColor.CYAN));
-        }
-
+        
         if (!validator.isValid(move, state.getBoard())) {
             // FIXME: throw a more descriptive error
             throw new InvalidMoveException("Move not valid");

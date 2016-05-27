@@ -3,6 +3,7 @@ package io.riddles.tron;
 
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.exception.InvalidInputException;
+import io.riddles.tron.moves.TronPassMove;
 
 public class TronMoveDeserializer {
 

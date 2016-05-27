@@ -19,13 +19,12 @@ public class TronBoard extends SquareBoard {
     			
     		Field f = fields.get(i);
     		if (f.getPiece().isPresent()) {
-    			if (f.getPiece().get().getDirection() == 1) {
-    				
+    			if (f.getPiece().get().getColor() == pieceColor) {
+    				return new Coordinate(i%size(), i/size());
     			}
     		}
-    		fields.add(new Field(Optional.of(new TronPiece(PieceColor.CYAN))));
     	}
-		return new Coordinate(1,1);
+		return null;
 	}
 
 

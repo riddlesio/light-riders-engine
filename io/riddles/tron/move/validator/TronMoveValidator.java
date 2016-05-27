@@ -19,33 +19,36 @@ import java.util.ArrayList;
  */
 public final class TronMoveValidator implements MoveValidator {
 
-    private ArrayList<MoveValidator> validators;
+	private ArrayList<MoveValidator> validators;
 
-    public TronMoveValidator() {
+	public TronMoveValidator() {
 
-        ArrayList<MoveValidator> validators = new ArrayList<>();
+		ArrayList<MoveValidator> validators = new ArrayList<>();
 
-        //validators.add(new FromNotEmptyValidator());
+		validators.add(new PassValidator());
+		validators.add(new DirectionValidator());
+		
+		this.validators = validators;
+	}
 
-        this.validators = validators;
-    }
+	@Override
+	public Boolean isApplicable(Move move, Board board) {
+		return true;
+	}
 
-    @Override
-    public Boolean isApplicable(Move move, Board board) {
-        return true;
-    }
+	@Override
+	public Boolean isValid(Move move, Board board) {
 
-    @Override
-    public Boolean isValid(Move move, Board board) {
+		for (MoveValidator validator : validators) {
 
-        for (MoveValidator validator : validators) {
+			if (validator.isApplicable(move, board)) {
+				if (!validator.isValid(move, board)) {
+					return false;
+				}
+			}
+		}
 
-            if (!validator.isValid(move, board)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+		return true;
+	}
 
 }

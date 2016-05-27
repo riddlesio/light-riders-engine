@@ -1,4 +1,4 @@
-package io.riddles.tron;
+package io.riddles.tron.moves;
 
 import io.riddles.boardgame.model.Move;
 
