@@ -62,4 +62,8 @@ public final class TronLogic {
 		return null;
 	}
 	
+	public static Coordinate transformCoordinate(Coordinate c, Direction d) {
+		return new Coordinate(1, 1);
+	}
+	
 }

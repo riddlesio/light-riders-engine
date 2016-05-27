@@ -64,6 +64,8 @@ public class Tron extends AbstractGame {
 			sendSettings(player);
 		}
 		
+		Board b = new SquareBoard(BOARD_SIZE);
+
 		/* Initialise player positions */
 		int counter = 0;
 		for (Player player : this.players) {
@@ -72,26 +74,24 @@ public class Tron extends AbstractGame {
 					player.setX(BOARD_SIZE/4);
 					player.setY(BOARD_SIZE/2);
 					player.setDirection(Direction.RIGHT);
+					player.setPieceColor(PieceColor.CYAN);
 					break;
 				case 1:
 					player.setX(BOARD_SIZE/4*3);
 					player.setY(BOARD_SIZE/2);
 					player.setDirection(Direction.LEFT);
+					player.setPieceColor(PieceColor.PURPLE);
 					break;
 				default:
 					Random r = new Random();
 					player.setX(r.nextInt(BOARD_SIZE));
 					player.setY(r.nextInt(BOARD_SIZE));
 					player.setDirection(Direction.RIGHT);
+					player.setPieceColor(PieceColor.YELLOW);
 			}
+			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(player.getPieceColor())));
 			counter ++;
 		}
-
-		// Create the playing field
-		
-		Board b = new SquareBoard(BOARD_SIZE);
-		b.getFieldAt(new Coordinate(1,1)).setPiece(Optional.of(new TronPiece(PieceColor.YELLOW)));
-		
 
 		// Create the processor
 		super.processor = new TronGameHandler(this.players, b);

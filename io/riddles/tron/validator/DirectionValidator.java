@@ -13,7 +13,7 @@ public class DirectionValidator implements MoveValidator {
 
 	@Override
 	public Boolean isValid(Move move, Board board) {
-		return true;
+		return !(move.getFrom().getX() == move.getTo().getX() && move.getFrom().getY() == move.getTo().getY());
 	}
 
 

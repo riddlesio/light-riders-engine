@@ -22,6 +22,7 @@ public class TronProcessor implements Processor<TronState> {
 
 	@Override
 	public boolean hasGameEnded(TronState state) {
+		
 		return false;
 	}
 
@@ -39,6 +40,9 @@ public class TronProcessor implements Processor<TronState> {
         Direction direction = moveDeserializer.traverse(input);
         
         Move move = TronLogic.DirectionToMoveTransformer(state, direction);
+        Coordinate c = TronLogic.getLightcycleCoordinate(state, state.getActivePieceColor());
+        Coordinate newC = TronLogic.transformCoordinate(c, direction);
+        
 
         
         if (!validator.isValid(move, state.getBoard())) {

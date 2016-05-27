@@ -29,7 +29,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     
     
     public TronState(Board board) {
-
         this.board = board;
         exception       = Optional.empty();
         move            = Optional.empty();
@@ -93,7 +92,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     public Boolean hasPreviousState() {
         return previousState.map(previousState -> true).orElse(false);
     }
-    
 
 	public PieceColor getActivePieceColor() {
 		return pieceColor;
