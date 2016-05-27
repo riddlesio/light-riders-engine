@@ -67,6 +67,7 @@ public class TronGameHandler implements GameHandler {
 				String input = player.requestMove("move");
 				try {
 					TronState s = processor.processInput(state, input);
+					mBoard = s.getBoard();
 				} catch (Exception e) {
 					if (e instanceof NoMoreMovesException) {
 						mGameOver = true;
@@ -92,6 +93,10 @@ public class TronGameHandler implements GameHandler {
 				mMoveNumber++;
 			}
 			*/
+		}
+		if (mRoundNumber == 43) {
+			Util.dumpBoard(mBoard);
+			System.exit(0);
 		}
 	}
 	

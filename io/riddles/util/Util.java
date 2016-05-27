@@ -67,7 +67,11 @@ public final class Util {
 		for (int x = 0; x < b.size(); x++) {
 			for (int y = 0; y < b.size(); y++) {
 				Optional<Piece> p = b.getFieldAt(new Coordinate(x,y)).getPiece();
-				if(p.isPresent()) System.out.print(p.get().toString().charAt(0));
+				if(p.isPresent()) {
+					System.out.print(p.get().toString());
+				} else {
+					System.out.print("--");
+				}
 			}
 			System.out.println("");
 		}

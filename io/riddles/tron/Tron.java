@@ -26,6 +26,7 @@ import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.player.Player;
 import io.riddles.util.Util;
 
@@ -58,7 +59,6 @@ public class Tron extends AbstractGame {
 			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
 			player.setPieceColor(pieceColors.get(i)); /* Maxed out at 4 players */
 			this.players.add(player);
-
 		}
 		for(Player player : this.players) {
 			sendSettings(player);
@@ -89,7 +89,7 @@ public class Tron extends AbstractGame {
 					player.setDirection(Direction.RIGHT);
 					player.setPieceColor(PieceColor.YELLOW);
 			}
-			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(player.getPieceColor())));
+			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
 			counter ++;
 		}
 
@@ -118,8 +118,8 @@ public class Tron extends AbstractGame {
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
 		AbstractGame.DEV_MODE = true;
-		game.TEST_BOT = "java -cp /home/joost/workspace/tronbot/bin/ bot.BotStarter";
-		game.NUM_TEST_BOTS = 4;
+		game.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		game.NUM_TEST_BOTS = 2;
 		game.setupEngine(args);
 		game.runEngine();
 	}

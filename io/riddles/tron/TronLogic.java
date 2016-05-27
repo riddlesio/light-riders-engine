@@ -8,34 +8,38 @@ import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.Piece;
 import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Direction;
 
 public final class TronLogic {
 
 	public static Move DirectionToMoveTransformer(TronState state, Direction direction) {
-		/* TODO: implement this */
 		PieceColor c = state.getActivePieceColor();
 		
 		Coordinate coord1 = getLightcycleCoordinate(state, c);
 		Coordinate coord2 = coord1;
 		
-		switch (direction) {
-			case UP:
-				coord2 = new Coordinate(coord1.getX(), coord1.getY()-1);
-				break;
-			case RIGHT:
-				coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
-				break;
-			case DOWN:
-				coord2 = new Coordinate(coord1.getX(), coord1.getY()+1);
-				break;
-			case LEFT:
-				coord2 = new Coordinate(coord1.getX()-1, coord1.getY());
-				break;
-			default:
-				coord2 = coord1;
-				break;
+		if (direction == null) {
+			return null;
+		} else {
+			switch (direction) {
+				case UP:
+					coord2 = new Coordinate(coord1.getX(), coord1.getY()-1);
+					break;
+				case RIGHT:
+					coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
+					break;
+				case DOWN:
+					coord2 = new Coordinate(coord1.getX(), coord1.getY()+1);
+					break;
+				case LEFT:
+					coord2 = new Coordinate(coord1.getX()-1, coord1.getY());
+					break;
+				default:
+					coord2 = coord1;
+					break;
+			}
 		}
 		return new Move(coord1, coord2);
 	}
@@ -54,7 +58,7 @@ public final class TronLogic {
     	for (int i = 0; i < fields.size(); i++) {
     		Field f = fields.get(i);
     		if (f.getPiece().isPresent()) {
-    			if (f.getPiece().get().getColor() == c) {
+    			if (f.getPiece().get().getColor() == c && f.getPiece().get().hasType(PieceType.LIGHTCYCLE)) {
     				return new Coordinate(i%size, i/size);
     			}
     		}
@@ -63,7 +67,18 @@ public final class TronLogic {
 	}
 	
 	public static Coordinate transformCoordinate(Coordinate c, Direction d) {
-		return new Coordinate(1, 1);
+		switch (d) {
+			case UP:
+				return new Coordinate(c.getX(), c.getY()-1);
+			case RIGHT:
+				return new Coordinate(c.getX()+1, c.getY());
+			case DOWN:
+				return new Coordinate(c.getX(), c.getY()+1);
+			case LEFT:
+				return new Coordinate(c.getX()-1, c.getY());
+			default:
+				return null;
+		}
 	}
 	
 }

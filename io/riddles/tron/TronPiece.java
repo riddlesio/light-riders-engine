@@ -7,8 +7,8 @@ public class TronPiece extends Piece {
     protected int direction;
 
 	
-	public TronPiece(PieceColor color) {
-		super(PieceType.LIGHTCYCLE, color);
+	public TronPiece(PieceType type, PieceColor color) {
+		super(type, color);
 	}
     
     public enum PieceColor {
@@ -20,14 +20,6 @@ public class TronPiece extends Piece {
     } 
     
     public String toString() {
-    	return this.color.toString();
-    }
-    
-    public void setDirection(int direction) {
-    	this.direction = direction;
-    }
-    
-    public int getDirection() {
-    	return this.direction;
+    	return new String(this.type.toString().charAt(0) + "" +  this.color.toString().charAt(0));
     }
 }
