@@ -24,6 +24,7 @@ import io.riddles.game.exception.NoMoreMovesException;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.Tron;
 import io.riddles.boardgame.model.Field;
+import io.riddles.boardgame.model.Move;
 import io.riddles.tron.player.Player;
 import io.riddles.util.Util;
 
@@ -40,10 +41,12 @@ public class TronGameHandler implements GameHandler {
 	private List<Player> mPlayers;
 	private Board mBoard;
 	private boolean mGameOver = false;
+	private TronState previousState;
 	
 	public TronGameHandler(List<Player> players, Board board) {
 		mPlayers = players;
 		mBoard = board;
+		previousState = new TronState(mBoard);
 		
 		if (Tron.DEV_MODE) {
 			System.out.println("Running in DEV_MODE");
@@ -57,10 +60,9 @@ public class TronGameHandler implements GameHandler {
 		System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
 		TronProcessor processor = new TronProcessor();
-		
 		for (Player player : mPlayers) {
 			if (!isGameOver()) {
-				TronState state = new TronState(mBoard);
+				TronState state = new TronState(previousState);
 				state.setActivePieceColor(player.getPieceColor());
 				sendUpdates(player);
 				player.requestMove("move");
@@ -68,6 +70,7 @@ public class TronGameHandler implements GameHandler {
 				try {
 					TronState s = processor.processInput(state, input);
 					mBoard = s.getBoard();
+					previousState = s;
 				} catch (Exception e) {
 					if (e instanceof NoMoreMovesException) {
 						mGameOver = true;
@@ -98,6 +101,7 @@ public class TronGameHandler implements GameHandler {
 			Util.dumpBoard(mBoard);
 			System.exit(0);
 		}
+		
 	}
 	
 	/**

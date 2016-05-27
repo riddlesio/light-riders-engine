@@ -1,10 +1,9 @@
 package io.riddles.tron;
 
+import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Piece;
 
 public class TronPiece extends Piece {
-	
-    protected int direction;
 
 	
 	public TronPiece(PieceType type, PieceColor color) {

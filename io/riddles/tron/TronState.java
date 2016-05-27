@@ -55,6 +55,14 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         exception      = Optional.empty();
         moveNumber     = previousState.getMoveNumber() + 1;
     }
+    
+    public TronState(TronState previousState) {
+
+        this.previousState  = Optional.of(previousState);
+
+        exception      = Optional.empty();
+        moveNumber     = previousState.getMoveNumber() + 1;
+    }
 
     @Override
     public void accept(Visitor visitor) {

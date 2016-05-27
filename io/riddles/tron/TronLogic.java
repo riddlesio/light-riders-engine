@@ -81,4 +81,29 @@ public final class TronLogic {
 		}
 	}
 	
+	public static Direction getCurrentDirection(TronState state) {
+		Optional<TronState> prevState = state.getPreviousState();
+		
+		if (prevState.isPresent()) {
+			PieceColor c = state.getActivePieceColor();
+			Coordinate coord1 = getLightcycleCoordinate(state, c);
+			Coordinate coord2 = getLightcycleCoordinate(prevState.get(), c);
+			if (coord1.getX() < coord2.getX()) {
+				return Direction.LEFT;
+			}
+			if (coord1.getX() > coord2.getX()) {
+				return Direction.RIGHT;
+			}
+			if (coord1.getY() < coord2.getY()) {
+				return Direction.UP;
+			}
+			if (coord1.getY() > coord2.getY()) {
+				return Direction.DOWN;
+			}
+		} else {
+			return Direction.DOWN;
+		}
+		return Direction.DOWN;
+	}
+	
 }

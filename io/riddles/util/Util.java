@@ -64,8 +64,8 @@ public final class Util {
 	}
 	
 	public static void dumpBoard(Board b) {
-		for (int x = 0; x < b.size(); x++) {
-			for (int y = 0; y < b.size(); y++) {
+		for (int y = 0; y < b.size(); y++) {
+			for (int x = 0; x < b.size(); x++) {
 				Optional<Piece> p = b.getFieldAt(new Coordinate(x,y)).getPiece();
 				if(p.isPresent()) {
 					System.out.print(p.get().toString());
