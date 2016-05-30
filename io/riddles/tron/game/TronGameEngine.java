@@ -16,7 +16,7 @@ import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.engine.GameEngine;
 import io.riddles.game.engine.GameLoop;
 import io.riddles.game.engine.SimpleGameLoop;
-import io.riddles.game.io.IOHandler;
+import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
@@ -40,7 +40,7 @@ public class TronGameEngine implements GameEngine {
     private GameLoop<TronState> gameLoop;
     private Processor<TronState> processor;
     private TronState finalState;
-    private ArrayList<IOPlayer> players; // ArrayList containing player handlers
+    private ArrayList<Player> players; // ArrayList containing player handlers
     
     public final int BOARD_SIZE = 64;
 	public static boolean DEV_MODE = false; // turn this on for local testing
@@ -48,7 +48,7 @@ public class TronGameEngine implements GameEngine {
 	public int NUM_TEST_BOTS; // number of bots for this game
 	
     public TronGameEngine() {
-        this.players = new ArrayList<IOPlayer>();
+        this.players = new ArrayList<Player>();
 
         gameLoop  = new SimpleGameLoop<>();
         processor = new TronProcessor();
@@ -60,10 +60,9 @@ public class TronGameEngine implements GameEngine {
      * @param initialStateString - String representation of the initial State
      */
     public void run() {
-    	/* TODO: initialState not used */
-
-		IOHandler handler = new IOHandler(players.get(0).getProcess());
-    	TronIOProvider provider = new TronIOProvider(handler);
+    	/* TODO: initialState not used */		
+		
+    	TronIOProvider provider = new TronIOProvider(players.get(0).getHandler());
         finalState = gameLoop.run(provider, processor, getInitialState());
     }
 
@@ -174,13 +173,14 @@ public class TronGameEngine implements GameEngine {
     	Process process = Runtime.getRuntime().exec(command);
 
         // Attach IO to process
-        IOPlayer player = new IOPlayer(process, idString);
+    	AiGamesIOHandler handler = new AiGamesIOHandler(process);
+        Player player = new Player(idString, handler, BOARD_SIZE, BOARD_SIZE, BOARD_SIZE);
         
         // Add player
         this.players.add(player);
 
         // Start running
-        player.run();
+        player.getHandler().run();
     }
 
 	@Override

@@ -17,7 +17,7 @@
 
 package io.riddles.game.player;
 
-import io.riddles.engine.io.IOPlayer;
+import io.riddles.game.io.AiGamesIOHandler;
 
 import java.io.IOException;
 
@@ -37,14 +37,14 @@ import java.io.IOException;
 public abstract class AbstractPlayer {
 	
 	private String name;
-	private IOPlayer bot;
+	private AiGamesIOHandler handler;
 	private long timeBank;
 	private long maxTimeBank;
 	private long timePerMove;
 	
-	public AbstractPlayer(String name, IOPlayer bot, long maxTimeBank, long timePerMove) {
+	public AbstractPlayer(String name, AiGamesIOHandler handler, long maxTimeBank, long timePerMove) {
 		this.name = name;
-		this.bot = bot;
+		this.handler = handler;
 		this.timeBank = maxTimeBank;
 		this.maxTimeBank = maxTimeBank;
 		this.timePerMove = timePerMove;
@@ -65,10 +65,10 @@ public abstract class AbstractPlayer {
 	}
 	
 	/**
-	 * @return : The Bot object of this Player
+	 * @return : The Handler object of this Player
 	 */
-	public IOPlayer getBot() {
-		return bot;
+	public AiGamesIOHandler getHandler() {
+		return handler;
 	}
 
 	/**
@@ -149,6 +149,7 @@ public abstract class AbstractPlayer {
 	 * @return : the bot's output
 	 */
 	public String requestMove(String moveType) {
+		/*
 		long startTime = System.currentTimeMillis();
 		
 		// write the request to the bot
@@ -162,6 +163,8 @@ public abstract class AbstractPlayer {
 		updateTimeBank(timeElapsed);
 		
 		return response;
+		*/
+		return "";
 	}
 	
 	/**
@@ -169,10 +172,6 @@ public abstract class AbstractPlayer {
 	 * @param info
 	 */
 	private void sendLine(String content) {
-		try {
-			this.bot.writeToBot(content);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.handler.write(content);
 	}
 }

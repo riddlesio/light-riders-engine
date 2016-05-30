@@ -12,9 +12,9 @@ package io.riddles.game.io;
  */
 public class AbstractIOProvider {
 
-    protected IOHandler handler;
+    protected AiGamesIOHandler handler;
 
-    public AbstractIOProvider(IOHandler handler) {
+    public AbstractIOProvider(AiGamesIOHandler handler) {
         this.handler = handler;
     }
 }

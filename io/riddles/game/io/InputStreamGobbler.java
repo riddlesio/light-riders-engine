@@ -33,12 +33,12 @@ import java.io.InputStreamReader;
 public class InputStreamGobbler extends Thread {
     
     private InputStream inputStream;
-    private IOWrapper wrapper;
+    private AiGamesBot wrapper;
     private String type;
     private StringBuffer buffer;
     private boolean finished;
 
-    InputStreamGobbler(InputStream inputStream, IOWrapper wrapper, String type) {
+    InputStreamGobbler(InputStream inputStream, AiGamesBot wrapper, String type) {
         this.inputStream = inputStream;
         this.wrapper = wrapper;
         this.type = type;

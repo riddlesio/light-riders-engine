@@ -21,7 +21,7 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.GameHandler;
 import io.riddles.game.exception.NoMoreMovesException;
-import io.riddles.game.io.IOHandler;
+import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IOResponse;
 import io.riddles.game.player.AbstractPlayer;

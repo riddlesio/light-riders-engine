@@ -19,6 +19,7 @@ package io.riddles.tron.player;
 
 import io.riddles.boardgame.model.Direction;
 import io.riddles.engine.io.IOPlayer;
+import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.field.Field;
@@ -33,8 +34,8 @@ public class Player extends AbstractPlayer {
 	boolean mAlive;
 	PieceColor mPieceColor;
 	
-	public Player(String name, IOPlayer bot, long maxTimeBank, long timePerMove, int id) {
-		super(name, bot, maxTimeBank, timePerMove);
+	public Player(String name, long maxTimeBank, long timePerMove, int id) {
+		super(name, handler, maxTimeBank, timePerMove);
 		mId = id;
 		mLastMove = "Null";
 		mAlive = true;

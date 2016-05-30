@@ -31,18 +31,19 @@ import io.riddles.game.io.InputStreamGobbler;
  * 
  * @author Sid Mijnders <sid@riddles.io>, Jim van Eeden <jim@starapple.nl>
  */
-public class IOWrapper implements Runnable {
+public class AiGamesBot implements Runnable {
     
     private Process process;
     private OutputStreamWriter inputStream;
     private InputStreamGobbler outputGobbler;
     private InputStreamGobbler errorGobbler;
     protected boolean finished;
+    private int playerId;
     
     public String response;
     public Queue<String> inputQueue;
     
-    public IOWrapper(Process process) {
+    public AiGamesBot(Process process) {
         this.inputStream = new OutputStreamWriter(process.getOutputStream());
         this.outputGobbler = new InputStreamGobbler(process.getInputStream(), this, "output");
         this.errorGobbler = new InputStreamGobbler(process.getErrorStream(), this, "error");
@@ -174,4 +175,7 @@ public class IOWrapper implements Runnable {
         this.outputGobbler.start();
         this.errorGobbler.start();
     }
+    
+    public int getPlayerId() { return playerId; }
+    public void setPlayerId(int playerId) { this.playerId = playerId; }
 }
