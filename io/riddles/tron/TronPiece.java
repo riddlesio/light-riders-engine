@@ -16,7 +16,7 @@ public class TronPiece extends Piece {
     
     public enum PieceType {
     	LIGHTCYCLE, WALL
-    } 
+    }
     
     public String toString() {
     	return new String(this.type.toString().charAt(0) + "" +  this.color.toString().charAt(0));

@@ -1,7 +1,10 @@
-package io.riddles.engine;
+package io.riddles.game.engine;
 
-import io.riddles.engine.io.Command;
+import io.riddles.engine.Processor;
 import io.riddles.engine.io.IO;
+import io.riddles.game.io.IORequest;
+import io.riddles.game.io.IOProvider;
+import io.riddles.game.io.IOResponse;
 
 /**
  * Implements of the GameLoop interface in a way which is suitable
@@ -17,23 +20,22 @@ import io.riddles.engine.io.IO;
  */
 public class SimpleGameLoop<State> implements GameLoop<State> {
 
-    /**
-     * @inheritdoc
-     */
     @Override
-    public State run(IO io, Processor<State> processor, State initialState) {
+    public State run(IOProvider ioProvider,
+                     Processor<State> processor,
+                     State initialState) {
 
-        Command command;
-        String input;
+        IORequest request;
+        IOResponse response;
         State state = initialState;
 
         while (!processor.hasGameEnded(state)) {
 
-            command = processor.getCommand(state);
-            input = io.execute(command);
+            request = processor.getRequest(state);
+            response = ioProvider.execute(request);
 
             try {
-                state = processor.processInput(state, input);
+                state = processor.processInput(state, response);
 
             } catch (Exception exception) {
 

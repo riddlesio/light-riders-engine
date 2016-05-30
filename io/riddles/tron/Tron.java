@@ -53,11 +53,14 @@ public class Tron extends AbstractGame {
 		pieceColors.add(PieceColor.YELLOW);
 		pieceColors.add(PieceColor.GREEN);
 		pieceColors.add(PieceColor.PURPLE);
+		
+		
 		for(int i=0; i<ioPlayers.size(); i++) {
 			// Create the player
 			String playerName = String.format("player%d", i+1);
 			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
-			player.setPieceColor(pieceColors.get(i)); /* Maxed out at 4 players */
+			PieceColor[] pieceColors = PieceColor.values();
+			player.setPieceColor(); /* Maxed out at 4 players */
 			this.players.add(player);
 		}
 		for(Player player : this.players) {

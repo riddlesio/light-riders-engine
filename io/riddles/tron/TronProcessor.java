@@ -9,10 +9,16 @@ import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Move;
 import io.riddles.engine.Processor;
 import io.riddles.engine.io.Command;
+import io.riddles.game.exception.FieldNotEmptyException;
 import io.riddles.game.exception.InvalidMoveException;
+import io.riddles.game.io.IORequest;
+import io.riddles.game.io.IOResponse;
 import io.riddles.game.move.MoveValidator;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
+import io.riddles.tron.io.TronIORequest;
+import io.riddles.tron.io.TronIOResponse;
+import io.riddles.tron.transformer.TronStateToIORequestTransformer;
 import io.riddles.tron.validator.TronMoveValidator;
 import io.riddles.tron.visitor.TronDirectionDeserializer;
 
@@ -36,7 +42,7 @@ public class TronProcessor implements Processor<TronState> {
 	}
 
 	@Override
-	public TronState processInput(TronState state, String input) throws Exception {
+	public TronState processInput(TronState state, IOResponse input) throws Exception {
 
 		MoveValidator validator = new TronMoveValidator();
 
@@ -70,14 +76,20 @@ public class TronProcessor implements Processor<TronState> {
         Board b = state.getBoard();
         Field f = b.getFieldAt(coord2);
         if (f.getPiece().isPresent()) {
-        	/* Player crash, remove lightcycle */
-        	f.setPiece(Optional.empty());
-        } else {
-        	b.getFieldAt(coord1).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
-        	b.getFieldAt(coord2).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
+        	throw new FieldNotEmptyException(String.format("Field(%s) contains wall or lightcycle.", coord2.toString()));
         }
+    	b.getFieldAt(coord1).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
+    	b.getFieldAt(coord2).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
+
         newState = new TronState(state, state.getBoard(), move);
 		return newState;
 	}
+	
+	@Override
+    public IORequest getRequest(TronState state) {
+
+        TronStateToIORequestTransformer transformer = new TronStateToIORequestTransformer();
+        return transformer.transform(state);
+    }
 
 }

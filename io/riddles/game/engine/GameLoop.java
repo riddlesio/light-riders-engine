@@ -1,6 +1,8 @@
-package io.riddles.engine;
+package io.riddles.game.engine;
 
-import io.riddles.engine.io.IO;
+import io.riddles.engine.Processor;
+import io.riddles.game.io.IOProvider;
+
 /**
  * This interface describes the functions required for consumption by
  * a GameEngine instance.
@@ -18,10 +20,10 @@ public interface GameLoop<State> {
 
     /**
      * Runs the game from the passed initialState and returns the final state.
-     * @param io - Provides engine-bot communication
-     * @param processor - The game specific processor (ie. ChessGameProcessor<ChessState>)
-     * @param initialState - The state to start the game with
+     * @param ioProvider   Provides engine-bot communication
+     * @param processor    The game specific processor (ie. ChessGameProcessor<ChessState>)
+     * @param initialState The state to start the game with
      * @return {State}
      */
-    State run(IO io, Processor<State> processor, State initialState);
+    State run(IOProvider ioProvider, Processor<State> processor, State initialState);
 }
