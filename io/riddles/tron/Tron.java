@@ -48,15 +48,7 @@ public class Tron extends AbstractGame {
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {		
 		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
-		
-		for(int i=0; i<ioPlayers.size(); i++) {
-			// Create the player
-			String playerName = String.format("player%d", i+1);
-			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
-			PieceColor[] pieceColors = PieceColor.values();
-			player.setPieceColor(pieceColors[i]); /* Maxed out at 4 players */
-			this.players.add(player);
-		}
+
 		for(Player player : this.players) {
 			sendSettings(player);
 		}

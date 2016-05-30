@@ -196,7 +196,7 @@ public abstract class AbstractGame implements Logic {
 
 		if(winner != null) {
 			System.out.println("winner: " + winner.getName());
-			winnerId = new ObjectId(winner.getBot().getIdString());
+			//winnerId = new ObjectId(winner.getBot().getIdString());
 		} else {
 			System.out.println("winner: draw");
 		}
