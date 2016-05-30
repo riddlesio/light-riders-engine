@@ -3,14 +3,14 @@ package io.riddles.tron.visitor;
 
 import io.riddles.boardgame.model.Direction;
 import io.riddles.game.exception.InvalidInputException;
+import io.riddles.game.io.IOResponse;
 import io.riddles.tron.TronPiece;
+import io.riddles.tron.io.TronIOResponse;
 
 public class TronDirectionDeserializer {
 
-    public Direction traverse(String input) throws InvalidInputException {
-
-        String[] tokens = input.trim().split(" ");
-
+    public Direction traverse(IOResponse input) throws InvalidInputException {
+        String[] tokens = input.getValue().trim().split(" ");
         return this.visit(tokens);
     }
 
@@ -29,7 +29,6 @@ public class TronDirectionDeserializer {
     		return direction;
     	}
     	throw new InvalidInputException("Token has invalid format");
-        
     }
 
     private Direction visit(String token) throws InvalidInputException {

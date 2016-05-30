@@ -6,7 +6,7 @@ import io.riddles.game.io.IOResponse;
 /**
  * io.riddles.chess.io
  * <p>
- * This file is a part of chess
+ * This file is a part of tron
  * <p>
  * Copyright 2016 - present Riddles.io
  * For license information see the LICENSE file in the project root
@@ -16,9 +16,15 @@ import io.riddles.game.io.IOResponse;
 public class TronIOResponse implements IOResponse {
 
     IORequest request;
+    private TronIOResponseType type;
 
-    public TronIOResponse(IORequest request) {
+    String value;
+    
+
+    public TronIOResponse(IORequest request, TronIOResponseType type, String value) {
         this.request = request;
+        this.type = type;
+        this.value = value;
     }
 
     @Override
@@ -27,7 +33,11 @@ public class TronIOResponse implements IOResponse {
     }
 
     @Override
-    public String getValue() {
-        return null;
+    public Enum<?> getType() {
+        return type;
     }
+    
+    @Override
+    public String getValue() { return value;  }    
+    public void setValue(String value) { this.value = value; }
 }

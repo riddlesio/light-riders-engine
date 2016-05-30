@@ -83,10 +83,9 @@ public final class TronLogic {
 	
 	public static Direction getCurrentDirection(TronState state) {
 		Optional<TronState> prevState = state.getPreviousState();
-		
+		PieceColor c = state.getActivePieceColor();
+		Coordinate coord1 = getLightcycleCoordinate(state, c);
 		if (prevState.isPresent()) {
-			PieceColor c = state.getActivePieceColor();
-			Coordinate coord1 = getLightcycleCoordinate(state, c);
 			Coordinate coord2 = getLightcycleCoordinate(prevState.get(), c);
 			if (coord1.getX() < coord2.getX()) {
 				return Direction.LEFT;
@@ -100,10 +99,15 @@ public final class TronLogic {
 			if (coord1.getY() > coord2.getY()) {
 				return Direction.DOWN;
 			}
-		} else {
-			return Direction.DOWN;
 		}
-		return Direction.DOWN;
+		
+		/* No previous state, figure out direction by player position */
+		/* TODO: make this better */
+		if (coord1.getX() < state.getBoard().size()/2) {
+			return Direction.RIGHT;
+		} else {
+			return Direction.LEFT;
+		}
 	}
 	
 }

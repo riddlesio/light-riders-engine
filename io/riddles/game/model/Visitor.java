@@ -8,7 +8,7 @@ package io.riddles.game.model;
  *
  * @author Niko
  */
-public interface Visitor {
+public interface Visitor<ReturnType> {
 
-    void visit(Traversible traversible);
+	ReturnType visit(Traversible traversible);
 }

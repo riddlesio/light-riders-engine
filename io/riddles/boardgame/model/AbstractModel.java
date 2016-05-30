@@ -6,7 +6,7 @@ import io.riddles.game.model.Visitor;
 /**
  * ${PACKAGE_NAME}
  *
- * This file is a part of chess
+ * This file is a part of tron
  *
  * Copyright 2016 - present Riddles.io
  * For license information see the LICENSE file in the project root
@@ -16,7 +16,7 @@ import io.riddles.game.model.Visitor;
 public abstract class AbstractModel implements Traversible {
 
     @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    public <ReturnType> ReturnType accept(Visitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

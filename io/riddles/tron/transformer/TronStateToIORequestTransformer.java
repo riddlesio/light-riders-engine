@@ -8,6 +8,7 @@ import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronState;
 import io.riddles.tron.io.TronIORequest;
+import io.riddles.tron.io.TronIORequestType;
 
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
         }
         */
 
-        return new TronIORequest(colorToMove, IORequestType.MOVE);
+        return new TronIORequest(colorToMove, TronIORequestType.MOVE);
     }
 
     /**
@@ -69,7 +70,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      */
     protected IORequest createInitialMoveRequest() {
 
-        return new TronIORequest(PieceColor.YELLOW, IORequestType.MOVE);
+        return new TronIORequest(PieceColor.YELLOW, TronIORequestType.MOVE);
     }
 
 

@@ -1,5 +1,7 @@
 package io.riddles.game.io;
 
+import java.io.IOException;
+
 /**
  * The functions needed by the GameLoop to
  *
@@ -9,6 +11,7 @@ package io.riddles.game.io;
  * @author Niko van Meurs <niko@riddles.io>
  */
 public interface IOProvider {
+	
+    IOResponse execute(IORequest request) throws IOException;
 
-    IOResponse execute(IORequest request);
 }

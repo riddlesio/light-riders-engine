@@ -12,5 +12,4 @@ package io.riddles.game.io;
  */
 
 public enum IORequestType {
-    MOVE
 }

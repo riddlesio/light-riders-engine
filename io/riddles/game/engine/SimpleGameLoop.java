@@ -1,7 +1,6 @@
 package io.riddles.game.engine;
 
 import io.riddles.engine.Processor;
-import io.riddles.engine.io.IO;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.IOResponse;
@@ -32,8 +31,14 @@ public class SimpleGameLoop<State> implements GameLoop<State> {
         while (!processor.hasGameEnded(state)) {
 
             request = processor.getRequest(state);
-            response = ioProvider.execute(request);
+            response = null;
+            try {
+                response = ioProvider.execute(request);
 
+            } catch (Exception exception) {
+            	System.out.print("Exception: " + exception.toString());
+            }
+            
             try {
                 state = processor.processInput(state, response);
 

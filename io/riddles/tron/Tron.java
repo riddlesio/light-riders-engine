@@ -27,6 +27,7 @@ import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
+import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.player.Player;
 import io.riddles.util.Util;
 
@@ -47,20 +48,13 @@ public class Tron extends AbstractGame {
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {		
 		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
-
-		List<PieceColor> pieceColors = new ArrayList<PieceColor>();
-		pieceColors.add(PieceColor.CYAN);
-		pieceColors.add(PieceColor.YELLOW);
-		pieceColors.add(PieceColor.GREEN);
-		pieceColors.add(PieceColor.PURPLE);
-		
 		
 		for(int i=0; i<ioPlayers.size(); i++) {
 			// Create the player
 			String playerName = String.format("player%d", i+1);
 			Player player = new Player(playerName, ioPlayers.get(i), TIMEBANK_MAX, TIME_PER_MOVE, i+1);
 			PieceColor[] pieceColors = PieceColor.values();
-			player.setPieceColor(); /* Maxed out at 4 players */
+			player.setPieceColor(pieceColors[i]); /* Maxed out at 4 players */
 			this.players.add(player);
 		}
 		for(Player player : this.players) {
@@ -120,11 +114,12 @@ public class Tron extends AbstractGame {
 	
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
-		AbstractGame.DEV_MODE = true;
-		game.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		game.NUM_TEST_BOTS = 2;
-		game.setupEngine(args);
-		game.runEngine();
+		TronGameEngine engine = new TronGameEngine();
+		engine.DEV_MODE = true;
+		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		engine.NUM_TEST_BOTS = 2;
+		engine.addPlayer(engine.TEST_BOT, "bot0");
+		engine.run();//engine.getInitialState());
 	}
 
 	@Override

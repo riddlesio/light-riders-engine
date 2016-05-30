@@ -13,5 +13,6 @@ package io.riddles.game.io;
 public interface IOResponse {
 
     IORequest getRequest();
+    Enum<?> getType();
     String getValue();
 }

@@ -26,11 +26,6 @@ import io.riddles.tron.visitor.TronDirectionDeserializer;
 public class TronProcessor implements Processor<TronState> {
 
 	@Override
-	public Command getCommand(TronState state) {
-		return null;
-	}
-
-	@Override
 	public boolean hasGameEnded(TronState state) {
 		
 		return false;
@@ -38,7 +33,7 @@ public class TronProcessor implements Processor<TronState> {
 
 	@Override
 	public TronState processException(TronState state, Exception exception) {
-		return null;
+		return state;
 	}
 
 	@Override

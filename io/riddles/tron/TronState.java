@@ -64,10 +64,6 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         moveNumber     = previousState.getMoveNumber() + 1;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
 
     public Board getBoard() { return board; }
 

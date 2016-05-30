@@ -21,8 +21,16 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.GameHandler;
 import io.riddles.game.exception.NoMoreMovesException;
+import io.riddles.game.io.IOHandler;
+import io.riddles.game.io.IORequest;
+import io.riddles.game.io.IOResponse;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.Tron;
+import io.riddles.tron.io.TronIOProvider;
+import io.riddles.tron.io.TronIORequest;
+import io.riddles.tron.io.TronIORequestType;
+import io.riddles.tron.io.TronIOResponse;
+import io.riddles.tron.io.TronIOResponseType;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Move;
 import io.riddles.tron.player.Player;
@@ -59,24 +67,33 @@ public class TronGameHandler implements GameHandler {
 	public void playRound(int roundNumber) {
 		System.out.println(String.format("playing round %d", roundNumber));
 		mRoundNumber = roundNumber;
+		
 		TronProcessor processor = new TronProcessor();
 		for (Player player : mPlayers) {
 			if (!isGameOver()) {
 				TronState state = new TronState(previousState);
 				state.setActivePieceColor(player.getPieceColor());
 				sendUpdates(player);
-				player.requestMove("move");
-				String input = player.requestMove("move");
+				
+				TronIORequest request = new TronIORequest(player.getPieceColor(), TronIORequestType.MOVE);
+				//TronIOProvider provider = new TronIOProvider(player.getHandler());
+				//TronIOResponse response = provider.execute(request);
+				/*
+				
+				
+				String s = player.requestMove("move");
+				
 				try {
-					TronState s = processor.processInput(state, input);
-					mBoard = s.getBoard();
-					previousState = s;
+					state = processor.processInput(state, response);
+					mBoard = state.getBoard();
+					previousState = state;
 				} catch (Exception e) {
 					if (e instanceof NoMoreMovesException) {
 						mGameOver = true;
 					}
 					System.out.println("Exception: " + e.toString());
 				}
+				*/
 			}
 			
 			/*
@@ -97,6 +114,7 @@ public class TronGameHandler implements GameHandler {
 			}
 			*/
 		}
+		/* TODO: this is temporary */
 		if (mRoundNumber == 43) {
 			Util.dumpBoard(mBoard);
 			System.exit(0);
@@ -242,52 +260,7 @@ public class TronGameHandler implements GameHandler {
 		return "";
 	}
 	
-	/*
-	private JSONObject getOutputState(MoveResult mr, boolean finalState) throws JSONException {
-	    JSONObject state = new JSONObject();
-		
-	    AbstractPlayer winner = getWinner();
-	    
-	    String winnerstring = "";
-	    if (finalState) {
-            if (winner == null) {
-                winnerstring = "none";
-            } else {
-                winnerstring = winner.getName();
-            }
-	    }
-	    
-	    JSONArray players = new JSONArray();
-	    for (Player player : mPlayers) {
-	        JSONObject playerState = new JSONObject();
-	        playerState.put("name", mr.getPlayer().getName());
-	        playerState.put("alive", mr.getPlayer().isAlive());
-	        players.put(playerState);
-	    }
-	    
-        state.put("field", mr.getFieldString());
-        state.put("round", mr.getRoundNumber());
-        state.put("action", mr.getMove().getAction());
-        state.put("winner", winnerstring);
-        state.put("player", mr.getPlayer().getId());
-        state.put("players", players);
-        state.put("illegalMove", mr.getMove().getIllegalMove());
-        
-		
-        return state;
-	}
-	*/
 	
-	/**
-	 * Returns player's opponent given player
-	 * @param player : player to find its opponent for
-	 * @return : player's opponent
-	 */
-	private Player getOpponent(Player player) {
-		if (mPlayers.get(0).equals(player))
-			return mPlayers.get(1);
-		return mPlayers.get(0);
-	}
 
 	public Board getBoard() {
 		return mBoard;

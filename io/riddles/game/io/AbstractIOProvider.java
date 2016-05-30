@@ -1,4 +1,4 @@
-package io.riddles.engine.io;
+package io.riddles.game.io;
 
 /**
  * io.riddles.game.io
@@ -10,7 +10,11 @@ package io.riddles.engine.io;
  *
  * @author Niko
  */
-public interface IO {
+public class AbstractIOProvider {
 
-	String execute(Command command);
+    protected IOHandler handler;
+
+    public AbstractIOProvider(IOHandler handler) {
+        this.handler = handler;
+    }
 }

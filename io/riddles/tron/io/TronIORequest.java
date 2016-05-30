@@ -21,17 +21,17 @@ import java.util.Optional;
  */
 public class TronIORequest implements Traversible, IORequest {
 
-    private IORequestType type;
+    private TronIORequestType type;
     private PieceColor color;
     private Optional<Coordinate> coordinate;
 
-    public TronIORequest(PieceColor color, IORequestType type) {
+    public TronIORequest(PieceColor color, TronIORequestType type) {
         coordinate = Optional.empty();
         this.color = color;
         this.type = type;
     }
 
-    public TronIORequest(PieceColor color, IORequestType type, Coordinate coordinate) {
+    public TronIORequest(PieceColor color, TronIORequestType type, Coordinate coordinate) {
         this.color = color;
         this.coordinate = Optional.of(coordinate);
         this.type = type;
@@ -40,7 +40,7 @@ public class TronIORequest implements Traversible, IORequest {
     public PieceColor getColor() { return color; }
 
     @Override
-    public 	IORequestType getType() {
+    public 	TronIORequestType getType() {
         return type;
     }
 
@@ -52,5 +52,8 @@ public class TronIORequest implements Traversible, IORequest {
     public <ReturnType> ReturnType accept(Visitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
+    
+    public String toString() {
+    	return "action " +  type.toString().toLowerCase();
+    }
 }
