@@ -39,52 +39,26 @@ public class AiGamesIOHandler implements IOHandler {
 	
     private final long TIMEOUT = 2000; // 2 seconds
     private ArrayList<AiGamesBot> bots;
+    public Queue<String> inputQueue;
+    public String response;
 
-    public AiGamesIOHandler(Player[] players, Process[] processes) {
+    public AiGamesIOHandler(ArrayList<Player> players, Process[] processes) {
     	int counter = 0;
 		for (Player player : players) {
     		AiGamesBot bot = new AiGamesBot(processes[counter]);
-    		bots.add(bot);
     		bot.setPlayerId(player.getId());
+    		bots.add(bot);
     		counter++;
     	}
     }
-
-    /**
-     * Send line to engine
-     * @param line Line to send
-     * @return True if write was successful, false otherwise
-     */
-    public boolean send(String message) throws IOException {
-        return write(message);
+    
+    public AiGamesIOHandler() {
     }
     
-    /**
-     * Send line to engine and waits for response
-     * @param line Line to output
-     * @param timeout Time before timeout
-     * @return Engine's response
-     * @throws IOException
-     */
-    public String ask(String message) throws IOException {
-        return super.ask(message, this.TIMEOUT);
-    }
-    
-    /**
-     * Waits until engine returns a response and returns it
-     * @return Engine's response, returns and empty string when there is no response
-     */
-    public String getResponse() {
-        return super.getResponse(this.TIMEOUT);
-    }
-    
-    
-    /**
-     * Shuts down the engine
-     */
-    public void finish() {
-        super.finish();
-        System.out.println("Engine shut down.");
+    public void addPlayerProcess(Player player, Process process) {
+		AiGamesBot bot = new AiGamesBot(process);
+		bot.setPlayerId(player.getId());
+		bots.add(bot);
     }
     
     /**
@@ -93,25 +67,8 @@ public class AiGamesIOHandler implements IOHandler {
      * @return Empty string
      */
     protected String handleResponseTimeout(long timeout) {
-
         System.err.println(String.format("Engine took too long! (%dms)", this.TIMEOUT));
         return "";
-    }
-    
-    /**
-     * Sends the bot IDs to the engine
-     * @param bots All the bots for this game
-     * @return False if write failed, true otherwise
-     */
-    public boolean sendPlayers(ArrayList<Player> players) {
-        StringBuilder message = new StringBuilder();
-        message.append("bot_ids ");
-        String connector = "";
-        for (int i=0; i < players.size(); i++) {
-            message.append(String.format("%s%d", connector, i));
-            connector = ",";
-        }
-        return write(message.toString());
     }
 
 	@Override
@@ -135,7 +92,6 @@ public class AiGamesIOHandler implements IOHandler {
         }
 
         this.response = null;
-        
         return message;
 	}
 
@@ -154,25 +110,34 @@ public class AiGamesIOHandler implements IOHandler {
 
 	@Override
 	public void sendMessage(int id, String message) {
-		
-        sendMessage(String.format("bot %d send %s", id, message));
+		AiGamesBot b = getBotWithPlayerId(id);
+		b.write(message);
 	}
 
 	@Override
 	public void broadcastMessage(String message) {
-		// TODO Auto-generated method stub
-		
+		for (AiGamesBot bot : bots) {
+			bot.write(message);
+		}
 	}
 
 	@Override
-	public String sendRequest(int id, String request) {
-		// TODO Auto-generated method stub
-		return null;
+	public String sendRequest(int id, String request) throws IOException {
+		AiGamesBot b = getBotWithPlayerId(id);
+		return b.ask(request, TIMEOUT);
 	}
 
 	@Override
 	public void sendWarning(int id, String warning) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private AiGamesBot getBotWithPlayerId(int id) {
+		for (AiGamesBot bot : bots) {
+    		if (bot.getPlayerId() == id)
+    			return bot;
+    	}
+    		return null;
 	}
 }

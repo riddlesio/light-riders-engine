@@ -4,12 +4,13 @@ import java.io.IOException;
 
 import io.riddles.game.io.AbstractIOProvider;
 import io.riddles.game.io.AiGamesIOHandler;
+import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.IORequest;
 
 public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 	
-	public TronIOProvider(AiGamesIOHandler handler) {
+	public TronIOProvider(IOHandler handler) {
 		/* mapping player -> handler */
 		super(handler);
 	}

@@ -34,8 +34,8 @@ public class Player extends AbstractPlayer {
 	boolean mAlive;
 	PieceColor mPieceColor;
 	
-	public Player(String name, long maxTimeBank, long timePerMove, int id) {
-		super(name, handler, maxTimeBank, timePerMove);
+	public Player(String name, int id) {
+		super(name, timePerMove);
 		mId = id;
 		mLastMove = "Null";
 		mAlive = true;

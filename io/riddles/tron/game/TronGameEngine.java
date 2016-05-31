@@ -173,9 +173,12 @@ public class TronGameEngine implements GameEngine {
     	Process process = Runtime.getRuntime().exec(command);
 
         // Attach IO to process
-    	AiGamesIOHandler handler = new AiGamesIOHandler(process);
-        Player player = new Player(idString, handler, BOARD_SIZE, BOARD_SIZE, BOARD_SIZE);
-        
+    	AiGamesIOHandler handler = new AiGamesIOHandler(this.players, null);
+    	
+        Player player = new Player(idString, 0);
+    	handler.addPlayerProcess(player, process);
+    	
+    	TronIOProvider provider = new TronIOProvider(handler);
         // Add player
         this.players.add(player);
 

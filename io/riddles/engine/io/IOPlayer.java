@@ -69,6 +69,7 @@ public class IOPlayer implements Runnable {
             }
             addToDump(line);
         }
+        System.out.println("out: " + line);
     }
     
     /**

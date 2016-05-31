@@ -33,6 +33,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * @return The received message
      * @throws IOException
      */
+	@Override
     public String getNextMessage() throws IOException {
         
         if(scanner.hasNextLine()) {
@@ -51,6 +52,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * are ignored.
      * @param expected Message that is waited on
      */
+	@Override
     public void waitForMessage(String expected) {
         
         String message = null;
@@ -69,6 +71,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * @param id Bot to send message to
      * @param message Message to send
      */
+	@Override
     public void sendMessage(int id, String message) {
         sendMessage(String.format("bot %d send %s", id, message));
     }
@@ -78,6 +81,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * no response from bots is expected
      * @param message Message to send
      */
+	@Override
     public void broadcastMessage(String message) {
         sendMessage(String.format("bot all send %s", message));
     }
@@ -89,6 +93,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * @param request Request to send
      * @return Answer from the bot
      */
+	@Override
     public String sendRequest(int id, String request) {
         sendMessage(String.format("bot %d ask %s", id, request));
         return getResponse(id);
@@ -100,6 +105,7 @@ public final class RiddlesIOHandler implements IOHandler {
      * @param id Bot to send warning to
      * @param warning Warning to send
      */
+	@Override
     public void sendWarning(int id, String warning) {
         sendMessage(String.format("bot %d warning %s", id, warning));
     }

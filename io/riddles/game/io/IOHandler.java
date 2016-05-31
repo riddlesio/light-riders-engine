@@ -36,7 +36,7 @@ public interface IOHandler {
      * @param request Request to send
      * @return Answer from the bot
      */
-    public String sendRequest(int id, String request);
+    public String sendRequest(int id, String request) throws IOException;
     /**
      * Send a warning to given bot, this will not be received
      * by the bot, but will be logged in its dump

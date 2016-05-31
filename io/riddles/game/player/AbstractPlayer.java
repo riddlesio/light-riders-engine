@@ -37,17 +37,9 @@ import java.io.IOException;
 public abstract class AbstractPlayer {
 	
 	private String name;
-	private AiGamesIOHandler handler;
-	private long timeBank;
-	private long maxTimeBank;
-	private long timePerMove;
 	
-	public AbstractPlayer(String name, AiGamesIOHandler handler, long maxTimeBank, long timePerMove) {
+	public AbstractPlayer(String name, int id) {
 		this.name = name;
-		this.handler = handler;
-		this.timeBank = maxTimeBank;
-		this.maxTimeBank = maxTimeBank;
-		this.timePerMove = timePerMove;
 	}
 	
 	/**
@@ -56,93 +48,7 @@ public abstract class AbstractPlayer {
 	public String getName() {
 		return name;
 	}
-	
-	/**
-	 * @return : The time left in this player's time bank
-	 */
-	public long getTimeBank() {
-		return timeBank;
-	}
-	
-	/**
-	 * @return : The Handler object of this Player
-	 */
-	public AiGamesIOHandler getHandler() {
-		return handler;
-	}
 
-	/**
-	 * Sets the time bank directly
-	 */
-	public void setTimeBank(long time) {
-		this.timeBank = time;
-	}
-	
-	/**
-	 * Updates the time bank for this player, cannot get bigger than maximal time bank or smaller than zero
-	 * @param timeElapsed : time consumed from the time bank
-	 */
-	public void updateTimeBank(long timeElapsed) {
-		this.timeBank = Math.max(this.timeBank - timeElapsed, 0);
-		this.timeBank = Math.min(this.timeBank + this.timePerMove, this.maxTimeBank);
-	}
-	
-	/**
-	 * Send one setting to the player
-	 * @param type : setting type
-	 * @param value : setting value
-	 */
-	public void sendSetting(String type, String value) {
-		sendLine(String.format("settings %s %s", type, value));
-	}
-	
-	/**
-	 * Send one setting to the player
-	 * @param type : setting type
-	 * @param value : setting value
-	 */
-	public void sendSetting(String type, int value) {
-		sendLine(String.format("settings %s %d", type, value));
-	}
-	
-	/**
-	 * Sends one update to the player about another player or himself
-	 * @param type : type of update
-	 * @param player : what player the update is about
-	 * @param value : value of the update
-	 */
-	public void sendUpdate(String type, AbstractPlayer player, String value) {
-		sendLine(String.format("update %s %s %s", player.getName(), type, value));
-	}
-	
-	/**
-	 * Sends one update to the player about another player or himself
-	 * @param type : type of update
-	 * @param player : what player the update is about
-	 * @param value : value of the update
-	 */
-	public void sendUpdate(String type, AbstractPlayer player, int value) {
-		sendLine(String.format("update %s %s %d", player.getName(), type, value));
-	}
-	
-	/**
-	 * Sends one update to the player about the game in general, like round number
-	 * @param type
-	 * @param value
-	 */
-	public void sendUpdate(String type, String value) {
-		sendLine(String.format("update game %s %s", type, value));
-	}
-	
-	/**
-	 * Sends one update to the player about the game in general, like round number
-	 * @param type : type of update
-	 * @param value : value of the update
-	 */
-	public void sendUpdate(String type, int value) {
-		sendLine(String.format("update game %s %d", type, value));
-	}
-	
 	/**
 	 * Asks the bot for given move type and returns the answer
 	 * @param moveType : type of move the bot has to return
@@ -165,13 +71,5 @@ public abstract class AbstractPlayer {
 		return response;
 		*/
 		return "";
-	}
-	
-	/**
-	 * Sends given string to bot
-	 * @param info
-	 */
-	private void sendLine(String content) {
-		this.handler.write(content);
 	}
 }
