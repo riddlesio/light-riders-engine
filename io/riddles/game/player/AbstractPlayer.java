@@ -17,11 +17,6 @@
 
 package io.riddles.game.player;
 
-import io.riddles.game.io.AiGamesIOHandler;
-
-import java.io.IOException;
-
-
 /**
  * AbstractPlayer class
  * 

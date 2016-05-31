@@ -17,7 +17,7 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 	
 	public TronIOResponse execute(IORequest request) throws IOException {
 		
-		String s = handler.ask(request.toString());
+		String s = handler.sendRequest(0, request.toString());
 		System.out.println("In: " + s);
 		//handler.writeToBot
 		return new TronIOResponse(request, TronIOResponseType.MOVE, "up");

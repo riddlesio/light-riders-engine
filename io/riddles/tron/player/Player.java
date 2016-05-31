@@ -35,7 +35,7 @@ public class Player extends AbstractPlayer {
 	PieceColor mPieceColor;
 	
 	public Player(String name, int id) {
-		super(name, timePerMove);
+		super(name, id);
 		mId = id;
 		mLastMove = "Null";
 		mAlive = true;

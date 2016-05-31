@@ -42,10 +42,11 @@ public class AiGamesIOHandler implements IOHandler {
     public Queue<String> inputQueue;
     public String response;
 
-    public AiGamesIOHandler(ArrayList<Player> players, Process[] processes) {
+    public AiGamesIOHandler(ArrayList<Player> players, ArrayList<Process> processes) {
     	int counter = 0;
+    	bots = new ArrayList<AiGamesBot>();
 		for (Player player : players) {
-    		AiGamesBot bot = new AiGamesBot(processes[counter]);
+    		AiGamesBot bot = new AiGamesBot(processes.get(counter));
     		bot.setPlayerId(player.getId());
     		bots.add(bot);
     		counter++;
@@ -53,6 +54,7 @@ public class AiGamesIOHandler implements IOHandler {
     }
     
     public AiGamesIOHandler() {
+    	bots = new ArrayList<AiGamesBot>();
     }
     
     public void addPlayerProcess(Player player, Process process) {

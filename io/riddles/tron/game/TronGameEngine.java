@@ -17,6 +17,7 @@ import io.riddles.game.engine.GameEngine;
 import io.riddles.game.engine.GameLoop;
 import io.riddles.game.engine.SimpleGameLoop;
 import io.riddles.game.io.AiGamesIOHandler;
+import io.riddles.game.io.IOProvider;
 import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
@@ -47,10 +48,13 @@ public class TronGameEngine implements GameEngine {
 	public String TEST_BOT; // command for the test bot in DEV_MODE
 	public int NUM_TEST_BOTS; // number of bots for this game
 	
+	private AiGamesIOHandler handler;
+	private IOProvider provider;
+	
     public TronGameEngine() {
         this.players = new ArrayList<Player>();
 
-        gameLoop  = new SimpleGameLoop<>();
+        gameLoop  = new SimpleGameLoop<TronState>();
         processor = new TronProcessor();
     }
 
@@ -62,7 +66,6 @@ public class TronGameEngine implements GameEngine {
     public void run() {
     	/* TODO: initialState not used */		
 		
-    	TronIOProvider provider = new TronIOProvider(players.get(0).getHandler());
         finalState = gameLoop.run(provider, processor, getInitialState());
     }
 
@@ -115,8 +118,9 @@ public class TronGameEngine implements GameEngine {
 	 */
 	public void setupEngine(String args[]) throws IOException, RuntimeException {
 		
-        // create engine
-        
+        /* Create IOHandler */
+    	handler = new AiGamesIOHandler(this.players, null);
+    	
         // add the test bots if in DEV_MODE
         if(DEV_MODE) {
             if(TEST_BOT.isEmpty()) {
@@ -130,35 +134,39 @@ public class TronGameEngine implements GameEngine {
                 addPlayer(TEST_BOT, "ID_" + i);
             }
             
-            return;
+        } else {
+	        
+	        // add the bots from the arguments if not in DEV_MODE
+	        List<String> botDirs = new ArrayList<String>();
+	        List<String> botIds = new ArrayList<String>();
+	        
+	        try {
+	            //this.gameIdString = args[0];
+	        } catch(Exception e) {
+	            throw new RuntimeException("No arguments provided.");
+	        }
+	        
+	        // get the bot id's and location of bot program
+	        for(int i=1; i <= (args.length - 1) / 2; i++) { // first arguments are the bot ids
+	            botIds.add(args[i]);
+	        }
+	        for(int i=((args.length - 1) / 2) + 1; i < args.length; i++) { // last arguments are the bot dirs
+	            botDirs.add(args[i]);
+	        }
+	        
+	        // check is the starting arguments are passed correctly
+	        if(botIds.isEmpty() || botDirs.isEmpty() || botIds.size() != botDirs.size())
+	            throw new RuntimeException("Missing some arguments.");
+	        
+	        // add the players
+	        for(int i=0; i < botIds.size(); i++) {
+	            addPlayer(String.format("/opt/aigames/scripts/run_bot.sh aiplayer%d %s", i + 1, botDirs.get(i)), botIds.get(i));
+	        }
         }
+    	
+
         
-        // add the bots from the arguments if not in DEV_MODE
-        List<String> botDirs = new ArrayList<String>();
-        List<String> botIds = new ArrayList<String>();
-        
-        try {
-            //this.gameIdString = args[0];
-        } catch(Exception e) {
-            throw new RuntimeException("No arguments provided.");
-        }
-        
-        // get the bot id's and location of bot program
-        for(int i=1; i <= (args.length - 1) / 2; i++) { // first arguments are the bot ids
-            botIds.add(args[i]);
-        }
-        for(int i=((args.length - 1) / 2) + 1; i < args.length; i++) { // last arguments are the bot dirs
-            botDirs.add(args[i]);
-        }
-        
-        // check is the starting arguments are passed correctly
-        if(botIds.isEmpty() || botDirs.isEmpty() || botIds.size() != botDirs.size())
-            throw new RuntimeException("Missing some arguments.");
-        
-        // add the players
-        for(int i=0; i < botIds.size(); i++) {
-            addPlayer(String.format("/opt/aigames/scripts/run_bot.sh aiplayer%d %s", i + 1, botDirs.get(i)), botIds.get(i));
-        }
+        provider = new TronIOProvider(handler);
 	}
 
     
@@ -171,19 +179,12 @@ public class TronGameEngine implements GameEngine {
 
         // Create new process
     	Process process = Runtime.getRuntime().exec(command);
-
-        // Attach IO to process
-    	AiGamesIOHandler handler = new AiGamesIOHandler(this.players, null);
-    	
+  	
         Player player = new Player(idString, 0);
     	handler.addPlayerProcess(player, process);
     	
-    	TronIOProvider provider = new TronIOProvider(handler);
         // Add player
         this.players.add(player);
-
-        // Start running
-        player.getHandler().run();
     }
 
 	@Override

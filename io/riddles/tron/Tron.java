@@ -87,6 +87,7 @@ public class Tron extends AbstractGame {
 	}
 
 	public void sendSettings(Player player) {
+		/*
 		String playerString = this.players.get(0).getName() + "," + this.players.get(1).getName();
 		player.sendSetting("timebank", TIMEBANK_MAX);
 		player.sendSetting("time_per_move", TIME_PER_MOVE);
@@ -94,6 +95,7 @@ public class Tron extends AbstractGame {
 		player.sendSetting("your_bot", player.getName());
 		player.sendSetting("your_botid", player.getId());
 		player.sendSetting("board_size", BOARD_SIZE);
+		*/
 	}
 
 	@Override
@@ -107,10 +109,11 @@ public class Tron extends AbstractGame {
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
 		TronGameEngine engine = new TronGameEngine();
+		
 		engine.DEV_MODE = true;
 		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
 		engine.NUM_TEST_BOTS = 2;
-		engine.addPlayer(engine.TEST_BOT, "bot0");
+		engine.setupEngine(args);
 		engine.run();//engine.getInitialState());
 	}
 
