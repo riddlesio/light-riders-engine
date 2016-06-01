@@ -44,7 +44,6 @@ import java.util.List;
 /* Class to glue processor to new TronProcessor */ 
 public class TronGameHandler implements GameHandler {
 	
-	private int mMoveNumber = 1;
 	private int mRoundNumber = -1;
 	private List<Player> mPlayers;
 	private Board mBoard;
@@ -58,8 +57,6 @@ public class TronGameHandler implements GameHandler {
 		
 		if (Tron.DEV_MODE) {
 			System.out.println("Running in DEV_MODE");
-			//Testsuite t = new Testsuite();
-			//t.dbgTestKoRule(mField);
 		}
 	}
 	

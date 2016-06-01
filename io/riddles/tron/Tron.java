@@ -18,18 +18,14 @@
 package io.riddles.tron;
 
 import io.riddles.engine.io.IOPlayer;
-import io.riddles.game.AbstractGame;
-import io.riddles.game.player.AbstractPlayer;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
-import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.player.Player;
-import io.riddles.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +33,16 @@ import java.util.Optional;
 import java.util.Random;
 
 
-public class Tron extends AbstractGame {
+public class Tron {
 	
+	public static final Boolean DEV_MODE = true;
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
 	private final int BOARD_SIZE = 64;
 	private List<Player> players;
+	
+	TronGameHandler handler;
 
-	@Override
 	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {		
 		// Create all the players and everything they need
 		this.players = new ArrayList<Player>();
@@ -83,7 +81,7 @@ public class Tron extends AbstractGame {
 		}
 
 		// Create the processor
-		super.processor = new TronGameHandler(this.players, b);
+		handler = new TronGameHandler(this.players, b);
 	}
 
 	public void sendSettings(Player player) {
@@ -98,13 +96,6 @@ public class Tron extends AbstractGame {
 		*/
 	}
 
-	@Override
-	protected void runEngine() throws Exception {
-	    System.out.println("starting...");
-	    
-		super.engine.setLogic(this);
-		super.engine.start();
-	}
 	
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
@@ -115,11 +106,5 @@ public class Tron extends AbstractGame {
 		engine.NUM_TEST_BOTS = 2;
 		engine.setupEngine(args);
 		engine.run();//engine.getInitialState());
-	}
-
-	@Override
-	public void sendSettings(AbstractPlayer player) {
-		// TODO Auto-generated method stub
-		
 	}
 }
