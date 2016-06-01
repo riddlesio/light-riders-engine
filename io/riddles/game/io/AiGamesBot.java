@@ -47,6 +47,7 @@ public class AiGamesBot implements Runnable {
         this.inputStream = new OutputStreamWriter(process.getOutputStream());
         this.outputGobbler = new InputStreamGobbler(process.getInputStream(), this, "output");
         this.errorGobbler = new InputStreamGobbler(process.getErrorStream(), this, "error");
+        
         this.process = process;
         this.finished = false;
     }
@@ -94,6 +95,7 @@ public class AiGamesBot implements Runnable {
     public String getResponse(long timeout) {
         long timeStart = System.currentTimeMillis();
         String response;
+        
 
         while (this.response == null) {
             long timeNow = System.currentTimeMillis();
@@ -124,7 +126,7 @@ public class AiGamesBot implements Runnable {
      * @return Response
      */
     protected String handleResponseTimeout(long timeout) {
-        return "";
+        return "timeout";
     }
     
     /**

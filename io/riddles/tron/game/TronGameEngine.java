@@ -25,6 +25,7 @@ import io.riddles.tron.TronProcessor;
 import io.riddles.tron.TronState;
 import io.riddles.tron.io.TronIOProvider;
 import io.riddles.tron.player.Player;
+import io.riddles.util.Util;
 
 /**
  * This class is the connecting instance between the Tron game and the
@@ -63,25 +64,18 @@ public class TronGameEngine implements GameEngine {
      *
      * @param initialStateString - String representation of the initial State
      */
-    public void run() {
-    	/* TODO: initialState not used */		
+    public void run() {	
 		
         finalState = gameLoop.run(provider, processor, getInitialState());
     }
-
-    /**
-     * TODO: expose all functions necessary to have the match data
-     *       consumed by the Riddles.io and TheAIGames libraries.
-     */
     
     public TronState getInitialState() {
-    	
-    	Board b = new SquareBoard(BOARD_SIZE);
+		Board b = new SquareBoard(BOARD_SIZE);
+
     	TronState s = new TronState(b);
-    	
+
 		/* Initialise player positions */
 		int counter = 0;
-		/*
 		for (Player player : this.players) {
 			switch (counter) {
 				case 0:
@@ -106,9 +100,9 @@ public class TronGameEngine implements GameEngine {
 			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
 			counter ++;
 		}
-		*/
-	    return s;
-    }
+		Util.dumpBoard(b);
+		return s;
+	}
     
     /**
 	 * Partially sets up the engine
@@ -119,7 +113,7 @@ public class TronGameEngine implements GameEngine {
 	public void setupEngine(String args[]) throws IOException, RuntimeException {
 		
         /* Create IOHandler */
-    	handler = new AiGamesIOHandler(this.players, null);
+    	handler = new AiGamesIOHandler();
     	
         // add the test bots if in DEV_MODE
         if(DEV_MODE) {

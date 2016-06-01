@@ -1,6 +1,6 @@
 package io.riddles.tron.visitor;
 
-
+/* Obsolete */
 import io.riddles.boardgame.model.Direction;
 import io.riddles.game.exception.InvalidInputException;
 import io.riddles.game.io.IOResponse;
@@ -19,7 +19,7 @@ public class TronDirectionDeserializer {
     	if (tokens[0].equals("pass")) {
 			return null;
     	}
-    	if (tokens[0].equals("move")) {
+    	if (tokens[0].equals("turn_direction")) {
     		Direction direction = visit(tokens[1]);
 
     		System.out.println(direction);

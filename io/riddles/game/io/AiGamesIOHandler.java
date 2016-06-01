@@ -60,6 +60,7 @@ public class AiGamesIOHandler implements IOHandler {
     public void addPlayerProcess(Player player, Process process) {
 		AiGamesBot bot = new AiGamesBot(process);
 		bot.setPlayerId(player.getId());
+		bot.run();
 		bots.add(bot);
     }
     

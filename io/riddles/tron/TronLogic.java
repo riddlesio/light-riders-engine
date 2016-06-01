@@ -7,6 +7,7 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.Piece;
+import io.riddles.game.io.IOResponse;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.boardgame.model.Field;
@@ -14,12 +15,16 @@ import io.riddles.boardgame.model.Direction;
 
 public final class TronLogic {
 
-	public static Move DirectionToMoveTransformer(TronState state, Direction direction) {
+	public static Move MoveTransformer(TronState state, IOResponse r) {
 		PieceColor c = state.getActivePieceColor();
 		
 		Coordinate coord1 = getLightcycleCoordinate(state, c);
 		Coordinate coord2 = coord1;
+		Direction direction = StringToDirectionTranformer(r.getValue());
 		
+		if (coord1 == null) {
+			return null;
+		}
 		if (direction == null) {
 			return null;
 		} else {
@@ -79,6 +84,10 @@ public final class TronLogic {
 			default:
 				return null;
 		}
+	}
+	
+	public static Direction StringToDirectionTranformer(String s) {
+		return Direction.UP;
 	}
 	
 	public static Direction getCurrentDirection(TronState state) {

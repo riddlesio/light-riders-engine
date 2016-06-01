@@ -41,9 +41,13 @@ public class TronProcessor implements Processor<TronState> {
 
 		MoveValidator validator = new TronMoveValidator();
 
-		TronDirectionDeserializer moveDeserializer = new TronDirectionDeserializer();
-        Direction direction = moveDeserializer.traverse(input);
-        Move move = TronLogic.DirectionToMoveTransformer(state, direction);
+		//TronDirectionDeserializer moveDeserializer = new TronDirectionDeserializer();
+        //Direction direction = moveDeserializer.traverse(input);
+		
+        //Move move = TronLogic.DirectionToMoveTransformer(state, direction);
+		
+		Move move = TronLogic.MoveTransformer(state, input);
+        
         TronState newState = state;
         Coordinate coord1 = TronLogic.getLightcycleCoordinate(state, state.getActivePieceColor());
         Coordinate coord2 = null;
@@ -51,8 +55,8 @@ public class TronProcessor implements Processor<TronState> {
         if (move == null) { /* Pass */
         	Direction d = TronLogic.getCurrentDirection(state);
         	System.out.println("getCurrentDirection gave " + d);
-        	TronLogic.DirectionToMoveTransformer(state, d);
-        	coord2 = TronLogic.transformCoordinate(coord1, Direction.DOWN);
+        	//TronLogic.DirectionToMoveTransformer(state, d);
+        	//coord2 = TronLogic.transformCoordinate(coord1, Direction.DOWN);
         } else {
 	        if (!validator.isValid(move, state.getBoard())) {
 	            // FIXME: throw a more descriptive error
@@ -63,7 +67,7 @@ public class TronProcessor implements Processor<TronState> {
 	        if (coord1 == null) {
 	        	/* No player lightcycle */
 	        } else {
-		        coord2 = TronLogic.transformCoordinate(coord1, direction);
+		        coord2 = TronLogic.transformCoordinate(coord1, Direction.UP);
 	        }
         }
         System.out.println(state.getActivePieceColor() + " coord2: " + coord2);

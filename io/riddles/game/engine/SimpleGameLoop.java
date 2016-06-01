@@ -34,16 +34,13 @@ public class SimpleGameLoop<State> implements GameLoop<State> {
             response = null;
             try {
                 response = ioProvider.execute(request);
-
             } catch (Exception exception) {
             	System.out.print("Exception: " + exception.toString());
             }
             
             try {
                 state = processor.processInput(state, response);
-
             } catch (Exception exception) {
-
                 state = processor.processException(state, exception);
             }
         }

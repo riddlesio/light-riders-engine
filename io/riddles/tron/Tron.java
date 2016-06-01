@@ -43,46 +43,6 @@ public class Tron {
 	
 	TronGameHandler handler;
 
-	public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {		
-		// Create all the players and everything they need
-		this.players = new ArrayList<Player>();
-
-		for(Player player : this.players) {
-			sendSettings(player);
-		}
-		
-		Board b = new SquareBoard(BOARD_SIZE);
-
-		/* Initialise player positions */
-		int counter = 0;
-		for (Player player : this.players) {
-			switch (counter) {
-				case 0:
-					player.setX(BOARD_SIZE/4);
-					player.setY(BOARD_SIZE/2);
-					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.CYAN);
-					break;
-				case 1:
-					player.setX(BOARD_SIZE/4*3);
-					player.setY(BOARD_SIZE/2);
-					player.setDirection(Direction.LEFT);
-					player.setPieceColor(PieceColor.PURPLE);
-					break;
-				default:
-					Random r = new Random();
-					player.setX(r.nextInt(BOARD_SIZE));
-					player.setY(r.nextInt(BOARD_SIZE));
-					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.YELLOW);
-			}
-			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
-			counter ++;
-		}
-
-		// Create the processor
-		handler = new TronGameHandler(this.players, b);
-	}
 
 	public void sendSettings(Player player) {
 		/*
@@ -99,10 +59,12 @@ public class Tron {
 	
 	public static void main(String args[]) throws Exception {
 		Tron game = new Tron();
+		
 		TronGameEngine engine = new TronGameEngine();
 		
 		engine.DEV_MODE = true;
-		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		//engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
 		engine.NUM_TEST_BOTS = 2;
 		engine.setupEngine(args);
 		engine.run();//engine.getInitialState());
