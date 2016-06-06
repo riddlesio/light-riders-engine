@@ -12,6 +12,7 @@ import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IOResponse;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
+import io.riddles.tron.io.TronIOResponseType;
 import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Direction;
 
@@ -20,6 +21,8 @@ public final class TronLogic {
 	public static Move MoveTransformer(TronState state, IOResponse r) throws InvalidDataException {
 		PieceColor c = state.getActivePieceColor();
 		Coordinate coord1 = null;
+		Coordinate coord2 = null;
+
 		try {
 			coord1 = getLightcycleCoordinate(state, c);
 		} catch (Exception e) {
@@ -27,30 +30,37 @@ public final class TronLogic {
 				/* No lightcycle found */
 			}
 		}
-		Coordinate coord2 = coord1;
-		Direction direction = StringToDirectionTranformer(r.getValue());
 		
 		if (coord1 == null) {
-			throw new InvalidDataException("No lightcycle found");
+			throw new InvalidDataException(String.format("Lightcycle " + c  + " not found."));
 		}
 
-		switch (direction) {
-			case UP:
-				coord2 = new Coordinate(coord1.getX(), coord1.getY()-1);
-				break;
-			case RIGHT:
-				coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
-				break;
-			case DOWN:
-				coord2 = new Coordinate(coord1.getX(), coord1.getY()+1);
-				break;
-			case LEFT:
-				coord2 = new Coordinate(coord1.getX()-1, coord1.getY());
-				break;
-			default:
-				coord2 = coord1;
-				break;
+		if (r.getType() == TronIOResponseType.MOVE) {
+			Direction direction = StringToDirectionTranformer(r.getValue());
+			switch (direction) {
+				case UP:
+					coord2 = new Coordinate(coord1.getX(), coord1.getY()-1);
+					break;
+				case RIGHT:
+					coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
+					break;
+				case DOWN:
+					coord2 = new Coordinate(coord1.getX(), coord1.getY()+1);
+					break;
+				case LEFT:
+					coord2 = new Coordinate(coord1.getX()-1, coord1.getY());
+					break;
+				default:
+					coord2 = coord1;
+					break;
+			}
+		} else if (r.getType() == TronIOResponseType.PASS) {
+			coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
+
 		}
+		
+
+		
 		return new Move(coord1, coord2);
 	}
 	
@@ -73,7 +83,7 @@ public final class TronLogic {
     			}
     		}
     	}
-    	throw new InvalidDataException ("Lightcycle not found.");
+    	throw new InvalidDataException (String.format("Lightcycle %s not found.", c.toString()));
 	}
 	
 	public static Coordinate transformCoordinate(Coordinate c, Direction d) throws InvalidDataException {
@@ -83,7 +93,7 @@ public final class TronLogic {
 			case RIGHT:
 				return new Coordinate(c.getX()+1, c.getY());
 			case DOWN:
-				return new Coordinate(c.getX(), c.getY()+1);
+				return new Coordinate(c.getX(), c.getY()+1);			
 			case LEFT:
 				return new Coordinate(c.getX()-1, c.getY());
 		}

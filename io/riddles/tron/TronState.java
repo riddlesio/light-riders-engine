@@ -43,12 +43,22 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 
         board       = previousState.getBoard();
         move        = Optional.empty();
-        moveNumber  = previousState.getMoveNumber();
+        moveNumber  = previousState.getMoveNumber() + 1;
     }
 
     public TronState(TronState previousState, Board board, Move move) {
 
         this.board          = board;
+        this.previousState  = Optional.of(previousState);
+        this.move           = Optional.of(move);
+
+        exception      = Optional.empty();
+        moveNumber     = previousState.getMoveNumber() + 1;
+    }
+
+    public TronState(TronState previousState, Move move) {
+
+        this.board          = previousState.board;
         this.previousState  = Optional.of(previousState);
         this.move           = Optional.of(move);
 
