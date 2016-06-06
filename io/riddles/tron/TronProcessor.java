@@ -49,8 +49,6 @@ public class TronProcessor implements Processor<TronState> {
 		Move move = TronLogic.MoveTransformer(state, input);
         
         TronState newState = state;
-        Coordinate coord1 = TronLogic.getLightcycleCoordinate(state, state.getActivePieceColor());
-        Coordinate coord2 = null;
         
         if (move == null) { /* Pass */
         	Direction d = TronLogic.getCurrentDirection(state);
@@ -62,23 +60,18 @@ public class TronProcessor implements Processor<TronState> {
 	            // FIXME: throw a more descriptive error
 	            throw new InvalidMoveException("Move not valid");
 	        }
-	        
-	        System.out.println(state.getActivePieceColor() + " " + coord1);
-	        if (coord1 == null) {
-	        	/* No player lightcycle */
-	        } else {
-		        coord2 = TronLogic.transformCoordinate(coord1, Direction.UP);
-	        }
         }
-        System.out.println(state.getActivePieceColor() + " coord2: " + coord2);
 
         Board b = state.getBoard();
+        
+        /*
         Field f = b.getFieldAt(coord2);
         if (f.getPiece().isPresent()) {
         	throw new FieldNotEmptyException(String.format("Field(%s) contains wall or lightcycle.", coord2.toString()));
         }
     	b.getFieldAt(coord1).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
     	b.getFieldAt(coord2).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
+    	*/
 
         newState = new TronState(state, state.getBoard(), move);
 		return newState;

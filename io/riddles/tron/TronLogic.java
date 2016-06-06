@@ -7,6 +7,7 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.Piece;
+import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IOResponse;
 import io.riddles.tron.TronPiece.PieceColor;
@@ -18,8 +19,14 @@ public final class TronLogic {
 
 	public static Move MoveTransformer(TronState state, IOResponse r) throws InvalidDataException {
 		PieceColor c = state.getActivePieceColor();
-		
-		Coordinate coord1 = getLightcycleCoordinate(state, c);
+		Coordinate coord1 = null;
+		try {
+			coord1 = getLightcycleCoordinate(state, c);
+		} catch (Exception e) {
+			if (e instanceof InvalidDataException) {
+				/* No lightcycle found */
+			}
+		}
 		Coordinate coord2 = coord1;
 		Direction direction = StringToDirectionTranformer(r.getValue());
 		
@@ -51,6 +58,7 @@ public final class TronLogic {
 	 * Get Coordinate of Lightcycle piece with PieceColor
 	 * @param args : Tronstate, PieceColor
 	 * @return : Coordinate or null;
+	 * @throws InvalidDataException when no Lightcycle found.
 	 */
 	public static Coordinate getLightcycleCoordinate(TronState state, PieceColor c) throws InvalidDataException {
 		Board b = state.getBoard();
@@ -124,6 +132,12 @@ public final class TronLogic {
 		} else {
 			return Direction.LEFT;
 		}
+	}
+	
+	
+	public static SquareBoard StringToSquareBoardTransformer(String s) throws InvalidDataException {
+		/* TODO: Implement this */
+		throw new InvalidDataException("Not implemented.");
 	}
 	
 }

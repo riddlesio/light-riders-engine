@@ -63,10 +63,10 @@ public class Tron {
 		TronGameEngine engine = new TronGameEngine();
 		
 		engine.DEV_MODE = true;
-		//engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
+		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		//engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
 		engine.NUM_TEST_BOTS = 2;
 		engine.setupEngine(args);
-		engine.run();//engine.getInitialState());
+		engine.run("test");
 	}
 }
