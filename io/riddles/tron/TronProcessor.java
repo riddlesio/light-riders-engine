@@ -25,7 +25,6 @@ public class TronProcessor implements Processor<TronState> {
 	public TronState processException(TronState state, Exception exception) {
 		if (exception instanceof FieldNotEmptyException) {
 	    	/* Lightcycle crashed. */
-			
 		} else {
 			exception.printStackTrace();
 			System.exit(0);
@@ -37,6 +36,7 @@ public class TronProcessor implements Processor<TronState> {
 	@Override
 	public TronState processInput(TronState state, IOResponse input) throws Exception {
 
+		
 		MoveValidator validator = new TronMoveValidator();	
 		Move move = TronLogic.MoveTransformer(state, input);
         
@@ -46,13 +46,16 @@ public class TronProcessor implements Processor<TronState> {
         	
         } else {
         	/* Lightcycle crashed. */
+        	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
             throw new FieldNotEmptyException(String.format("Field(%s) contains wall or lightcycle.", move.getTo().toString()));
         }
 
         TronState newState = state;
         newState = new TronState(state, move);
         
+        
         /* Fixed for two players */
+        
         if (state.getActivePieceColor() == PieceColor.YELLOW) {
         	newState.setActivePieceColor(PieceColor.PURPLE);
         } else {
@@ -66,6 +69,7 @@ public class TronProcessor implements Processor<TronState> {
 	@Override
     public IORequest getRequest(TronState state) {
 
+		
         TronStateToIORequestTransformer transformer = new TronStateToIORequestTransformer();
         return transformer.transform(state);
     }

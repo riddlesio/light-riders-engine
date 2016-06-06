@@ -1,6 +1,7 @@
 package io.riddles.game.io;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IOHandler {
 	
@@ -22,7 +23,7 @@ public interface IOHandler {
      * @param id Bot to send message to
      * @param message Message to send
      */
-    public void sendMessage(int id, String message);
+    public void sendMessage(Identifier id, String message);
     /**
      * Send a message that will be received by all bots,
      * no response from bots is expected
@@ -36,14 +37,17 @@ public interface IOHandler {
      * @param request Request to send
      * @return Answer from the bot
      */
-    public String sendRequest(int id, String request) throws IOException;
+    public String sendRequest(Identifier id, String request) throws IOException;
     /**
      * Send a warning to given bot, this will not be received
      * by the bot, but will be logged in its dump
      * @param id Bot to send warning to
      * @param warning Warning to send
      */
-    public void sendWarning(int id, String warning);
+    public void sendWarning(Identifier id, String warning);
+    
+    
+    public List<Identifier> getBotIdentifiers();
     
 
 }

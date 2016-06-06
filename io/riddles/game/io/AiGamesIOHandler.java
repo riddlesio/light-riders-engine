@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import io.riddles.tron.player.Player;
@@ -112,7 +113,7 @@ public class AiGamesIOHandler implements IOHandler {
 	}
 
 	@Override
-	public void sendMessage(int id, String message) {
+	public void sendMessage(Identifier id, String message) {
 		AiGamesBot b = getBotWithPlayerId(id);
 		b.write(message);
 	}
@@ -125,22 +126,35 @@ public class AiGamesIOHandler implements IOHandler {
 	}
 
 	@Override
-	public String sendRequest(int id, String request) throws IOException {
+	public String sendRequest(Identifier id, String request) throws IOException {
 		AiGamesBot b = getBotWithPlayerId(id);
 		return b.ask(request, TIMEOUT);
 	}
 
 	@Override
-	public void sendWarning(int id, String warning) {
+	public void sendWarning(Identifier id, String warning) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	private AiGamesBot getBotWithPlayerId(int id) {
+	private AiGamesBot getBotWithPlayerId(Identifier id) throws IllegalArgumentException {
+		
 		for (AiGamesBot bot : bots) {
     		if (bot.getPlayerId() == id)
     			return bot;
     	}
-    		return null;
+		
+		throw new IllegalArgumentException(String.format("Bot with id %s not found.", id));
+	}
+
+	@Override
+	public List<Identifier> getBotIdentifiers() {
+		
+		ArrayList<Identifier> identifiers = new ArrayList<>();
+		for (AiGamesBot bot : bots) {
+			identifiers.add(bot.getPlayerId());
+    	}
+
+		return identifiers;
 	}
 }

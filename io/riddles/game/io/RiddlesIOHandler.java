@@ -17,6 +17,7 @@
 
 package io.riddles.game.io;
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -72,8 +73,8 @@ public final class RiddlesIOHandler implements IOHandler {
      * @param message Message to send
      */
 	@Override
-    public void sendMessage(int id, String message) {
-        sendMessage(String.format("bot %d send %s", id, message));
+    public void sendMessage(Identifier id, String message) {
+        sendMessage(String.format("bot %s send %s", id, message));
     }
     
     /**
@@ -94,8 +95,8 @@ public final class RiddlesIOHandler implements IOHandler {
      * @return Answer from the bot
      */
 	@Override
-    public String sendRequest(int id, String request) {
-        sendMessage(String.format("bot %d ask %s", id, request));
+    public String sendRequest(Identifier id, String request) {
+        sendMessage(String.format("bot %s ask %s", id, request));
         return getResponse(id);
     }
     
@@ -106,8 +107,8 @@ public final class RiddlesIOHandler implements IOHandler {
      * @param warning Warning to send
      */
 	@Override
-    public void sendWarning(int id, String warning) {
-        sendMessage(String.format("bot %d warning %s", id, warning));
+    public void sendWarning(Identifier id, String warning) {
+        sendMessage(String.format("bot %s warning %s", id, warning));
     }
     
     /**
@@ -126,10 +127,10 @@ public final class RiddlesIOHandler implements IOHandler {
      * from given bot are ignored.
      * @param id Bot to get response from
      */
-    private String getResponse(int id) {
+    private String getResponse(Identifier id) {
         
         String message = null;
-        String identifier = String.format("bot %d ", id);
+        String identifier = String.format("bot %s ", id);
         while(message == null || !message.startsWith(identifier)) {
             try {
                 message = getNextMessage();
@@ -139,4 +140,10 @@ public final class RiddlesIOHandler implements IOHandler {
         }
         return message.replace(identifier, "");
     }
+
+	@Override
+	public List<Identifier> getBotIdentifiers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

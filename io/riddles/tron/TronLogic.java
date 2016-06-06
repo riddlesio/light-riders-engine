@@ -149,5 +149,10 @@ public final class TronLogic {
 		/* TODO: Implement this */
 		throw new InvalidDataException("Not implemented.");
 	}
+
+	public static List<PieceColor> getLivingPieceColors(TronState state) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

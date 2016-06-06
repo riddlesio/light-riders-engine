@@ -2,6 +2,8 @@ package io.riddles.game.io;
 
 import java.io.IOException;
 
+import io.riddles.game.exception.InvalidInputException;
+
 /**
  * The functions needed by the GameLoop to
  *
@@ -12,6 +14,6 @@ import java.io.IOException;
  */
 public interface IOProvider {
 	
-    IOResponse execute(IORequest request) throws IOException;
+    IOResponse execute(IORequest request) throws IOException, InvalidInputException;
 
 }

@@ -38,7 +38,7 @@ public class AiGamesBot implements Runnable {
     private InputStreamGobbler outputGobbler;
     private InputStreamGobbler errorGobbler;
     protected boolean finished;
-    private int playerId;
+    private Identifier playerId;
     
     public String response;
     public Queue<String> inputQueue;
@@ -178,6 +178,6 @@ public class AiGamesBot implements Runnable {
         this.errorGobbler.start();
     }
     
-    public int getPlayerId() { return playerId; }
-    public void setPlayerId(int playerId) { this.playerId = playerId; }
+    public Identifier getPlayerId() { return playerId; }
+    public void setPlayerId(Identifier identifier) { this.playerId = identifier; }
 }
