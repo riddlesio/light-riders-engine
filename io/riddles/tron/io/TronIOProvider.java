@@ -47,6 +47,7 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 			return t.transform(request, response);
 		}
 	}
+	
 
     /* mapping player to color
      */

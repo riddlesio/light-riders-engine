@@ -112,10 +112,7 @@ public class TronGameEngine implements GameEngine {
 			counter ++;
 		}
 		s.setActivePieceColor(PieceColor.YELLOW);
-		
-		/* TODO remove this */
-		//b.getFieldAt(new Coordinate(17, 32)).setPiece(Optional.of(new TronPiece(PieceType.WALL, PieceColor.YELLOW)));
-		
+				
 		Util.dumpBoard(b);
 		return s;
 	}

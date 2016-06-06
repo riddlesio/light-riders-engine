@@ -151,6 +151,9 @@ public final class TronLogic {
 	}
 
 	public static List<PieceColor> getLivingPieceColors(TronState state) {
+		/* Gather all player colors */
+		/* For each ask state which are alive */
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
