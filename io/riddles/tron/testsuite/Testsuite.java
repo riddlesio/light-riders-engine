@@ -17,12 +17,6 @@
 
 package io.riddles.tron.testsuite;
 
-import io.riddles.tron.field.Field;
-
 public class Testsuite {
 	
-	public void dbgTest(Field field) {
-
-		/* TODO: Assert field state */
-	}
 }

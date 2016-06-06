@@ -23,7 +23,6 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Piece;
-import io.riddles.tron.field.Field;
 
 public final class Util {
 

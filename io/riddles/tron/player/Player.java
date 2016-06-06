@@ -23,7 +23,6 @@ import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.Identifier;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.field.Field;
 
 
 public class Player extends AbstractPlayer {
