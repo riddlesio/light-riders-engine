@@ -1,5 +1,6 @@
 package io.riddles.tron;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,11 +152,17 @@ public final class TronLogic {
 	}
 
 	public static List<PieceColor> getLivingPieceColors(TronState state) {
+		List<PieceColor> l = new ArrayList<PieceColor>();
+		l.add(PieceColor.YELLOW);
+		l.add(PieceColor.PURPLE);
+		l.add(PieceColor.CYAN);
+		l.add(PieceColor.GREEN);
+		
 		/* Gather all player colors */
 		/* For each ask state which are alive */
 		
-		// TODO Auto-generated method stub
-		return null;
+		// TODO: This should be gathered from the IOProvider
+		return l;
 	}
 	
 }
