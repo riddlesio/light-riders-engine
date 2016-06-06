@@ -16,8 +16,12 @@ import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.engine.GameEngine;
 import io.riddles.game.engine.GameLoop;
 import io.riddles.game.engine.SimpleGameLoop;
+import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IOProvider;
+import io.riddles.game.io.Identifier;
+import io.riddles.game.io.StringIdentifier;
+import io.riddles.tron.TronLogic;
 import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
@@ -66,12 +70,19 @@ public class TronGameEngine implements GameEngine {
      */
     public void run() {	
 		
-        finalState = gameLoop.run(provider, processor, getInitialState());
+        finalState = gameLoop.run(provider, processor, getInitialState(null));
     }
     
-    public TronState getInitialState() {
+    public TronState getInitialState(String initialStateString) {
 		Board b = new SquareBoard(BOARD_SIZE);
-
+		
+		if (initialStateString != null) {
+			try {
+				b = TronLogic.StringToSquareBoardTransformer(initialStateString);
+			} catch (InvalidDataException e) {
+				System.err.println("Could not initialise Board from initialStateString");
+			}
+		}
     	TronState s = new TronState(b);
 
 		/* Initialise player positions */
@@ -82,7 +93,7 @@ public class TronGameEngine implements GameEngine {
 					player.setX(BOARD_SIZE/4);
 					player.setY(BOARD_SIZE/2);
 					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.CYAN);
+					player.setPieceColor(PieceColor.YELLOW);
 					break;
 				case 1:
 					player.setX(BOARD_SIZE/4*3);
@@ -95,11 +106,16 @@ public class TronGameEngine implements GameEngine {
 					player.setX(r.nextInt(BOARD_SIZE));
 					player.setY(r.nextInt(BOARD_SIZE));
 					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.YELLOW);
+					player.setPieceColor(PieceColor.CYAN);
 			}
 			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
 			counter ++;
 		}
+		s.setActivePieceColor(PieceColor.YELLOW);
+		
+		/* TODO remove this */
+		//b.getFieldAt(new Coordinate(17, 32)).setPiece(Optional.of(new TronPiece(PieceType.WALL, PieceColor.YELLOW)));
+		
 		Util.dumpBoard(b);
 		return s;
 	}
@@ -125,7 +141,7 @@ public class TronGameEngine implements GameEngine {
             }
             
             for(int i = 0; i < NUM_TEST_BOTS; i++) {
-                addPlayer(TEST_BOT, "ID_" + i);
+                addPlayer(TEST_BOT, new StringIdentifier("ID_" + i));
             }
             
         } else {
@@ -154,7 +170,7 @@ public class TronGameEngine implements GameEngine {
 	        
 	        // add the players
 	        for(int i=0; i < botIds.size(); i++) {
-	            addPlayer(String.format("/opt/aigames/scripts/run_bot.sh aiplayer%d %s", i + 1, botDirs.get(i)), botIds.get(i));
+	            addPlayer(String.format("/opt/aigames/scripts/run_bot.sh aiplayer%d %s", i + 1, botDirs.get(i)), new StringIdentifier(botIds.get(i)));
 	        }
         }
     	
@@ -169,12 +185,12 @@ public class TronGameEngine implements GameEngine {
      * Start up the bot process and add the player to the game
      * @param command : command to start a bot process
      */
-    public void addPlayer(String command, String idString) throws IOException {
+    public void addPlayer(String command, Identifier id) throws IOException {
 
         // Create new process
     	Process process = Runtime.getRuntime().exec(command);
   	
-        Player player = new Player(idString, 0);
+        Player player = new Player("name", id);
     	handler.addPlayerProcess(player, process);
     	
         // Add player
@@ -184,6 +200,10 @@ public class TronGameEngine implements GameEngine {
 	@Override
 	public void run(String initialStateString) {
 		/* TODO: initialStateString not used */
-		run();
+        finalState = gameLoop.run(provider, processor, this.getInitialState(initialStateString));
+	}
+	
+	public void run(TronState initialState) {
+        finalState = gameLoop.run(provider, processor, initialState);
 	}
 }

@@ -17,6 +17,8 @@
 
 package io.riddles.game.player;
 
+import io.riddles.game.io.Identifier;
+
 /**
  * AbstractPlayer class
  * 
@@ -33,7 +35,7 @@ public abstract class AbstractPlayer {
 	
 	private String name;
 	
-	public AbstractPlayer(String name, int id) {
+	public AbstractPlayer(String name, Identifier id) {
 		this.name = name;
 	}
 	

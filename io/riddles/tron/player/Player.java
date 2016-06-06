@@ -20,6 +20,7 @@ package io.riddles.tron.player;
 import io.riddles.boardgame.model.Direction;
 import io.riddles.engine.io.IOPlayer;
 import io.riddles.game.io.AiGamesIOHandler;
+import io.riddles.game.io.Identifier;
 import io.riddles.game.player.AbstractPlayer;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.field.Field;
@@ -27,21 +28,21 @@ import io.riddles.tron.field.Field;
 
 public class Player extends AbstractPlayer {
 	
-	int mId;
+	Identifier mId;
 	String mLastMove;
 	Direction mDirection;
 	int mX, mY;
 	boolean mAlive;
 	PieceColor mPieceColor;
 	
-	public Player(String name, int id) {
+	public Player(String name, Identifier id) {
 		super(name, id);
 		mId = id;
 		mLastMove = "Null";
 		mAlive = true;
 	}
 
-	public int getId() {
+	public Identifier getId() {
 		return mId;
 	}
 	

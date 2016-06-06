@@ -31,20 +31,15 @@ public class SimpleGameLoop<State> implements GameLoop<State> {
         while (!processor.hasGameEnded(state)) {
 
             request = processor.getRequest(state);
-            response = null;
-            try {
-                response = ioProvider.execute(request);
-            } catch (Exception exception) {
-            	System.out.print("Exception: " + exception.toString());
-            }
             
             try {
+            	response = ioProvider.execute(request);
                 state = processor.processInput(state, response);
             } catch (Exception exception) {
                 state = processor.processException(state, exception);
             }
+            
         }
-
         return state;
     }
 }

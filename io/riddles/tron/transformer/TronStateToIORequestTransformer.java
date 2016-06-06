@@ -1,15 +1,19 @@
 package io.riddles.tron.transformer;
 
 import io.riddles.boardgame.model.*;
+import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IORequestType;
 import io.riddles.game.transformer.Transformer;
+import io.riddles.tron.TronLogic;
 import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronState;
 import io.riddles.tron.io.TronIORequest;
 import io.riddles.tron.io.TronIORequestType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,12 +21,7 @@ import java.util.Optional;
  */
 public class TronStateToIORequestTransformer implements Transformer<TronState, IORequest> {
 
-   // private SquareBoardLogic boardLogic;
-   // private ChessPieceLogic pieceLogic;
-
     public TronStateToIORequestTransformer() {
-       // boardLogic = new SquareBoardLogic();
-       // pieceLogic = new ChessPieceLogic();
     }
 
     /**
@@ -37,6 +36,13 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
         if (!optionalPreviousMove.isPresent()) {
             return createInitialMoveRequest();
         }
+        
+        try {
+        	Coordinate c = TronLogic.getLightcycleCoordinate(state, state.getActivePieceColor());
+        } catch (InvalidDataException e) {
+            /* If player is dead, create NOOP MoveRequest */
+        	return createNoOpRequest(state);
+        }
 
         // Everything else is a simple move request
         return createMoveRequest(state);
@@ -50,23 +56,61 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      */
     protected IORequest createMoveRequest(TronState state) {
 
-        PieceColor colorToMove = PieceColor.YELLOW;;
-        TronPiece movedPiece = getMovedPiece(state);
-
-        /*
-        if (movedPiece.hasColor(PieceColor.BLACK)) {
-            colorToMove = PieceColor.YELLOW;
-        } else {
-            colorToMove = PieceColor.GREEN;
-        }
-        */
-
-        return new TronIORequest(colorToMove, TronIORequestType.MOVE);
+    	PieceColor colorToMove = null;
+    	
+    	TronPiece movedPiece = getMovedPiece(state);
+    	/* Figure out next player */
+    	colorToMove = getColorToMove(state);
+    	
+    	return new TronIORequest(colorToMove, TronIORequestType.MOVE);
+    }
+    	
+    	
+    	
+	protected PieceColor getColorToMove(TronState state) {
+		
+		List<PieceColor> currentLivingPieceColors = TronLogic.getLivingPieceColors(state);
+		
+		if (!state.getPreviousState().isPresent()) {
+    		
+    		return currentLivingPieceColors.get(0);
+    	}
+		
+		TronState previousState = state.getPreviousState().get();
+		
+		List<PieceColor> livingPieceColors = TronLogic.getLivingPieceColors(previousState);
+    	PieceColor c = state.getActivePieceColor();
+    	int i = livingPieceColors.indexOf(c);
+    	
+    	List<PieceColor> beforePieceColors = livingPieceColors.subList(0, i);
+    	List<PieceColor> afterPieceColors = livingPieceColors.subList(i+1, livingPieceColors.size());
+    	
+    	List<PieceColor> previouslyActivePieceColors = new ArrayList<>();
+    	previouslyActivePieceColors.addAll(afterPieceColors);
+    	previouslyActivePieceColors.addAll(beforePieceColors);
+    	
+    	for (PieceColor previouslyAlive : previouslyActivePieceColors) {
+    		if (currentLivingPieceColors.indexOf(previouslyAlive) != -1) {
+    			return previouslyAlive;
+    		}
+    	}
+    	
+    	throw new IllegalArgumentException("No players left alive");
+    }
+    
+    /**
+     * Creates an IORequest for the next player to move a piece,
+     * based on the passed state and move
+     * @param state The state upon which to base the next move
+     * @return IORequest for the next player to move a piece
+     */
+    protected IORequest createNoOpRequest(TronState state) {
+        return new TronIORequest(state.getActivePieceColor(), TronIORequestType.NOOP);
     }
 
     /**
-     * Creates an IORequest for WHITE to move a piece (ie. first move of the game)
-     * @return IORequest for WHITE to move a piece
+     * Creates an IORequest for YELLOW to move a piece (ie. first move of the game)
+     * @return IORequest for YELLOW to move a piece
      */
     protected IORequest createInitialMoveRequest() {
 
@@ -86,7 +130,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
     }
 
     /**
-     * Get the piece which was moved in the previous IOResponse
+     * Get the piece which was moved in TronState
      * @param state The state from which to retrieve the last moved piece
      * @return The last moved piece
      */

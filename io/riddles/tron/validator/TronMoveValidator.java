@@ -25,7 +25,7 @@ public final class TronMoveValidator implements MoveValidator {
 		ArrayList<MoveValidator> validators = new ArrayList<>();
 
 		validators.add(new DirectionValidator());
-		
+		validators.add(new FieldEmptyValidator());
 		this.validators = validators;
 	}
 
@@ -38,7 +38,6 @@ public final class TronMoveValidator implements MoveValidator {
 	public Boolean isValid(Move move, Board board) {
 
 		for (MoveValidator validator : validators) {
-
 			if (validator.isApplicable(move, board)) {
 				if (!validator.isValid(move, board)) {
 					return false;
