@@ -1,5 +1,6 @@
 package io.riddles.tron;
 
+import java.util.List;
 import java.util.Optional;
 
 import io.riddles.boardgame.model.Move;
@@ -10,6 +11,7 @@ import io.riddles.game.io.IOResponse;
 import io.riddles.game.move.MoveValidator;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
+import io.riddles.tron.transformer.IOResponseToMoveTransformer;
 import io.riddles.tron.transformer.TronStateToIORequestTransformer;
 import io.riddles.tron.validator.TronMoveValidator;
 
@@ -18,12 +20,14 @@ public class TronProcessor implements Processor<TronState> {
 
 	@Override
 	public boolean hasGameEnded(TronState state) {
-		return false;
+		List<PieceColor> l = new TronLogic().getLivingPieceColors(state);
+		return (l.size() < 2);
 	}
 
 	@Override
 	public TronState processException(TronState state, Exception exception) {
 		if (exception instanceof FieldNotEmptyException) {
+			System.out.println(state.getActivePieceColor() + " CRASHED!");
 	    	/* Lightcycle crashed. */
 		} else {
 			exception.printStackTrace();
@@ -38,7 +42,7 @@ public class TronProcessor implements Processor<TronState> {
 
 		
 		MoveValidator validator = new TronMoveValidator();	
-		Move move = TronLogic.MoveTransformer(state, input);
+		Move move = new IOResponseToMoveTransformer().transform(state, input);
         
         if (validator.isValid(move, state.getBoard())) {
         	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
@@ -54,13 +58,7 @@ public class TronProcessor implements Processor<TronState> {
         newState = new TronState(state, move);
         
         
-        /* Fixed for two players */
-        
-        if (state.getActivePieceColor() == PieceColor.YELLOW) {
-        	newState.setActivePieceColor(PieceColor.PURPLE);
-        } else {
-        	newState.setActivePieceColor(PieceColor.YELLOW);
-        }
+    	newState.setActivePieceColor(new TronStateToIORequestTransformer().getColorToMove(state));
 
         //Util.dumpBoard(newState.getBoard());
 		return newState;

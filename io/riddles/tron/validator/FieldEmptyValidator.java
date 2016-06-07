@@ -19,7 +19,6 @@ public class FieldEmptyValidator implements MoveValidator {
 
 	@Override
 	public Boolean isValid(Move move, Board board) {
-		Util.dumpBoard(board);
 		Optional<Piece> p =  board.getFieldAt(new Coordinate(move.getTo().getX(), move.getTo().getY())).getPiece();
 		return !p.isPresent();
 	}

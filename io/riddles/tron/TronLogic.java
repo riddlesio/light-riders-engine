@@ -11,6 +11,7 @@ import io.riddles.boardgame.model.Piece;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IOResponse;
+import io.riddles.game.io.Identifier;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.io.TronIOResponseType;
@@ -19,51 +20,7 @@ import io.riddles.boardgame.model.Direction;
 
 public final class TronLogic {
 
-	public static Move MoveTransformer(TronState state, IOResponse r) throws InvalidDataException {
-		PieceColor c = state.getActivePieceColor();
-		Coordinate coord1 = null;
-		Coordinate coord2 = null;
 
-		try {
-			coord1 = getLightcycleCoordinate(state, c);
-		} catch (Exception e) {
-			if (e instanceof InvalidDataException) {
-				/* No lightcycle found */
-			}
-		}
-		
-		if (coord1 == null) {
-			throw new InvalidDataException(String.format("Lightcycle " + c  + " not found."));
-		}
-
-		if (r.getType() == TronIOResponseType.MOVE) {
-			Direction direction = StringToDirectionTranformer(r.getValue());
-			switch (direction) {
-				case UP:
-					coord2 = new Coordinate(coord1.getX(), coord1.getY()-1);
-					break;
-				case RIGHT:
-					coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
-					break;
-				case DOWN:
-					coord2 = new Coordinate(coord1.getX(), coord1.getY()+1);
-					break;
-				case LEFT:
-					coord2 = new Coordinate(coord1.getX()-1, coord1.getY());
-					break;
-				default:
-					coord2 = coord1;
-					break;
-			}
-		} else if (r.getType() == TronIOResponseType.PASS) {
-			coord2 = new Coordinate(coord1.getX()+1, coord1.getY());
-
-		}
-		
-
-		
-		return new Move(coord1, coord2);
-	}
 	
 	/**
 	 * Get Coordinate of Lightcycle piece with PieceColor
@@ -71,7 +28,7 @@ public final class TronLogic {
 	 * @return : Coordinate or null;
 	 * @throws InvalidDataException when no Lightcycle found.
 	 */
-	public static Coordinate getLightcycleCoordinate(TronState state, PieceColor c) throws InvalidDataException {
+	public Coordinate getLightcycleCoordinate(PieceColor c, TronState state) throws InvalidDataException {
 		Board b = state.getBoard();
 		int size = b.size();
 		
@@ -87,7 +44,7 @@ public final class TronLogic {
     	throw new InvalidDataException (String.format("Lightcycle %s not found.", c.toString()));
 	}
 	
-	public static Coordinate transformCoordinate(Coordinate c, Direction d) throws InvalidDataException {
+	public Coordinate transformCoordinate(Coordinate c, Direction d) throws InvalidDataException {
 		switch (d) {
 			case UP:
 				return new Coordinate(c.getX(), c.getY()-1);
@@ -101,7 +58,7 @@ public final class TronLogic {
 		throw new InvalidDataException("Direction unknown");
 	}
 	
-	public static Direction StringToDirectionTranformer(String s) throws InvalidDataException {
+	public Direction StringToDirectionTranformer(String s) throws InvalidDataException {
 		s = s.toLowerCase();
 		switch (s) {
 			case "up":
@@ -116,12 +73,12 @@ public final class TronLogic {
 		throw new InvalidDataException("Direction unknown");
 	}
 	
-	public static Direction getCurrentDirection(TronState state) throws InvalidDataException {
+	public Direction getCurrentDirection(TronState state) throws InvalidDataException {
 		Optional<TronState> prevState = state.getPreviousState();
 		PieceColor c = state.getActivePieceColor();
-		Coordinate coord1 = getLightcycleCoordinate(state, c);
+		Coordinate coord1 = getLightcycleCoordinate(c, state);
 		if (prevState.isPresent()) {
-			Coordinate coord2 = getLightcycleCoordinate(prevState.get(), c);
+			Coordinate coord2 = getLightcycleCoordinate(c, prevState.get());
 			if (coord1.getX() < coord2.getX()) {
 				return Direction.LEFT;
 			}
@@ -151,18 +108,32 @@ public final class TronLogic {
 		throw new InvalidDataException("Not implemented.");
 	}
 
-	public static List<PieceColor> getLivingPieceColors(TronState state) {
-		List<PieceColor> l = new ArrayList<PieceColor>();
-		l.add(PieceColor.YELLOW);
-		l.add(PieceColor.PURPLE);
-		l.add(PieceColor.CYAN);
-		l.add(PieceColor.GREEN);
+	public List<PieceColor> getLivingPieceColors(TronState state) {
+		// TODO: allColors should be gathered from the IOProvider
+		List<PieceColor> allColors = new ArrayList<PieceColor>();
+		allColors.add(PieceColor.YELLOW);
+		allColors.add(PieceColor.PURPLE);
+		allColors.add(PieceColor.CYAN);
+		allColors.add(PieceColor.GREEN);
 		
-		/* Gather all player colors */
-		/* For each ask state which are alive */
+		List<PieceColor> livingColors = new ArrayList<PieceColor>();
+		for (int i = 0; i < allColors.size(); i++) {
+			PieceColor c = allColors.get(i);
+			if (isColorAlive(c, state)) {
+				livingColors.add(c);
+			}
+		}
 		
-		// TODO: This should be gathered from the IOProvider
-		return l;
+		return livingColors;
+	}
+	
+	public boolean isColorAlive(PieceColor c, TronState state) {
+		try {
+			getLightcycleCoordinate(c, state);
+		} catch (InvalidDataException e) {
+			return false;
+		}
+		return true;
 	}
 	
 }

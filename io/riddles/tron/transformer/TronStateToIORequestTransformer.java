@@ -36,13 +36,6 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
         if (!optionalPreviousMove.isPresent()) {
             return createInitialMoveRequest();
         }
-        
-        try {
-        	Coordinate c = TronLogic.getLightcycleCoordinate(state, state.getActivePieceColor());
-        } catch (InvalidDataException e) {
-            /* If player is dead, create NOOP MoveRequest */
-        	return createNoOpRequest(state);
-        }
 
         // Everything else is a simple move request
         return createMoveRequest(state);
@@ -58,7 +51,6 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
 
     	PieceColor colorToMove = null;
     	
-    	TronPiece movedPiece = getMovedPiece(state);
     	/* Figure out next player */
     	colorToMove = getColorToMove(state);
     	
@@ -67,53 +59,46 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
     	
     	
     	
-	protected PieceColor getColorToMove(TronState state) {
+	public PieceColor getColorToMove(TronState state) {
 		
-		List<PieceColor> currentLivingPieceColors = TronLogic.getLivingPieceColors(state);
+		List<PieceColor> currentLivingPieceColors = new TronLogic().getLivingPieceColors(state);
 		
 		if (!state.getPreviousState().isPresent()) {
-    		
     		return currentLivingPieceColors.get(0);
     	}
 		
 		TronState previousState = state.getPreviousState().get();
 		
-		List<PieceColor> livingPieceColors = TronLogic.getLivingPieceColors(previousState);
+		List<PieceColor> livingPieceColors = new TronLogic().getLivingPieceColors(previousState);
     	PieceColor c = state.getActivePieceColor();
     	int i = livingPieceColors.indexOf(c);
+    	List<PieceColor> beforePieceColors;
     	
-    	List<PieceColor> beforePieceColors = livingPieceColors.subList(0, i);
+    	try {
+	    	beforePieceColors = livingPieceColors.subList(0, i);
+    	} catch (IllegalArgumentException e ) {
+    		throw new IllegalArgumentException("No players left alive");
+    	}
     	List<PieceColor> afterPieceColors = livingPieceColors.subList(i+1, livingPieceColors.size());
     	
-    	List<PieceColor> previouslyActivePieceColors = new ArrayList<>();
-    	previouslyActivePieceColors.addAll(afterPieceColors);
-    	previouslyActivePieceColors.addAll(beforePieceColors);
+    	List<PieceColor> remainingActivePieceColors = new ArrayList<>();
+    	remainingActivePieceColors.addAll(afterPieceColors);
+    	remainingActivePieceColors.addAll(beforePieceColors);
     	
-    	for (PieceColor previouslyAlive : previouslyActivePieceColors) {
-    		if (currentLivingPieceColors.indexOf(previouslyAlive) != -1) {
-    			return previouslyAlive;
+    	for (PieceColor remainingAlive : remainingActivePieceColors) {
+    		if (currentLivingPieceColors.indexOf(remainingAlive) != -1) {
+    			return remainingAlive;
     		}
     	}
-    	
-    	throw new IllegalArgumentException("No players left alive");
+		throw new IllegalArgumentException("No players left alive");
     }
     
-    /**
-     * Creates an IORequest for the next player to move a piece,
-     * based on the passed state and move
-     * @param state The state upon which to base the next move
-     * @return IORequest for the next player to move a piece
-     */
-    protected IORequest createNoOpRequest(TronState state) {
-        return new TronIORequest(state.getActivePieceColor(), TronIORequestType.NOOP);
-    }
-
     /**
      * Creates an IORequest for YELLOW to move a piece (ie. first move of the game)
      * @return IORequest for YELLOW to move a piece
      */
     protected IORequest createInitialMoveRequest() {
-
+    	/* TODO: Use getColorToMove */
         return new TronIORequest(PieceColor.YELLOW, TronIORequestType.MOVE);
     }
 

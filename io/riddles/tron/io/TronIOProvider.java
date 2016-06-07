@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.exception.InvalidInputException;
 import io.riddles.game.io.AbstractIOProvider;
-import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.IORequest;
@@ -37,6 +35,7 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 		if (request.getType() == TronIORequestType.NOOP) {
 			return new TronIOResponse(request, TronIOResponseType.NOOP, "noop");
 		} else {
+			System.out.println("sendRequest color: " + r.getColor());
 			String response = handler.sendRequest(botList.get(r.getColor()), request.toString());
 			/* Check request matches with response type */
 			
@@ -47,8 +46,4 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 			return t.transform(request, response);
 		}
 	}
-	
-
-    /* mapping player to color
-     */
 }

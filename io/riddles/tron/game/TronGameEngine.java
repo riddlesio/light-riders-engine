@@ -93,27 +93,25 @@ public class TronGameEngine implements GameEngine {
 					player.setX(BOARD_SIZE/4);
 					player.setY(BOARD_SIZE/2);
 					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.YELLOW);
 					break;
 				case 1:
 					player.setX(BOARD_SIZE/4*3);
 					player.setY(BOARD_SIZE/2);
 					player.setDirection(Direction.LEFT);
-					player.setPieceColor(PieceColor.PURPLE);
 					break;
 				default:
 					Random r = new Random();
 					player.setX(r.nextInt(BOARD_SIZE));
 					player.setY(r.nextInt(BOARD_SIZE));
 					player.setDirection(Direction.RIGHT);
-					player.setPieceColor(PieceColor.CYAN);
 			}
+			player.setPieceColor(PieceColor.values()[counter]);
 			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
 			counter ++;
 		}
-		s.setActivePieceColor(PieceColor.YELLOW);
+		s.setActivePieceColor(this.players.get(0).getPieceColor());
 				
-		Util.dumpBoard(b);
+		//Util.dumpBoard(b);
 		return s;
 	}
     
@@ -198,6 +196,7 @@ public class TronGameEngine implements GameEngine {
 	public void run(String initialStateString) {
 		/* TODO: initialStateString not used */
         finalState = gameLoop.run(provider, processor, this.getInitialState(initialStateString));
+        Util.dumpBoard(finalState.getBoard());
 	}
 	
 	public void run(TronState initialState) {

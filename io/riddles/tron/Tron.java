@@ -17,20 +17,10 @@
 
 package io.riddles.tron;
 
-import io.riddles.engine.io.IOPlayer;
-import io.riddles.boardgame.model.Board;
-import io.riddles.boardgame.model.Coordinate;
-import io.riddles.boardgame.model.Direction;
-import io.riddles.boardgame.model.SquareBoard;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 
 public class Tron {
@@ -40,8 +30,6 @@ public class Tron {
 	private final int TIME_PER_MOVE = 200;
 	private final int BOARD_SIZE = 64;
 	private List<Player> players;
-	
-	TronGameHandler handler;
 
 
 	public void sendSettings(Player player) {
@@ -63,8 +51,8 @@ public class Tron {
 		TronGameEngine engine = new TronGameEngine();
 		
 		engine.DEV_MODE = true;
-		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		//engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
+		//engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
 		engine.NUM_TEST_BOTS = 2;
 		engine.setupEngine(args);
 		engine.run("test");
