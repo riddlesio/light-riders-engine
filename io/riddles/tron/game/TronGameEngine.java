@@ -18,6 +18,7 @@ import io.riddles.game.engine.SimpleGameLoop;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.exception.InvalidInputException;
 import io.riddles.game.io.AiGamesIOHandler;
+import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.Identifier;
 import io.riddles.game.io.StringIdentifier;
@@ -53,13 +54,12 @@ public class TronGameEngine implements GameEngine {
 	public String TEST_BOT; // command for the test bot in DEV_MODE
 	public int NUM_TEST_BOTS; // number of bots for this game
 	
-	private AiGamesIOHandler handler;
+	private IOHandler handler;
 	private IOProvider provider;
 	
-    public TronGameEngine() {
+    public TronGameEngine(IOHandler handler) {
         this.players = new ArrayList<Player>();
-        /* Create IOHandler */
-    	handler = new AiGamesIOHandler();
+        this.handler = handler;
     	
         gameLoop  = new SimpleGameLoop<TronState>();
         processor = new TronProcessor();
@@ -187,7 +187,7 @@ public class TronGameEngine implements GameEngine {
     	Process process = Runtime.getRuntime().exec(command);
   	
         Player player = new Player("name", id);
-    	handler.addPlayerProcess(player, process);
+    	((AiGamesIOHandler) handler).addPlayerProcess(player, process);
     	
         // Add player
         this.players.add(player);

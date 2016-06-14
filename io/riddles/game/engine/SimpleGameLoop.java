@@ -31,14 +31,12 @@ public class SimpleGameLoop<State> implements GameLoop<State> {
         while (!processor.hasGameEnded(state)) {
 
             request = processor.getRequest(state);
-            
             try {
             	response = ioProvider.execute(request);
                 state = processor.processInput(state, response);
             } catch (Exception exception) {
                 state = processor.processException(state, exception);
             }
-            
         }
         return state;
     }

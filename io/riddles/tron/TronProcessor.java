@@ -14,6 +14,7 @@ import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.transformer.IOResponseToMoveTransformer;
 import io.riddles.tron.transformer.TronStateToIORequestTransformer;
 import io.riddles.tron.validator.TronMoveValidator;
+import io.riddles.util.Util;
 
 
 public class TronProcessor implements Processor<TronState> {
@@ -47,7 +48,7 @@ public class TronProcessor implements Processor<TronState> {
         if (validator.isValid(move, state.getBoard())) {
         	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
         	state.getBoard().getFieldAt(move.getTo()).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
-        	
+        	Util.dumpBoard(state.getBoard());
         } else {
         	/* Lightcycle crashed. */
         	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
@@ -57,8 +58,9 @@ public class TronProcessor implements Processor<TronState> {
         TronState newState = state;
         newState = new TronState(state, move);
         
-        
-    	newState.setActivePieceColor(new TronStateToIORequestTransformer().getColorToMove(state));
+        PieceColor c = new TronStateToIORequestTransformer().getColorToMove(state);
+        System.out.println("Next: " + c);
+    	newState.setActivePieceColor(c);
 
         //Util.dumpBoard(newState.getBoard());
 		return newState;
@@ -66,8 +68,7 @@ public class TronProcessor implements Processor<TronState> {
 	
 	@Override
     public IORequest getRequest(TronState state) {
-
-		
+		System.out.println("getRequest " + state.getActivePieceColor());
         TronStateToIORequestTransformer transformer = new TronStateToIORequestTransformer();
         return transformer.transform(state);
     }

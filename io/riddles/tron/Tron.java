@@ -17,19 +17,25 @@
 
 package io.riddles.tron;
 
+import io.riddles.game.io.IOHandler;
+import io.riddles.platform.AiGamesPlatform;
+import io.riddles.platform.Platform;
+//import io.riddles.platform.RiddlesPlatform;
 import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.player.Player;
-import java.util.HashMap;
 
+import java.util.HashMap;
 import java.util.List;
 
 
 public class Tron {
 	
-	public static final Boolean DEV_MODE = true;
-	private final int TIMEBANK_MAX = 10000;
-	private final int TIME_PER_MOVE = 200;
+	private static TronGameEngine engine;
+	private static HashMap<String, Object> configuration;
+	private static IOHandler handler;
+	private final static String PLATFORM = "aigames";
 	private List<Player> players;
+	private static Platform platform;
 
 
 	public void sendSettings(Player player) {
@@ -46,15 +52,19 @@ public class Tron {
 
 	
 	public static void main(String args[]) throws Exception {
-		TronGameEngine engine = new TronGameEngine();
 		
-		/*
-		engine.DEV_MODE = true;
-		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		//engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
-		engine.NUM_TEST_BOTS = 2;
-		engine.setupEngine(args);
+		if (PLATFORM == "aigames") {
+			platform = new AiGamesPlatform(args);
+		} else {
+			//platform = new RiddlesPlatform();
+		}
 		
-		*/
+		handler = platform.getHandler();
+		engine = new TronGameEngine(handler);
+	
+		platform.setEngine(engine);
+		platform.preRun();
+		platform.run();
+		platform.postRun();
 	}
 }

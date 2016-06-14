@@ -3,6 +3,8 @@ package io.riddles.game.io;
 import java.io.IOException;
 import java.util.List;
 
+import io.riddles.tron.player.Player;
+
 public interface IOHandler {
 	
 	/**

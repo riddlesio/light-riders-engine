@@ -52,20 +52,22 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
     	PieceColor colorToMove = null;
     	
     	/* Figure out next player */
-    	colorToMove = getColorToMove(state);
+    	colorToMove = state.getActivePieceColor();
     	
     	return new TronIORequest(colorToMove, TronIORequestType.MOVE);
     }
-    	
-    	
-    	
+
 	public PieceColor getColorToMove(TronState state) {
 		
 		List<PieceColor> currentLivingPieceColors = new TronLogic().getLivingPieceColors(state);
 		
 		if (!state.getPreviousState().isPresent()) {
-    		return currentLivingPieceColors.get(0);
-    	}
+			if (currentLivingPieceColors.size() > 1) {
+				return currentLivingPieceColors.get(1);
+			} else {
+				throw new IllegalArgumentException("Not enough players left.");
+			}
+		}
 		
 		TronState previousState = state.getPreviousState().get();
 		
