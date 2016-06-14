@@ -19,6 +19,7 @@ package io.riddles.tron;
 
 import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.player.Player;
+import java.util.HashMap;
 
 import java.util.List;
 
@@ -28,7 +29,6 @@ public class Tron {
 	public static final Boolean DEV_MODE = true;
 	private final int TIMEBANK_MAX = 10000;
 	private final int TIME_PER_MOVE = 200;
-	private final int BOARD_SIZE = 64;
 	private List<Player> players;
 
 
@@ -46,15 +46,15 @@ public class Tron {
 
 	
 	public static void main(String args[]) throws Exception {
-		Tron game = new Tron();
-		
 		TronGameEngine engine = new TronGameEngine();
 		
+		/*
 		engine.DEV_MODE = true;
-		//engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-		engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
+		engine.TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		//engine.TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
 		engine.NUM_TEST_BOTS = 2;
 		engine.setupEngine(args);
-		engine.run("test");
+		
+		*/
 	}
 }

@@ -1,5 +1,9 @@
 package io.riddles.game.engine;
 
+import java.util.HashMap;
+
+import io.riddles.game.exception.InvalidInputException;
+
 /**
  * This interface describes the functions required for consumption of
  * GameEngine implementations.
@@ -16,8 +20,9 @@ public interface GameEngine {
      * Runs the game
      * @param initialStateString - String representation of the initial State
      */
-    void run(String initialStateString);
-    void run();
+    void run(HashMap configuration, String initialStateString) throws InvalidInputException ;
+    void run(HashMap configuration) throws InvalidInputException ;
+    
 
     /**
      * TODO: extend this interface to contain all functions necessary
