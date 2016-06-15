@@ -34,7 +34,6 @@ public class Tron {
 	private static HashMap<String, Object> configuration;
 	private static IOHandler handler;
 	private final static String PLATFORM = "aigames";
-	private List<Player> players;
 	private static Platform platform;
 
 

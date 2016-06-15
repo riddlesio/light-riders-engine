@@ -16,13 +16,13 @@ import io.riddles.tron.game.TronGameEngine;
  *
  * @author Joost <joost@riddles.io>
  */
-public interface Platform<E> {
+public interface Platform {
 
 	public IOHandler getHandler();
 	
 	public HashMap<String, Object> getConfiguration();
 	
-	public void setEngine(E engine);
+	public void setEngine(GameEngine engine);
 	
 	public void preRun() throws IOException ;
 	

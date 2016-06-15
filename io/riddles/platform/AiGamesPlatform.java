@@ -11,7 +11,7 @@ import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.StringIdentifier;
 import io.riddles.tron.game.TronGameEngine;
 
-public class AiGamesPlatform<AiGamesEngine> implements Platform {
+public class AiGamesPlatform implements Platform {
 	private String args[];
 	private HashMap<String, Object> configuration;
 	private AiGamesIOHandler handler;
@@ -19,6 +19,7 @@ public class AiGamesPlatform<AiGamesEngine> implements Platform {
 
 	public AiGamesPlatform(String args[]) {
 		this.args = args;
+		this.handler = new AiGamesIOHandler(); 
 	}
 	
 	public IOHandler getHandler() {
@@ -29,7 +30,7 @@ public class AiGamesPlatform<AiGamesEngine> implements Platform {
 		return configuration;
 	}
 	
-	public void setEngine(TronGameEngine engine) {
+	public void setEngine(GameEngine engine) {
 		this.engine = engine;
 	}
 	
@@ -48,7 +49,8 @@ public class AiGamesPlatform<AiGamesEngine> implements Platform {
 		/* Get configuration via handler */
 		
 		int NUM_TEST_BOTS = 2;
-		String TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		//String TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
+		String TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
 
 		for(int i = 0; i < NUM_TEST_BOTS; i++) {
 			this.engine.addPlayer(TEST_BOT, new StringIdentifier("ID_" + i));
@@ -97,11 +99,5 @@ public class AiGamesPlatform<AiGamesEngine> implements Platform {
 		/* output correct data */
 		/* See Viewer Adyen */
 		System.out.println("Done.");
-	}
-
-	@Override
-	public void setEngine(Object engine) {
-		// TODO Auto-generated method stub
-		
 	}
 }
