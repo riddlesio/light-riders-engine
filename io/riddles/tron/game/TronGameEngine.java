@@ -125,8 +125,6 @@ public class TronGameEngine implements GameEngine {
 	 * @throws RuntimeException
 	 */
 	public void setupEngine(String args[]) throws IOException, RuntimeException {
-		
-
     	
         // add the test bots if in DEV_MODE
         if(DEV_MODE) {
@@ -215,5 +213,10 @@ public class TronGameEngine implements GameEngine {
 			boardSize = Integer.parseInt((String)configuration.get("board_size"));
 		}
 		return true;
+	}
+
+	@Override
+	public TronState getFinalState() {
+		return finalState;
 	}
 }

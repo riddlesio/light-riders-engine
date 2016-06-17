@@ -34,7 +34,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
 
         // Handle game start
         if (!optionalPreviousMove.isPresent()) {
-            return createInitialMoveRequest();
+            return createInitialMoveRequest(state);
         }
 
         // Everything else is a simple move request
@@ -99,9 +99,10 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      * Creates an IORequest for YELLOW to move a piece (ie. first move of the game)
      * @return IORequest for YELLOW to move a piece
      */
-    protected IORequest createInitialMoveRequest() {
-    	/* TODO: Use getColorToMove */
-        return new TronIORequest(PieceColor.YELLOW, TronIORequestType.MOVE);
+    protected IORequest createInitialMoveRequest(TronState state) {
+    	
+    	PieceColor c = getColorToMove(state);
+        return new TronIORequest(c, TronIORequestType.MOVE);
     }
 
 

@@ -112,6 +112,18 @@ public class AiGamesIOHandler implements IOHandler {
         }
 	}
 
+	public void getMessage() {
+        String message = null;
+        while(message == null) {
+            try {
+                message = getNextMessage();
+                try { Thread.sleep(2); } catch (InterruptedException e) {}
+            } catch (IOException ex) {
+                System.err.println(ex);
+            }
+        }
+	}
+	
 	@Override
 	public void sendMessage(Identifier id, String message) {
 		AiGamesBot b = getBotWithPlayerId(id);

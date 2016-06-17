@@ -10,6 +10,8 @@ import io.riddles.boardgame.model.Move;
 
 import java.util.Optional;
 
+import org.json.JSONObject;
+
 /**
  * ${PACKAGE_NAME}
  *
@@ -114,4 +116,10 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 	public void setActivePieceColor(PieceColor pieceColor) {
 		this.pieceColor = pieceColor;
 	}
+	
+	@Override
+    public JSONObject accept(Visitor visitor) {
+		return new JSONObject();
+    }
+
 }
