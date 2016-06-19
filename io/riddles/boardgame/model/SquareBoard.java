@@ -18,8 +18,13 @@ public final class SquareBoard extends AbstractModel implements Board {
      * @param fields
      */
     public SquareBoard(List<Field> fields) {
-
-        this.fields = fields;
+    	this.fields = new ArrayList<Field>();
+    	for (int i = 0; i < fields.size(); i++) {
+    		Field f = new Field(fields.get(i).getPiece());
+    		
+    		this.fields.add(f);
+    	}
+       // this.fields = fields;
     }
     
     /**
@@ -66,5 +71,18 @@ public final class SquareBoard extends AbstractModel implements Board {
     public static SquareBoard of(List<Field> fields) {
 
         return new SquareBoard(fields);
+    }
+    
+    public String toString() {
+    	String s = "";
+    	for (int i = 0; i < fields.size(); i++) {
+			Optional<Piece> p = fields.get(i).getPiece();
+			if(p.isPresent()) {
+				s += (p.get().toString());
+			} else {
+				s += "0";
+			}
+    	}
+    	return s;
     }
 }

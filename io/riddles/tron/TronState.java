@@ -163,7 +163,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 		
 		r = r + " " + p + " \n";
 		//System.out.println(r);
-
+		visitor.addJSONObject(new JSONObject().put("state", p));
 		return r;
 
 	}
