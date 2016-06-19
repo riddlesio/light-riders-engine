@@ -28,47 +28,54 @@ public class TronProcessor implements Processor<TronState> {
 	@Override
 	public TronState processException(TronState state, Exception exception) {
 		if (exception instanceof FieldNotEmptyException) {
-			System.out.println(state.getActivePieceColor() + " CRASHED!");
-	    	/* Lightcycle crashed. */
+
+			FieldNotEmptyException e = (FieldNotEmptyException) exception;
+			PieceColor c = e.getPieceColor();
+
+			state.getBoard().getFieldAt(
+					e.getCoordinate())
+			.setPiece(
+					Optional.of(new TronPiece(PieceType.WALL, c)));
+
+			System.out.println(c + " CRASHED AT " + e.getCoordinate());
 		} else {
 			exception.printStackTrace();
 			System.exit(0);
 		}
-		
+		Util.dumpBoard(state.getBoard());
 		return state;
 	}
 
 	@Override
 	public TronState processInput(TronState state, IOResponse input) throws Exception {
-
 		
 		MoveValidator validator = new TronMoveValidator();	
 		Move move = new IOResponseToMoveTransformer().transform(state, input);
-        
+        TronState newState = new TronState(state, move);
+
         if (validator.isValid(move, state.getBoard())) {
-        	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
-        	state.getBoard().getFieldAt(move.getTo()).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
-        	Util.dumpBoard(state.getBoard());
+        	newState.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
+        	newState.getBoard().getFieldAt(move.getTo()).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, state.getActivePieceColor())));
         } else {
         	/* Lightcycle crashed. */
-        	state.getBoard().getFieldAt(move.getFrom()).setPiece(Optional.of(new TronPiece(PieceType.WALL, state.getActivePieceColor())));
-            throw new FieldNotEmptyException(String.format("Field(%s) contains wall or lightcycle.", move.getTo().toString()));
+        	FieldNotEmptyException e = new FieldNotEmptyException(String.format("Field(%s) contains wall or lightcycle.", move.getTo().toString()), move.getFrom(), state.getActivePieceColor());
+            throw e;
         }
+        
+        System.out.println(state.getBoard());
+        System.out.println(newState.getBoard());
+        
+        System.out.println("");
 
-        TronState newState = state;
-        newState = new TronState(state, move);
         
         PieceColor c = new TronStateToIORequestTransformer().getColorToMove(state);
-        System.out.println("Next: " + c);
     	newState.setActivePieceColor(c);
-
-        //Util.dumpBoard(newState.getBoard());
 		return newState;
 	}
 	
 	@Override
     public IORequest getRequest(TronState state) {
-		System.out.println("getRequest " + state.getActivePieceColor());
+		//System.out.println("getRequest " + state.getActivePieceColor());
         TronStateToIORequestTransformer transformer = new TronStateToIORequestTransformer();
         return transformer.transform(state);
     }

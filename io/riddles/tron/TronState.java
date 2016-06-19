@@ -6,10 +6,14 @@ import io.riddles.game.model.Stateful;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
 import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.tron.visitor.TronStateToJSONVisitor;
 import io.riddles.boardgame.model.Move;
+import io.riddles.boardgame.model.SquareBoard;
 
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -43,14 +47,14 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         this.exception      = Optional.of(exception);
         this.previousState  = Optional.of(previousState);
 
-        board       = previousState.getBoard();
+        board       = new SquareBoard(previousState.getBoard().getFields());
         move        = Optional.empty();
         moveNumber  = previousState.getMoveNumber() + 1;
     }
 
     public TronState(TronState previousState, Board board, Move move) {
 
-        this.board          = board;
+    	board       = new SquareBoard(previousState.getBoard().getFields());
         this.previousState  = Optional.of(previousState);
         this.move           = Optional.of(move);
 
@@ -60,7 +64,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 
     public TronState(TronState previousState, Move move) {
 
-        this.board          = previousState.board;
+    	board       = new SquareBoard(previousState.getBoard().getFields());
         this.previousState  = Optional.of(previousState);
         this.move           = Optional.of(move);
 
@@ -116,10 +120,52 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 	public void setActivePieceColor(PieceColor pieceColor) {
 		this.pieceColor = pieceColor;
 	}
+//	
+//	@Override
+//    public void accept(Visitor visitor) {
+//		String r = "";
+//		if (this.previousState.isPresent()) {
+//			JSONObject j = new JSONObject();
+//			try {
+//				j.put("state", this.getBoard().toString());
+//			} catch (JSONException e) {
+//				e.printStackTrace();
+//			}
+//			
+//			//r = j.toString() + "," + this.previousState.get().accept(visitor);
+//			
+//			r = this.previousState.get().accept(visitor);
+//		}
+//		r += "test " + moveNumber;
+//		visitor.visit(this);
+//    }
+//	
 	
 	@Override
-    public JSONObject accept(Visitor visitor) {
-		return new JSONObject();
-    }
+	public String accept(Visitor visitor) {
+		String r = "";
+		String p = "";
+		p = this.getBoard().toString();
+
+		if (this.previousState.isPresent()) {
+			r = this.previousState.get().accept(visitor);
+		}
+		
+		/*
+	   JSONObject j = new JSONObject();
+	   try {
+		   j.put("state",  this.board.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		 */
+		//System.out.println(board.toString());
+		
+		r = r + " " + p + " \n";
+		//System.out.println(r);
+
+		return r;
+
+	}
 
 }

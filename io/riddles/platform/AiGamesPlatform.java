@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import io.riddles.engine.Engine;
@@ -111,10 +112,15 @@ public class AiGamesPlatform implements Platform {
         	/* Get final state from engine */
         	TronState finalState = (TronState) this.engine.getFinalState();
             JSONObject output = new JSONObject();
+            //JSONArray states = new JSONArray();
+            
+            
             TronStateToJSONVisitor v = new TronStateToJSONVisitor();
+            String r = v.visit(finalState);
+                        
             
         	
-            System.out.println(output);
+            System.out.println(r);
         } else { // save the game to database
             try {
                 this.saveGame();

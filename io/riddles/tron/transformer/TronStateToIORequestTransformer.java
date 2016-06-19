@@ -1,9 +1,7 @@
 package io.riddles.tron.transformer;
 
 import io.riddles.boardgame.model.*;
-import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IORequest;
-import io.riddles.game.io.IORequestType;
 import io.riddles.game.transformer.Transformer;
 import io.riddles.tron.TronLogic;
 import io.riddles.tron.TronPiece;
