@@ -32,10 +32,15 @@ public class TronStateToJSONVisitor implements Visitor<JSONArray> {
 		TronState state = (TronState) traversible;
 		
 		while (state.hasPreviousState()) {
+			JSONObject stateJSON = new JSONObject();
+			
+			stateJSON.put("field", boardtoPresentationString(state.getBoard()));
+			stateJSON.put("move",  state.getMoveNumber());
+			
 			JSONObject j = new JSONObject();
-			j.put("state", boardtoPresentationString(state.getBoard()));
-			j.put("move",  state.getMoveNumber());
-			array.put(j);
+			j.put("state",  stateJSON);
+
+			array.put(stateJSON);
 			state = state.getPreviousState().get();
 		}
 		
@@ -113,5 +118,4 @@ public class TronStateToJSONVisitor implements Visitor<JSONArray> {
     	}
     	return s;
 	}
-
 }

@@ -115,6 +115,22 @@ public class AiGamesPlatform implements Platform {
             v.visit(finalState);
             JSONArray states = v.getJSONArray();
             output.put("states", states);
+            
+            JSONObject settings = new JSONObject();
+            ArrayList<String> a = new ArrayList<String>();
+            a.add("a"); a.add("b");
+            
+            JSONObject players = new JSONObject();
+            players.put("names", a);
+            
+            settings.put("players", players);
+            
+            JSONObject fieldJSON = new JSONObject();
+            fieldJSON.put("width", 16);
+            
+            settings.put("field",  fieldJSON);
+
+            output.put("settings", settings);
             System.out.println(output.toString());
             
         } else { // save the game to database
