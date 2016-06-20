@@ -6,17 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
-import io.riddles.engine.Engine;
 import io.riddles.game.engine.GameEngine;
-import io.riddles.game.exception.InvalidInputException;
 import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.StringIdentifier;
 import io.riddles.tron.TronState;
-import io.riddles.tron.game.TronGameEngine;
 import io.riddles.tron.visitor.TronStateToJSONVisitor;
 
 public class AiGamesPlatform implements Platform {
@@ -115,8 +112,11 @@ public class AiGamesPlatform implements Platform {
             
             
             TronStateToJSONVisitor v = new TronStateToJSONVisitor();
-            JSONArray j = v.visit(finalState);
-            System.out.println(j.toString());
+            v.visit(finalState);
+            JSONArray states = v.getJSONArray();
+            output.put("states", states);
+            System.out.println(output.toString());
+            
         } else { // save the game to database
             try {
                 this.saveGame();

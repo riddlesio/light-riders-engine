@@ -20,15 +20,19 @@ package io.riddles.connections;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.bson.types.ObjectId;
 
+import com.mongodb.AuthenticationMechanism;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 /**
  * Database class
@@ -73,16 +77,20 @@ public final class Database {
 		
 		// connect to MongoDB
 		try {
-			db = new MongoClient(dbHost, Integer.parseInt(dbPort)).getDB(dbName);
-		} catch (UnknownHostException ex) {
+			MongoCredential credential = MongoCredential.createPlainCredential(dbUser, dbName, dbPassword.toCharArray());
+			ArrayList<MongoCredential> credentials = new ArrayList<>();
+			credentials.add(credential);
+			
+			ServerAddress address = new ServerAddress(dbHost, Integer.parseInt(dbPort));
+			MongoClient client = new MongoClient(address, credentials);
+			db = client.getDB(dbName);
+			
+			//client.
+			//db = new MongoClient(dbHost, Integer.parseInt(dbPort)).getDB(dbName);
+		} catch (Exception ex) {
 			System.err.println(ex);
-		}
-		
-        if(db != null && db.authenticate(dbUser, dbPassword.toCharArray()))
-            System.out.println("Successfully logged in to the database");
-        else
-        	throw new RuntimeException("Log-in to the database failed");
-		
+			throw new RuntimeException("Log-in to the database failed");
+		}		
 	}
 	
 	/**

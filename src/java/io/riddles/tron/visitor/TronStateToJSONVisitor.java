@@ -12,43 +12,44 @@ import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Piece;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
-import io.riddles.tron.TronPiece;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.TronPiece.PieceType;
 import io.riddles.tron.TronState;
 
 public class TronStateToJSONVisitor implements Visitor<JSONArray> {
 	
+	private JSONArray array;
+	
 	public JSONArray traverse(TronState state) {
-		
 		return state.accept(this);
 	}
 
 	@Override
 	public JSONArray visit(Traversible traversible) {
-		
+		array = new JSONArray();
+
 		JSONArray result = new JSONArray();
 		TronState state = (TronState) traversible;
 		
-		result.put(boardtoPresentationString(state.getBoard()));
-		
-		if (state.hasPreviousState()) {
-			
-			JSONArray intermediate = state.getPreviousState().get().accept(this);
-			
-			for(int i = 0; i < intermediate.length(); i++) {
-
-				try {
-					String stateRepresentation = intermediate.getString(i);
-					result.put(stateRepresentation);
-				} catch (Exception e) {
-					result.put(getEmptyBoardRepresentation(state.getBoard()));
-				}
-			}
+		while (state.hasPreviousState()) {
+			JSONObject j = new JSONObject();
+			j.put("state", boardtoPresentationString(state.getBoard()));
+			j.put("move",  state.getMoveNumber());
+			array.put(j);
+			state = state.getPreviousState().get();
 		}
 		
 		return result;
+	}
+	
+	public JSONArray getJSONArray() {
 		
+		/* Reverse the array */
+		JSONArray newJsonArray = new JSONArray();
+		for (int i = array.length()-1; i>=0; i--) {
+			newJsonArray.put(array.get(i));
+		}
+		return newJsonArray;
 	}
 	
 	/**

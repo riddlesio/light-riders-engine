@@ -11,11 +11,6 @@ import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.SquareBoard;
 
 import java.util.Optional;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * ${PACKAGE_NAME}
  *
