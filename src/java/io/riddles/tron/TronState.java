@@ -8,6 +8,7 @@ import io.riddles.game.model.Visitor;
 import io.riddles.tron.TronPiece.PieceColor;
 import io.riddles.tron.visitor.TronStateToJSONVisitor;
 import io.riddles.boardgame.model.Move;
+import io.riddles.boardgame.model.RectangularBoard;
 import io.riddles.boardgame.model.SquareBoard;
 
 import java.util.Optional;
@@ -21,7 +22,7 @@ import java.util.Optional;
  */
 public final class TronState extends AbstractModel implements Stateful<TronState>, Traversible {
 
-    private Board board;
+    private RectangularBoard board;
     private Optional<Exception> exception;
     private Optional<Move> move;
     private int moveNumber;
@@ -29,7 +30,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     private PieceColor pieceColor;
     
     
-    public TronState(Board board) {
+    public TronState(RectangularBoard board) {
         this.board = board;
         exception       = Optional.empty();
         move            = Optional.empty();
@@ -42,14 +43,14 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         this.exception      = Optional.of(exception);
         this.previousState  = Optional.of(previousState);
 
-        board       = new SquareBoard(previousState.getBoard().getFields());
+        board       = new RectangularBoard(previousState.getBoard().getFields(), previousState.getBoard().getWidth(), previousState.getBoard().getHeight());
         move        = Optional.empty();
         moveNumber  = previousState.getMoveNumber() + 1;
     }
 
     public TronState(TronState previousState, Board board, Move move) {
 
-    	board       = new SquareBoard(previousState.getBoard().getFields());
+        board       = new RectangularBoard(previousState.getBoard().getFields(), previousState.getBoard().getWidth(), previousState.getBoard().getHeight());
         this.previousState  = Optional.of(previousState);
         this.move           = Optional.of(move);
 
@@ -59,7 +60,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
 
     public TronState(TronState previousState, Move move) {
 
-    	board       = new SquareBoard(previousState.getBoard().getFields());
+        board       = new RectangularBoard(previousState.getBoard().getFields(), previousState.getBoard().getWidth(), previousState.getBoard().getHeight());
         this.previousState  = Optional.of(previousState);
         this.move           = Optional.of(move);
 
@@ -76,7 +77,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     }
 
 
-    public Board getBoard() { return board; }
+    public RectangularBoard getBoard() { return board; }
 
     public Optional<Move> getMove() {
         return move;

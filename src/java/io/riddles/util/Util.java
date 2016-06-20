@@ -23,6 +23,7 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Piece;
+import io.riddles.boardgame.model.RectangularBoard;
 
 public final class Util {
 
@@ -65,6 +66,21 @@ public final class Util {
 	public static void dumpBoard(Board b) {
 		for (int y = 0; y < b.size(); y++) {
 			for (int x = 0; x < b.size(); x++) {
+				Optional<Piece> p = b.getFieldAt(new Coordinate(x,y)).getPiece();
+				if(p.isPresent()) {
+					System.out.print(p.get().toString());
+				} else {
+					System.out.print("--");
+				}
+			}
+			System.out.println("");
+		}
+	}
+	
+	
+	public static void dumpBoard(RectangularBoard b) {
+		for (int y = 0; y < b.getHeight(); y++) {
+			for (int x = 0; x < b.getWidth(); x++) {
 				Optional<Piece> p = b.getFieldAt(new Coordinate(x,y)).getPiece();
 				if(p.isPresent()) {
 					System.out.print(p.get().toString());

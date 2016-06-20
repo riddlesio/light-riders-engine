@@ -84,4 +84,13 @@ public final class RectangularBoard extends AbstractModel implements Board {
     	}
     	return s;
     }
+
+	@Override
+	/* Beware that functionality differs from SquareBoard! */
+	public int size() {
+		return this.fields.size();
+	}
+	
+	public int getWidth() { return this.width; }
+	public int getHeight() { return this.height; }
 }

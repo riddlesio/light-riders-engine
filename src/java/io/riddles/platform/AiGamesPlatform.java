@@ -44,7 +44,8 @@ public class AiGamesPlatform implements Platform {
 		configuration = new HashMap<String, Object>();
 		
 		if (DEV_MODE) {
-			configuration.put("board_size",  "16");
+			configuration.put("board_width",  "24");
+			configuration.put("board_height",  "16");
 			configuration.put("timebank",  "10000");
 			configuration.put("time_per_move",  "200");
 			configuration.put("playerids",  "1,2");
@@ -87,8 +88,11 @@ public class AiGamesPlatform implements Platform {
 	
 	public void run() throws Exception {
 		
-		if (configuration.get("board_size") == null) {
-			throw new RuntimeException("board_size not set.");
+		if (configuration.get("board_width") == null) {
+			throw new RuntimeException("board_width not set.");
+		}
+		if (configuration.get("board_height") == null) {
+			throw new RuntimeException("board_height not set.");
 		}
 		if (configuration.get("timebank") == null) {
 			throw new RuntimeException("timebank not set.");
@@ -126,7 +130,8 @@ public class AiGamesPlatform implements Platform {
             settings.put("players", players);
             
             JSONObject fieldJSON = new JSONObject();
-            fieldJSON.put("width", 16);
+            fieldJSON.put("width", configuration.get("board_width"));
+            fieldJSON.put("height", configuration.get("board_height"));
             
             settings.put("field",  fieldJSON);
 

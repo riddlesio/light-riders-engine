@@ -27,22 +27,21 @@ public class TronProcessor implements Processor<TronState> {
 
 	@Override
 	public TronState processException(TronState state, Exception exception) {
-		if (exception instanceof FieldNotEmptyException) {
+        TronState newState = new TronState(state, exception);
 
+		if (exception instanceof FieldNotEmptyException) {
 			FieldNotEmptyException e = (FieldNotEmptyException) exception;
 			PieceColor c = e.getPieceColor();
 
-			state.getBoard().getFieldAt(
+
+	        newState.getBoard().getFieldAt(
 					e.getCoordinate())
 			.setPiece(
 					Optional.of(new TronPiece(PieceType.WALL, c)));
 
 			System.out.println(c + " CRASHED AT " + e.getCoordinate());
-		} else {
-			exception.printStackTrace();
-			System.exit(0);
 		}
-		return state;
+		return newState;
 	}
 
 	@Override
@@ -63,6 +62,8 @@ public class TronProcessor implements Processor<TronState> {
         
         PieceColor c = new TronStateToIORequestTransformer().getColorToMove(state);
     	newState.setActivePieceColor(c);
+        Util.dumpBoard(newState.getBoard());
+
 		return newState;
 	}
 	

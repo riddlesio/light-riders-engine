@@ -2,6 +2,7 @@ package io.riddles.game.engine;
 
 import io.riddles.engine.Processor;
 import io.riddles.game.io.IORequest;
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.IOResponse;
 
@@ -22,11 +23,11 @@ public class SimpleGameLoop<State> implements GameLoop<State> {
     @Override
     public State run(IOProvider ioProvider,
                      Processor<State> processor,
-                     State initialState) {
+                     State initialState) throws TerminalException {
 
         IORequest request;
         IOResponse response;
-        State state = initialState;
+        State state = initialState; 
 
         while (!processor.hasGameEnded(state)) {
 

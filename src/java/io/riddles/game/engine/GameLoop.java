@@ -1,6 +1,7 @@
 package io.riddles.game.engine;
 
 import io.riddles.engine.Processor;
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IOProvider;
 
 /**
@@ -25,5 +26,5 @@ public interface GameLoop<State> {
      * @param initialState The state to start the game with
      * @return {State}
      */
-    State run(IOProvider ioProvider, Processor<State> processor, State initialState);
+    State run(IOProvider ioProvider, Processor<State> processor, State initialState) throws TerminalException;
 }

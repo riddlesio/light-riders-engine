@@ -30,6 +30,7 @@ public class TronStateToJSONVisitor implements Visitor<JSONArray> {
 
 		JSONArray result = new JSONArray();
 		TronState state = (TronState) traversible;
+		int counter = 0;
 		
 		while (state.hasPreviousState()) {
 			JSONObject stateJSON = new JSONObject();
@@ -42,8 +43,14 @@ public class TronStateToJSONVisitor implements Visitor<JSONArray> {
 
 			array.put(stateJSON);
 			state = state.getPreviousState().get();
+			
+			//if (counter%NRPLAYERS == 0 || state.getException()) {
+				
+			//}
+			
+			counter ++;
+			
 		}
-		
 		return result;
 	}
 	

@@ -17,6 +17,7 @@
 
 package io.riddles.tron;
 
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IOHandler;
 import io.riddles.platform.AiGamesPlatform;
 import io.riddles.platform.Platform;
@@ -63,7 +64,14 @@ public class Tron {
 	
 		platform.setEngine(engine);
 		platform.preRun();
-		platform.run();
-		platform.postRun();
+		
+		try {
+			platform.run();
+			platform.postRun();
+		} catch (TerminalException exception) {
+			// TODO: let each platform handle a terminal exception
+//			platform.handleTerminalException(exception);
+			System.exit(1);
+		}
 	}
 }

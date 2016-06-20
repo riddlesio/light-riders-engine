@@ -10,6 +10,7 @@ import java.util.Random;
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
+import io.riddles.boardgame.model.RectangularBoard;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.engine.Processor;
 import io.riddles.game.engine.GameEngine;
@@ -17,6 +18,7 @@ import io.riddles.game.engine.GameLoop;
 import io.riddles.game.engine.SimpleGameLoop;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.exception.InvalidInputException;
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
@@ -42,14 +44,14 @@ import io.riddles.util.Util;
  *
  * @author Niko van Meurs <niko@riddles.io>
  */
-public class TronGameEngine implements GameEngine {
+public class TronGameEngine implements GameEngine<TronState> {
 
     private GameLoop<TronState> gameLoop;
     private Processor<TronState> processor;
     private TronState finalState;
     private ArrayList<Player> players; // ArrayList containing player handlers
     
-    private int boardSize = 16;
+    private int boardWidth = 16, boardHeight = 16;
 	public static boolean DEV_MODE = false; // turn this on for local testing
 	public String TEST_BOT; // command for the test bot in DEV_MODE
 	public int NUM_TEST_BOTS; // number of bots for this game
@@ -71,17 +73,17 @@ public class TronGameEngine implements GameEngine {
      * @param initialStateString - String representation of the initial State
      * @throws InvalidInputException 
      */
-    public void run(HashMap configuration) throws RuntimeException {	
-    	setConfiguration(configuration);
-        finalState = gameLoop.run(provider, processor, getInitialState(null));
+    public void run(HashMap configuration) throws TerminalException {	
+    	TronState initialState = getInitialState(null);
+    	this.run(configuration, initialState);
     }
     
     public TronState getInitialState(String initialStateString) {
-		Board b = new SquareBoard(boardSize);
+    	RectangularBoard b = new RectangularBoard(boardWidth, boardHeight);
 		
 		if (initialStateString != null) {
 			try {
-				b = TronLogic.StringToSquareBoardTransformer(initialStateString);
+				b = TronLogic.StringToRectangularBoardTransformer(initialStateString);
 			} catch (InvalidDataException e) {
 				System.err.println("Could not initialise Board from initialStateString");
 			}
@@ -93,19 +95,19 @@ public class TronGameEngine implements GameEngine {
 		for (Player player : this.players) {
 			switch (counter) {
 				case 0:
-					player.setX(boardSize/4);
-					player.setY(boardSize/2);
+					player.setX(boardWidth/4);
+					player.setY(boardHeight/2);
 					player.setDirection(Direction.RIGHT);
 					break;
 				case 1:
-					player.setX(boardSize/4*3);
-					player.setY(boardSize/2);
+					player.setX(boardWidth/4*3);
+					player.setY(boardHeight/2);
 					player.setDirection(Direction.LEFT);
 					break;
 				default:
 					Random r = new Random();
-					player.setX(r.nextInt(boardSize));
-					player.setY(r.nextInt(boardSize));
+					player.setX(r.nextInt(boardWidth));
+					player.setY(r.nextInt(boardHeight));
 					player.setDirection(Direction.RIGHT);
 			}
 			player.setPieceColor(PieceColor.values()[counter]);
@@ -168,9 +170,6 @@ public class TronGameEngine implements GameEngine {
 	            addPlayer(String.format("/opt/aigames/scripts/run_bot.sh aiplayer%d %s", i + 1, botDirs.get(i)), new StringIdentifier(botIds.get(i)));
 	        }
         }
-    	
-
-        
 	}
 
     
@@ -192,31 +191,42 @@ public class TronGameEngine implements GameEngine {
     }
 
 	@Override
-	public void run(HashMap configuration, String initialStateString) throws RuntimeException {
-		/* TODO: initialStateString not used */
-		setConfiguration(configuration);
-        provider = new TronIOProvider(handler);
-        finalState = gameLoop.run(provider, processor, this.getInitialState(initialStateString));
-        Util.dumpBoard(finalState.getBoard());
+	public void run(HashMap configuration, String initialStateString) throws TerminalException {
+		TronState initialState = this.getInitialState(initialStateString);
+		this.run(configuration, initialState);
 	}
 	
-	public void run(HashMap configuration, TronState initialState) throws RuntimeException {
+	public void run(HashMap configuration, TronState initialState) throws TerminalException {
 		setConfiguration(configuration);
         provider = new TronIOProvider(handler);
-        finalState = gameLoop.run(provider, processor, initialState);
+    	
+        try {
+    		finalState = gameLoop.run(provider, processor, initialState);
+    	} catch (TerminalException exception) {
+    		
+    		// TODO: Serialize traversible into usable debug data and save this stuff
+//    		TronState state = (TronState) exception.getTraversible();
+    		
+//    		TronTerminalExceptionSerializer serializer = new TronTerminalExceptionSerializer();
+//    		String serializedData = serializer.traverse(state);
+//    		exception.setSerializedData(serializedData);
+    		
+    		throw exception;
+//    		
+    	}
 	}
 	
 	private Boolean setConfiguration(HashMap configuration) throws RuntimeException {
-		if (configuration.get("board_size") == null) {
-			throw new RuntimeException("Invalid configuration");
+		if (configuration.get("board_width") == null) {
+			throw new RuntimeException("Invalid configuration: please set board_width");
 		} else {
-			boardSize = Integer.parseInt((String)configuration.get("board_size"));
+			boardWidth = Integer.parseInt((String)configuration.get("board_width"));
+		}
+		if (configuration.get("board_height") == null) {
+			throw new RuntimeException("Invalid configuration: please set board_height");
+		} else {
+			boardHeight = Integer.parseInt((String)configuration.get("board_height"));
 		}
 		return true;
-	}
-
-	@Override
-	public TronState getFinalState() {
-		return finalState;
 	}
 }

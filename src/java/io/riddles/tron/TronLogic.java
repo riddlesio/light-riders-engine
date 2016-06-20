@@ -8,6 +8,7 @@ import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.Piece;
+import io.riddles.boardgame.model.RectangularBoard;
 import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IOResponse;
@@ -30,7 +31,7 @@ public final class TronLogic {
 	 * @throws InvalidDataException when no Lightcycle found.
 	 */
 	public Coordinate getLightcycleCoordinate(PieceColor c, TronState state) throws InvalidDataException {
-		Board b = state.getBoard();
+		RectangularBoard b = state.getBoard();
 		int size = b.size();
 		
 		List<Field> fields = b.getFields();
@@ -38,7 +39,7 @@ public final class TronLogic {
     		Field f = fields.get(i);
     		if (f.getPiece().isPresent()) {
     			if (f.getPiece().get().getColor() == c && f.getPiece().get().hasType(PieceType.LIGHTCYCLE)) {
-    				return new Coordinate(i%size, i/size);
+    				return new Coordinate(i%b.getWidth(), i/b.getWidth());
     			}
     		}
     	}
@@ -96,7 +97,8 @@ public final class TronLogic {
 		
 		/* No previous state, figure out direction by player position */
 		/* TODO: this could be more sophisticated */
-		if (coord1.getX() < state.getBoard().size()/2) {
+		System.out.println(coord1.getX() + " " + state.getBoard().getWidth()/2);
+		if (coord1.getX() < state.getBoard().getWidth()/2) {
 			return Direction.RIGHT;
 		} else {
 			return Direction.LEFT;
@@ -105,6 +107,11 @@ public final class TronLogic {
 	
 	
 	public static SquareBoard StringToSquareBoardTransformer(String s) throws InvalidDataException {
+		/* TODO: Implement this */
+		throw new InvalidDataException("Not implemented.");
+	}	
+	
+	public static RectangularBoard StringToRectangularBoardTransformer(String s) throws InvalidDataException {
 		/* TODO: Implement this */
 		throw new InvalidDataException("Not implemented.");
 	}
