@@ -116,11 +116,11 @@ public class AiGamesPlatform implements Platform {
             
             
             TronStateToJSONVisitor v = new TronStateToJSONVisitor();
-            String r = v.visit(finalState);
+            v.visit(finalState);
                         
             
         	
-            System.out.println(r);
+            //System.out.println(r);
         } else { // save the game to database
             try {
                 this.saveGame();
