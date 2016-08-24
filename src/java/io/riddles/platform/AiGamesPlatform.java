@@ -50,8 +50,7 @@ public class AiGamesPlatform implements Platform {
 			configuration.put("time_per_move",  "200");
 			configuration.put("playerids",  "1,2");
 			int NUM_TEST_BOTS = 2;
-			String TEST_BOT = "java -cp /home/joost/workspace/TronBot/bin/ bot.BotStarter";
-			//String TEST_BOT = "java -cp /media/joost/5c2fc3a1-c9fa-4c17-a054-b2da1b1fac0e/workspace/tronbot/bin/ bot.BotStarter";
+			String TEST_BOT = "java -cp /home/jim/workspace/light-riders-starter-bot/bin bot.BotStarter";
 
 			for(int i = 0; i < NUM_TEST_BOTS; i++) {
 				this.engine.addPlayer(TEST_BOT, new StringIdentifier("ID_" + i));
@@ -63,8 +62,6 @@ public class AiGamesPlatform implements Platform {
 
 		
 		/* Get configuration via handler */
-		
-
 	}
 	
 	private void buildConfiguration() throws IOException {
@@ -101,7 +98,7 @@ public class AiGamesPlatform implements Platform {
 			throw new RuntimeException("time_per_move not set.");
 		}
 		/* Send settings, board op basis van state */
-		engine.run(configuration, "");
+		engine.run(configuration, null);
 	}
 	
 	public void postRun() {

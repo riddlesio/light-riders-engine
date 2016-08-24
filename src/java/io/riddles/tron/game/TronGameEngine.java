@@ -119,6 +119,10 @@ public class TronGameEngine implements GameEngine<TronState> {
 		//Util.dumpBoard(b);
 		return s;
 	}
+
+	public TronState getFinalState() {
+		return this.finalState;
+	}
     
     /**
 	 * Partially sets up the engine

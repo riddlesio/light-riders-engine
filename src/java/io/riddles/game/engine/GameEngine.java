@@ -3,13 +3,8 @@ package io.riddles.game.engine;
 import java.io.IOException;
 import java.util.HashMap;
 
-import io.riddles.engine.Processor;
-import io.riddles.game.exception.InvalidInputException;
 import io.riddles.game.exception.TerminalException;
-import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.Identifier;
-import io.riddles.game.io.StringIdentifier;
-import io.riddles.tron.TronState;
 
 /**
  * This interface describes the functions required for consumption of
@@ -29,6 +24,7 @@ public interface GameEngine<State> {
     void run(HashMap configuration, String initialStateString) throws TerminalException;
     void run(HashMap configuration) throws TerminalException;
     void addPlayer(String command, Identifier id) throws IOException;
+    State getFinalState();
     /**
      * TODO: extend this interface to contain all functions necessary
      *       to have the match data consumed by the Riddles.io and
