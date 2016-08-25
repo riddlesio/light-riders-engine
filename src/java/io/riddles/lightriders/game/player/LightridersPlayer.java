@@ -20,7 +20,9 @@
 package io.riddles.lightriders.game.player;
 
 import io.riddles.javainterface.game.player.AbstractPlayer;
+import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.data.Coordinate;
+import io.riddles.lightriders.game.data.MoveType;
 
 /**
  * io.riddles.catchfrauds.game.player.BookingGameMovePlayer - Created on 3-6-16
@@ -31,52 +33,39 @@ import io.riddles.lightriders.game.data.Coordinate;
  */
 public class LightridersPlayer extends AbstractPlayer {
 
-    private int snippets, weapons;
     private Coordinate c;
-    private int paralysis;
+    private boolean alive;
+    private Color color;
+    private MoveType direction;
 
     public LightridersPlayer(int id) {
         super(id);
-        this.snippets = 0;
-        this.weapons = 0;
-        this.paralysis = 0;
+        this.alive = true;
         this.c = new Coordinate (0,0);
     }
 
-    public void updateSnippets(int delta) {
-        this.snippets+=delta;
-        if (this.snippets < 0) this.snippets = 0;
-    }
-    public void updateWeapons(int delta) {
-        this.weapons+=delta;
-    }
-
-    public int getSnippets() {
-        return this.snippets;
-    }
-    public int getWeapons() { return this.weapons; }
     public Coordinate getCoordinate() { return this.c; }
 
     public void setCoordinate(Coordinate c) {
         this.c = c;
     }
 
+    public Color getColor() { return this.color; }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public MoveType getDirection() { return this.direction; }
+
+    public void setDirection(MoveType direction) {
+        this.direction = direction;
+    }
+
     public String toString() {
-        return "Player " + this.getId() + " coord " + this.getCoordinate() + " snippets " + this.snippets + " weapons " + weapons + " paralysis " + paralysis;
+        return "Player " + this.getId() + " " + this.color + " coord " + this.getCoordinate() + " alive " + this.alive;
     }
 
-    public void updateParalysis() {
-        if (this.paralysis > 0) {
-            this.paralysis--;
-        }
-    }
-
-    public Boolean isParalyzed() {
-        return (this.paralysis > 0);
-    }
-
-    public void paralyse(int p) {
-        this.paralysis+=p;
-    }
-
+    public boolean isAlive() { return this.alive; }
+    public void kill() { this.alive = false; }
 }

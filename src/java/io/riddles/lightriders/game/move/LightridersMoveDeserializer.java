@@ -41,7 +41,6 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
 
     @Override
     public LightridersMove traverse(String string) {
-        if (this.player.isParalyzed()) { return new LightridersMove(this.player, MoveType.PARALYZED); }
         try {
             return visitMove(string);
         } catch (InvalidInputException ex) {
@@ -55,9 +54,14 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
     private LightridersMove visitMove(String input) throws InvalidInputException {
         String[] split = input.split(" ");
 
-        MoveType type = visitAssessment(split[0]);
-
-         return new LightridersMove(this.player, type);
+        switch (split[0]) {
+            case "pass":
+                return new LightridersMove(this.player, MoveType.PASS);
+            case "move":
+                MoveType type = visitAssessment(split[1]);
+                return new LightridersMove(this.player, type);
+        }
+        return new LightridersMove(this.player, MoveType.PASS);
     }
 
     public MoveType visitAssessment(String input) throws InvalidInputException {

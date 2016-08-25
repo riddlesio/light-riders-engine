@@ -6,20 +6,25 @@ package io.riddles.lightriders.game.data;
 public class Board {
     protected String[][] fields;
     protected int width = 20;
-    protected int height = 11;
+    protected int height = 16;
 
 
     public Board(int w, int h) {
         this.width = w;
         this.height = h;
         this.fields = new String[w][h];
+        clear();
+
     }
 
     public String toString() {
         String s = "";
+        int counter = 0;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
+                if (counter > 0) s += ",";
                 s += fields[x][y];
+                counter ++;
             }
         }
         return s;
@@ -39,6 +44,13 @@ public class Board {
         }
     }
 
+    public void clear() {
+        for (int y = 0; y < this.height; y++)
+            for (int x = 0; x < this.width; x++)
+                fields[x][y] = ".";
+    }
+
+
     public int getWidth() { return this.width; }
     public int getHeight() { return this.height; }
 
@@ -56,7 +68,7 @@ public class Board {
         if (c.getX() < 0 || c.getY() < 0 || c.getX() >= this.width || c.getY() >= this.height) {
             return false;
         }
-        return (!fields[c.getX()][c.getY()].equals("x"));
+        return (fields[c.getX()][c.getY()].equals("."));
     }
 
     public void dump() {

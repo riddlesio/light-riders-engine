@@ -1,5 +1,6 @@
 package io.riddles.lightriders.engine;
 
+import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.data.LightridersBoard;
 import io.riddles.lightriders.game.data.Coordinate;
 
@@ -16,15 +17,19 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
     protected Coordinate[] startCoordinates;
     protected String bot_ids;
-    public LightridersEngine() {
+    protected int nrPlayers = 0;
 
+    public LightridersEngine() {
         super();
+        configuration.put("board_width", 16);
+        configuration.put("board_height", 16);
         initialiseData();
     }
 
     public LightridersEngine(String wrapperFile, String[] botFiles) {
-
         super(wrapperFile, botFiles);
+        configuration.put("board_width", 16);
+        configuration.put("board_height", 16);
         initialiseData();
     }
 
@@ -37,23 +42,23 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     @Override
     protected LightridersPlayer createPlayer(int id) {
         LightridersPlayer p = new LightridersPlayer(id);
+        p.setColor(Color.values()[nrPlayers]); /* This limits the game to four players */
+        nrPlayers++;
         return p;
     }
 
     @Override
     protected LightridersProcessor createProcessor() {
-        for (int i = 0; i < this.players.size(); i++)
-            this.players.get(i).updateSnippets(configuration.get("player_snippet_count"));
         return new LightridersProcessor(this.players);
     }
 
     @Override
     protected void sendGameSettings(LightridersPlayer player) {
         /* TODO: Send all settings needed */
+        LightridersState initialState = getInitialState();
         player.sendSetting("player_names", this.bot_ids);
-        player.sendSetting("board", getInitialState().getBoard().toString());
-        player.sendSetting("board_width", getInitialState().getBoard().getWidth());
-        player.sendSetting("board_height", getInitialState().getBoard().getHeight());
+        player.sendSetting("field_width", initialState.getBoard().getWidth());
+        player.sendSetting("field_height", initialState.getBoard().getHeight());
         player.sendSetting("time_per_move", 5000); /* TODO: find this value */
         player.sendSetting("your_botid", player.getId());
     }
@@ -67,30 +72,10 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     @Override
     protected LightridersState getInitialState() {
         LightridersState s = new LightridersState();
-        LightridersBoard b = new LightridersBoard(20, 11);
-        String standardBoard = getStandardBoard();
-        b.initialiseFromString(standardBoard, 20, 11);
-        b.updateComplete(players, s);
-        for (int i = 0; i < configuration.get("map_snippet_count"); i++) {
-            b.addRandomSnippet();
-        }
+        LightridersBoard b = new LightridersBoard(configuration.get("board_width"), configuration.get("board_height"));
+        //LightridersBoard b = new LightridersBoard(16, 16);
         s.setBoard(b);
         return s;
-    }
-
-
-    protected String getStandardBoard() {
-        return  "x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x," +
-                "x,.,.,.,.,x,.,.,.,.,.,.,.,.,x,.,.,.,.,x," +
-                "x,.,x,x,.,x,.,x,x,x,x,x,x,.,x,.,x,x,.,x," +
-                "x,.,x,.,.,.,.,.,.,.,.,.,.,.,.,.,.,x,.,x," +
-                "x,C,x,.,x,x,.,x,x,.,.,x,x,.,x,x,.,x,.,x," +
-                "x,.,C,.,.,.,.,x,.,.,.,.,x,.,.,.,C,C,.,x," +
-                "x,C,x,.,x,x,.,x,x,x,x,x,x,.,x,x,C,x,.,x," +
-                "x,C,x,.,C,C,.,.,.,.,.,.,.,.,.,.,C,x,.,x," +
-                "x,C,x,x,C,x,.,x,x,x,x,x,x,.,x,.,x,x,.,x," +
-                "x,C,C,.,.,x,.,.,.,.,.,.,.,.,x,.,.,.,.,x," +
-                "x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x";
     }
 
     @Override
@@ -107,30 +92,12 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
                 player.setCoordinate(getStartCoordinate(i));
                 this.players.add(player);
             }
-        } else if (command.equals("player_snippet_count")) {
-            configuration.put("player_snippet_count", Integer.parseInt(split[1]));
-        } else if (command.equals("map_snippet_count")) {
-            configuration.put("map_snippet_count", Integer.parseInt(split[1]));
-        } else if (command.equals("snippet_spawn_rate")) {
-            configuration.put("snippet_spawn_rate", Integer.parseInt(split[1]));
-        } else if (command.equals("snippet_spawn_count")) {
-            configuration.put("snippet_spawn_count", Integer.parseInt(split[1]));
-        } else if (command.equals("initial_enemy_count")) {
-            configuration.put("initial_enemy_count", Integer.parseInt(split[1]));
-        } else if (command.equals("enemy_spawn_delay")) {
-            configuration.put("enemy_spawn_delay", Integer.parseInt(split[1]));
-        } else if (command.equals("enemy_spawn_rate")) {
-            configuration.put("enemy_spawn_rate", Integer.parseInt(split[1]));
-        } else if (command.equals("enemy_spawn_count")) {
-            configuration.put("enemy_spawn_count", Integer.parseInt(split[1]));
+        } else if (command.equals("board_width")) {
+            configuration.put("board_width", Integer.parseInt(split[1]));
+        } else if (command.equals("board_height")) {
+            configuration.put("board_height", Integer.parseInt(split[1]));
         } else if (command.equals("max_rounds")) {
             configuration.put("max_rounds", Integer.parseInt(split[1]));
-        } else if (command.equals("enemy_snippet_loss")) {
-            configuration.put("enemy_snippet_loss", Integer.parseInt(split[1]));
-        } else if (command.equals("weapon_snippet_loss")) {
-            configuration.put("weapon_snippet_loss", Integer.parseInt(split[1]));
-        } else if (command.equals("weapon_paralysis_duration")) {
-            configuration.put("weapon_paralysis_duration", Integer.parseInt(split[1]));
         }
     }
 

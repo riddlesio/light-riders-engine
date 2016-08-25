@@ -38,27 +38,19 @@ import java.util.ArrayList;
 public class LightridersState extends AbstractState<LightridersMove> {
 
     private LightridersBoard board;
-    private ArrayList<Enemy> enemies;
-    private String errorMessage;
     private String representationString;
-    private int snippetsEaten;
 
 
     public LightridersState() {
         super();
-        this.enemies = new ArrayList<Enemy>();
     }
 
     public LightridersState(LightridersState previousState, LightridersMove move, int roundNumber) {
         super(previousState, move, roundNumber);
-        this.enemies = previousState.getEnemies();
-        this.snippetsEaten = previousState.snippetsEaten;
     }
 
     public LightridersState(LightridersState previousState, ArrayList<LightridersMove> moves, int roundNumber) {
         super(previousState, moves, roundNumber);
-        this.enemies = previousState.getEnemies();
-        this.snippetsEaten = previousState.snippetsEaten;
     }
 
     public LightridersBoard getBoard() {
@@ -68,44 +60,13 @@ public class LightridersState extends AbstractState<LightridersMove> {
         this.board = b;
     }
 
-    public void addEnemy(Enemy e) {
-        System.out.println("adding enemy " + e.getCoordinate());
-        enemies.add(e);
-    }
 
-    public void killEnemyAt(Coordinate c) {
-        for (Enemy e : this.enemies) {
-            Coordinate enemyCoordinate = e.getCoordinate();
-            if (c.getX() == enemyCoordinate.getX() && c.getY() == enemyCoordinate.getY()) {
-                this.enemies.remove(e);
-            }
-        }
-    }
-
-    public ArrayList<Enemy> getEnemies() {
-        return this.enemies;
-    }
-
-    public void setEnemies(ArrayList<Enemy> e) { this.enemies = e; }
-
-    public void setRepresentationString(ArrayList<LightridersPlayer> players) {
-        this.representationString = this.board.toRepresentationString(players, this);
+    public void setRepresentationString(String s) {
+        this.representationString = s;
     }
 
     public String getRepresentationString() {
         return this.representationString;
-    }
-
-    public void setSnippetsEaten(int nr) {
-        this.snippetsEaten = nr;
-    }
-
-    public int getSnippetsEaten() {
-        return this.snippetsEaten;
-    }
-
-    public void updateSnippetsEaten(int nr) {
-        this.snippetsEaten += nr;
     }
 
 }
