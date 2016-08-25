@@ -17,27 +17,39 @@
  *     file that was distributed with this source code.
  */
 
-package io.riddles.lightriders;
+package io.riddles.lightriders.game.move;
 
-import io.riddles.lightriders.engine.LightridersEngine;
-import io.riddles.javainterface.exception.TerminalException;
+import io.riddles.lightriders.game.data.MoveType;
+import io.riddles.javainterface.exception.InvalidInputException;
+import io.riddles.javainterface.game.move.AbstractMove;
+import io.riddles.lightriders.game.player.LightridersPlayer;
 
 /**
- * io.riddles.lightriders.Lightriders - Created on 2-6-16
+ * io.riddles.lightriders.game.move.LightridersMove - Created on 2-6-16
  *
  * [description]
  *
  * @author jim
  */
-public class Lightriders {
+public class LightridersMove extends AbstractMove<LightridersPlayer> {
 
-    public static void main(String[] args) {
-        LightridersEngine engine = new LightridersEngine();
+    private MoveType type;
 
-        try {
-            engine.run();
-        } catch (TerminalException e) {
-            System.exit(e.getStatusCode());
-        }
+    public LightridersMove(LightridersPlayer player, MoveType type) {
+        super(player);
+        this.type = type;
     }
+
+    public LightridersMove(LightridersPlayer player, InvalidInputException exception) {
+        super(player, exception);
+    }
+
+    public MoveType getMoveType() {
+        return this.type;
+    }
+
+    public String toString() {
+        return "LightridersMove " + this.type;
+    }
+
 }

@@ -17,27 +17,20 @@
  *     file that was distributed with this source code.
  */
 
-package io.riddles.lightriders;
-
-import io.riddles.lightriders.engine.LightridersEngine;
-import io.riddles.javainterface.exception.TerminalException;
+package io.riddles.lightriders.game.move;
 
 /**
- * io.riddles.lightriders.Lightriders - Created on 2-6-16
+ * io.riddles.catchfrauds.game.move.ActionTypes - Created on 6-6-16
  *
  * [description]
  *
  * @author jim
  */
-public class Lightriders {
+public enum ActionType {
+    MOVE;
 
-    public static void main(String[] args) {
-        LightridersEngine engine = new LightridersEngine();
-
-        try {
-            engine.run();
-        } catch (TerminalException e) {
-            System.exit(e.getStatusCode());
-        }
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }
