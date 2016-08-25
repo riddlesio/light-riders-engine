@@ -62,29 +62,32 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         for (LightridersPlayer player : this.players) {
 
             System.out.println(player);
-            player.sendUpdate("field", player, newBoard.toString());
-            String response = player.requestMove(ActionType.MOVE.toString());
+            if (player.isAlive()) {
+                player.sendUpdate("field", player, newBoard.toString());
+                String response = player.requestMove(ActionType.MOVE.toString());
 
-            // parse the response
-            LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
-            LightridersMove move = deserializer.traverse(response);
+                // parse the response
+                LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
+                LightridersMove move = deserializer.traverse(response);
 
-            // create the next state
-            moves.add(move);
+                // create the next state
+                moves.add(move);
 
-            LightridersLogic l = new LightridersLogic();
+                LightridersLogic l = new LightridersLogic();
 
-            try {
-                l.transform(state, player, move);
-            } catch (Exception e) {
-                //LOGGER.info(String.format("Unknown response: %s", response));
-                e.printStackTrace();
-            }
+                try {
+                    l.transform(state, player, move);
+                } catch (Exception e) {
+                    //LOGGER.info(String.format("Unknown response: %s", response));
+                    e.printStackTrace();
+                }
 
 
-            // stop game if bot returns nothing
-            if (response == null) {
-                this.gameOver = true;
+
+                // stop game if bot returns nothing
+                if (response == null) {
+                    this.gameOver = true;
+                }
             }
         }
 

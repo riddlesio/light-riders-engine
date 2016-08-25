@@ -34,9 +34,12 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     }
 
     protected void initialiseData() {
+        /* TODO: Calculate coordinates, directions */
         this.startCoordinates = new Coordinate[4];
         this.startCoordinates[0] = new Coordinate(1, 5);
         this.startCoordinates[1] = new Coordinate(19, 5);
+        this.startCoordinates[2] = new Coordinate(1, 8);
+        this.startCoordinates[3] = new Coordinate(19, 8);
     }
 
     @Override

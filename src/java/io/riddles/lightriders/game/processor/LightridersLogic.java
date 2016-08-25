@@ -44,23 +44,39 @@ public class LightridersLogic {
 
         switch(player.getDirection()) {
             case UP:
-                if (board.isEmpty(new Coordinate(c.getX(), c.getY()-1))) {
-                    newC = new Coordinate(c.getX(), c.getY()-1);
+                if (c.getY() > 0) {
+                    if (board.isEmpty(new Coordinate(c.getX(), c.getY() - 1))) {
+                        newC = new Coordinate(c.getX(), c.getY() - 1);
+                    }
+                } else {
+                    player.kill();
                 }
                 break;
             case DOWN:
-                if (board.isEmpty(new Coordinate(c.getX(), c.getY()+1))) {
-                    newC = new Coordinate(c.getX(), c.getY()+1);
+                if (c.getY() < board.getHeight()-1) {
+                    if (board.isEmpty(new Coordinate(c.getX(), c.getY() + 1))) {
+                        newC = new Coordinate(c.getX(), c.getY() + 1);
+                    }
+                } else {
+                    player.kill();
                 }
                 break;
             case RIGHT:
-                if (board.isEmpty(new Coordinate(c.getX()+1, c.getY()))) {
-                    newC = new Coordinate(c.getX()+1, c.getY());
+                if (c.getX() < board.getWidth()-1) {
+                    if (board.isEmpty(new Coordinate(c.getX()+1, c.getY()))) {
+                        newC = new Coordinate(c.getX() + 1, c.getY());
+                    }
+                } else {
+                    player.kill();
                 }
                 break;
             case LEFT:
-                if (board.isEmpty(new Coordinate(c.getX()-1, c.getY()))) {
-                    newC = new Coordinate(c.getX()-1, c.getY());
+                if (c.getX() > 0) {
+                    if (board.isEmpty(new Coordinate(c.getX() - 1, c.getY()))) {
+                        newC = new Coordinate(c.getX() - 1, c.getY());
+                    }
+                } else {
+                    player.kill();
                 }
                 break;
         }

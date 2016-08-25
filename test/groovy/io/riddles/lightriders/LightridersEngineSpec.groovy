@@ -123,12 +123,13 @@ class LightridersEngineSpec extends Specification {
         println("test running of standard game")
 
         setup:
-        String[] botInputs = new String[2]
+        String[] botInputs = new String[4]
 
         def wrapperInput = "./test/resources/wrapper_input.txt"
         botInputs[0] = "./test/resources/bot1_input.txt"
         botInputs[1] = "./test/resources/bot2_input.txt"
-
+        botInputs[2] = "./test/resources/bot1_input.txt"
+        botInputs[3] = "./test/resources/bot2_input.txt"
         def engine = new StandardTestEngine(wrapperInput, botInputs)
 
         engine.run()

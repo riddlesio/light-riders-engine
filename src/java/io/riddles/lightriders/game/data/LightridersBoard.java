@@ -45,17 +45,17 @@ public class LightridersBoard extends Board {
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
                 int b = 0;
-                if (fields[x][y] == "Y") {
+                if (fields[x][y].equals("Y")) {
                     b = b | (1 << 0);
-                } else if (fields[x][y] == "G") {
+                } else if (fields[x][y].equals("G")) {
                     b = b | (1 << 1);
-                } else if (fields[x][y] == "C") {
+                } else if (fields[x][y].equals("C")) {
                     b = b | (1 << 2);
-                } else if (fields[x][y] == "P") {
+                } else if (fields[x][y].equals("P")) {
                     b = b | (1 << 3);
                 }
 
-                for (int i = 0; i < players.size(); i++) {
+                 for (int i = 0; i < players.size(); i++) {
                     if (players.get(i).getCoordinate().getX() == x && players.get(i).getCoordinate().getY() == y) {
                         b = b | (1 << 5);
                     }
