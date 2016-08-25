@@ -6,6 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import com.mongodb.BasicDBObject;
+import io.riddles.connections.Amazon;
+import io.riddles.connections.Database;
+import io.riddles.engine.io.IOPlayer;
+import io.riddles.game.player.AbstractPlayer;
+import org.bson.types.ObjectId;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -50,7 +56,7 @@ public class AiGamesPlatform implements Platform {
 			configuration.put("time_per_move",  "200");
 			configuration.put("playerids",  "1,2");
 			int NUM_TEST_BOTS = 2;
-			String TEST_BOT = "java -cp /home/jim/workspace/lightriders-starter-bot/bin bot.BotStarter";
+			String TEST_BOT = "/usr/java/jdk1.8.0_91/bin/java -cp /home/joost/workspace/lightriders-starter-bot/bin bot.BotStarter";
 
 			for(int i = 0; i < NUM_TEST_BOTS; i++) {
 				this.engine.addPlayer(TEST_BOT, new StringIdentifier("ID_" + i));
@@ -182,9 +188,9 @@ public class AiGamesPlatform implements Platform {
      * Does everything that is needed to store the output of a game
      */
     public void saveGame() {
-        
-        //AbstractPlayer winner = this.processor.getWinner();
         /*
+        AbstractPlayer winner = this.processor.getWinner();
+
         ObjectId winnerId = null;
         int score = this.processor.getRoundNumber() - 1;
         BasicDBObject errors = new BasicDBObject();
@@ -215,6 +221,6 @@ public class AiGamesPlatform implements Platform {
         // store everything in the database
         Database.connectToDatabase();
         Database.storeGameInDatabase(this.gameIdString, winnerId, score, savedFilePath, errors, dumps);
-        */
+*/
     }
 }

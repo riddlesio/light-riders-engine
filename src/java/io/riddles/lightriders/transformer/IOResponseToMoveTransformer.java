@@ -40,9 +40,9 @@ public class IOResponseToMoveTransformer {
 					coord2 = coord1;
 					break;
 			}
-		} else if (r.getType() == LightridersIOResponseType.PASS) {
+		} else {
+			/* We'll regard everything else as a 'pass' */
 			coord2 = logic.transformCoordinate(coord1, logic.getCurrentDirection(state));
-
 		}
 		
 

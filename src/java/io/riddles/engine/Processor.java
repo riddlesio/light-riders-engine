@@ -2,6 +2,7 @@ package io.riddles.engine;
 
 import io.riddles.engine.io.Command;
 import io.riddles.game.exception.InvalidMoveException;
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IOResponse;
 
@@ -41,7 +42,7 @@ public interface Processor<State> {
      * @param exception - The exception thrown when trying to execute Processor.processInput
      * @return {State}
      */
-    State processException(State state, Exception exception);
+    State processException(State state, Exception exception) throws TerminalException;
 
     /**
      * Processes the input and returns the new state

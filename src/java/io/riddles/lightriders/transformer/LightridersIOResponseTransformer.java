@@ -22,7 +22,7 @@ public class LightridersIOResponseTransformer { /* Doesn't implement Tranformer,
 			if (direction.equals("up") || direction.equals("right") || direction.equals("down") || direction.equals("left")) {
 				return new LightridersIOResponse(request, LightridersIOResponseType.MOVE, direction);
 			}
-		} else if (tokens[0].equals("pass")) {
+		} else {
 			return new LightridersIOResponse(request, LightridersIOResponseType.PASS, null);
 		}
 		

@@ -6,6 +6,7 @@ import java.util.Optional;
 import io.riddles.boardgame.model.Move;
 import io.riddles.engine.Processor;
 import io.riddles.game.exception.FieldNotEmptyException;
+import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IOResponse;
 import io.riddles.game.move.MoveValidator;
@@ -26,7 +27,7 @@ public class LightridersProcessor implements Processor<LightridersState> {
 	}
 
 	@Override
-	public LightridersState processException(LightridersState state, Exception exception) {
+	public LightridersState processException(LightridersState state, Exception exception) throws TerminalException {
         LightridersState newState = new LightridersState(state, exception);
 
 		if (exception instanceof FieldNotEmptyException) {
@@ -40,6 +41,8 @@ public class LightridersProcessor implements Processor<LightridersState> {
 					Optional.of(new LightridersPiece(PieceType.WALL, c)));
 
 			System.out.println(c + " CRASHED AT " + e.getCoordinate());
+		} else {
+			throw new TerminalException(exception.toString(), null);
 		}
 		return newState;
 	}
