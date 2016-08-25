@@ -15,14 +15,12 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
-package io.riddles.tron.player;
+package io.riddles.lightriders.player;
 
 import io.riddles.boardgame.model.Direction;
-import io.riddles.engine.io.IOPlayer;
-import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.Identifier;
 import io.riddles.game.player.AbstractPlayer;
-import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
 
 
 public class Player extends AbstractPlayer {

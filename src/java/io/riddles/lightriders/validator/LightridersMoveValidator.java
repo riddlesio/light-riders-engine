@@ -1,4 +1,4 @@
-package io.riddles.tron.validator;
+package io.riddles.lightriders.validator;
 
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Move;
@@ -16,11 +16,11 @@ import java.util.ArrayList;
  *
  * @author Niko
  */
-public final class TronMoveValidator implements MoveValidator {
+public final class LightridersMoveValidator implements MoveValidator {
 
 	private ArrayList<MoveValidator> validators;
 
-	public TronMoveValidator() {
+	public LightridersMoveValidator() {
 
 		ArrayList<MoveValidator> validators = new ArrayList<>();
 

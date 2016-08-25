@@ -1,4 +1,4 @@
-package io.riddles.tron.game;
+package io.riddles.lightriders.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.RectangularBoard;
-import io.riddles.boardgame.model.SquareBoard;
 import io.riddles.engine.Processor;
 import io.riddles.game.engine.GameEngine;
 import io.riddles.game.engine.GameLoop;
@@ -24,18 +22,17 @@ import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.Identifier;
 import io.riddles.game.io.StringIdentifier;
-import io.riddles.tron.TronLogic;
-import io.riddles.tron.TronPiece;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.TronPiece.PieceType;
-import io.riddles.tron.TronProcessor;
-import io.riddles.tron.TronState;
-import io.riddles.tron.io.TronIOProvider;
-import io.riddles.tron.player.Player;
-import io.riddles.util.Util;
+import io.riddles.lightriders.LightridersLogic;
+import io.riddles.lightriders.LightridersPiece;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
+import io.riddles.lightriders.LightridersPiece.PieceType;
+import io.riddles.lightriders.LightridersProcessor;
+import io.riddles.lightriders.LightridersState;
+import io.riddles.lightriders.io.LightridersIOProvider;
+import io.riddles.lightriders.player.Player;
 
 /**
- * This class is the connecting instance between the Tron game and the
+ * This class is the connecting instance between the Lightriders game and the
  * encapsulating framework. It should implement all methods required for
  * the Riddles.io framework to retrieve the necessary game data.
  *
@@ -44,11 +41,11 @@ import io.riddles.util.Util;
  *
  * @author Niko van Meurs <niko@riddles.io>
  */
-public class TronGameEngine implements GameEngine<TronState> {
+public class LightridersGameEngine implements GameEngine<LightridersState> {
 
-    private GameLoop<TronState> gameLoop;
-    private Processor<TronState> processor;
-    private TronState finalState;
+    private GameLoop<LightridersState> gameLoop;
+    private Processor<LightridersState> processor;
+    private LightridersState finalState;
     private ArrayList<Player> players; // ArrayList containing player handlers
     
     private int boardWidth = 16, boardHeight = 16;
@@ -59,36 +56,36 @@ public class TronGameEngine implements GameEngine<TronState> {
 	private IOHandler handler;
 	private IOProvider provider;
 	
-    public TronGameEngine(IOHandler handler) {
+    public LightridersGameEngine(IOHandler handler) {
         this.players = new ArrayList<Player>();
         this.handler = handler;
     	
-        gameLoop  = new SimpleGameLoop<TronState>();
-        processor = new TronProcessor();
+        gameLoop  = new SimpleGameLoop<LightridersState>();
+        processor = new LightridersProcessor();
     }
 
     /**
      * Deserializes the initialState string and runs the GameLoop
      *
-     * @param initialStateString - String representation of the initial State
+     * @param HashMap configuration - String representation of the initial State
      * @throws InvalidInputException 
      */
     public void run(HashMap configuration) throws TerminalException {	
-    	TronState initialState = getInitialState(null);
+    	LightridersState initialState = getInitialState(null);
     	this.run(configuration, initialState);
     }
     
-    public TronState getInitialState(String initialStateString) {
+    public LightridersState getInitialState(String initialStateString) {
     	RectangularBoard b = new RectangularBoard(boardWidth, boardHeight);
 		
 		if (initialStateString != null) {
 			try {
-				b = TronLogic.StringToRectangularBoardTransformer(initialStateString);
+				b = LightridersLogic.StringToRectangularBoardTransformer(initialStateString);
 			} catch (InvalidDataException e) {
 				System.err.println("Could not initialise Board from initialStateString");
 			}
 		}
-    	TronState s = new TronState(b);
+    	LightridersState s = new LightridersState(b);
 
 		/* Initialise player positions */
 		int counter = 0;
@@ -111,7 +108,7 @@ public class TronGameEngine implements GameEngine<TronState> {
 					player.setDirection(Direction.RIGHT);
 			}
 			player.setPieceColor(PieceColor.values()[counter]);
-			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new TronPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
+			b.getFieldAt(new Coordinate(player.getX(),player.getY())).setPiece(Optional.of(new LightridersPiece(PieceType.LIGHTCYCLE, player.getPieceColor())));
 			counter ++;
 		}
 		s.setActivePieceColor(this.players.get(0).getPieceColor());
@@ -120,7 +117,7 @@ public class TronGameEngine implements GameEngine<TronState> {
 		return s;
 	}
 
-	public TronState getFinalState() {
+	public LightridersState getFinalState() {
 		return this.finalState;
 	}
     
@@ -196,22 +193,22 @@ public class TronGameEngine implements GameEngine<TronState> {
 
 	@Override
 	public void run(HashMap configuration, String initialStateString) throws TerminalException {
-		TronState initialState = this.getInitialState(initialStateString);
+		LightridersState initialState = this.getInitialState(initialStateString);
 		this.run(configuration, initialState);
 	}
 	
-	public void run(HashMap configuration, TronState initialState) throws TerminalException {
+	public void run(HashMap configuration, LightridersState initialState) throws TerminalException {
 		setConfiguration(configuration);
-        provider = new TronIOProvider(handler);
+        provider = new LightridersIOProvider(handler);
     	
         try {
     		finalState = gameLoop.run(provider, processor, initialState);
     	} catch (TerminalException exception) {
     		
     		// TODO: Serialize traversible into usable debug data and save this stuff
-//    		TronState state = (TronState) exception.getTraversible();
+//    		LightridersState state = (LightridersState) exception.getTraversible();
     		
-//    		TronTerminalExceptionSerializer serializer = new TronTerminalExceptionSerializer();
+//    		LightridersTerminalExceptionSerializer serializer = new LightridersTerminalExceptionSerializer();
 //    		String serializedData = serializer.traverse(state);
 //    		exception.setSerializedData(serializedData);
     		

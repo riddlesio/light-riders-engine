@@ -1,15 +1,12 @@
-package io.riddles.tron;
+package io.riddles.lightriders;
 
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.AbstractModel;
 import io.riddles.game.model.Stateful;
 import io.riddles.game.model.Traversible;
-import io.riddles.game.model.Visitor;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.visitor.TronStateToJSONVisitor;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.RectangularBoard;
-import io.riddles.boardgame.model.SquareBoard;
 
 import java.util.Optional;
 /**
@@ -20,17 +17,17 @@ import java.util.Optional;
  *
  * @author Niko
  */
-public final class TronState extends AbstractModel implements Stateful<TronState>, Traversible {
+public final class LightridersState extends AbstractModel implements Stateful<LightridersState>, Traversible {
 
     private RectangularBoard board;
     private Optional<Exception> exception;
     private Optional<Move> move;
     private int moveNumber;
-    private Optional<TronState> previousState;
+    private Optional<LightridersState> previousState;
     private PieceColor pieceColor;
     
     
-    public TronState(RectangularBoard board) {
+    public LightridersState(RectangularBoard board) {
         this.board = board;
         exception       = Optional.empty();
         move            = Optional.empty();
@@ -38,7 +35,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         previousState   = Optional.empty();
     }
 
-    public TronState(TronState previousState, Exception exception) {
+    public LightridersState(LightridersState previousState, Exception exception) {
 
         this.exception      = Optional.of(exception);
         this.previousState  = Optional.of(previousState);
@@ -48,7 +45,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         moveNumber  = previousState.getMoveNumber() + 1;
     }
 
-    public TronState(TronState previousState, Board board, Move move) {
+    public LightridersState(LightridersState previousState, Board board, Move move) {
 
         board       = new RectangularBoard(previousState.getBoard().getFields(), previousState.getBoard().getWidth(), previousState.getBoard().getHeight());
         this.previousState  = Optional.of(previousState);
@@ -58,7 +55,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         moveNumber     = previousState.getMoveNumber() + 1;
     }
 
-    public TronState(TronState previousState, Move move) {
+    public LightridersState(LightridersState previousState, Move move) {
 
         board       = new RectangularBoard(previousState.getBoard().getFields(), previousState.getBoard().getWidth(), previousState.getBoard().getHeight());
         this.previousState  = Optional.of(previousState);
@@ -68,7 +65,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
         moveNumber     = previousState.getMoveNumber() + 1;
     }
     
-    public TronState(TronState previousState) {
+    public LightridersState(LightridersState previousState) {
 
         this.previousState  = Optional.of(previousState);
 
@@ -93,7 +90,7 @@ public final class TronState extends AbstractModel implements Stateful<TronState
     }
 
     @Override
-    public Optional<TronState> getPreviousState() {
+    public Optional<LightridersState> getPreviousState() {
         return previousState;
     }
 

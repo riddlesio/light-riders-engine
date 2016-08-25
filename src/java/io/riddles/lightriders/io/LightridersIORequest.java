@@ -1,37 +1,36 @@
-package io.riddles.tron.io;
+package io.riddles.lightriders.io;
 
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.game.io.IORequest;
-import io.riddles.game.io.IORequestType;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
-import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
 
 import java.util.Optional;
 
 /**
- * io.riddles.tron.io
+ * io.riddles.lightriders.io
  * <p>
- * This file is a part of tron
+ * This file is a part of lightriders
  * <p>
  * Copyright 2016 - present Riddles.io
  * For license information see the LICENSE file in the project root
  *
  * @author Niko
  */
-public class TronIORequest implements Traversible, IORequest {
+public class LightridersIORequest implements Traversible, IORequest {
 
-    private TronIORequestType type;
+    private LightridersIORequestType type;
     private PieceColor color;
     private Optional<Coordinate> coordinate;
 
-    public TronIORequest(PieceColor color, TronIORequestType type) {
+    public LightridersIORequest(PieceColor color, LightridersIORequestType type) {
         coordinate = Optional.empty();
         this.color = color;
         this.type = type;
     }
 
-    public TronIORequest(PieceColor color, TronIORequestType type, Coordinate coordinate) {
+    public LightridersIORequest(PieceColor color, LightridersIORequestType type, Coordinate coordinate) {
         this.color = color;
         this.coordinate = Optional.of(coordinate);
         this.type = type;
@@ -40,7 +39,7 @@ public class TronIORequest implements Traversible, IORequest {
     public PieceColor getColor() { return color; }
 
     @Override
-    public 	TronIORequestType getType() {
+    public LightridersIORequestType getType() {
         return type;
     }
 

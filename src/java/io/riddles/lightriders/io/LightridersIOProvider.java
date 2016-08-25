@@ -1,4 +1,4 @@
-package io.riddles.tron.io;
+package io.riddles.lightriders.io;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,14 +10,14 @@ import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.IOProvider;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.Identifier;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.transformer.TronIOResponseTransformer;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
+import io.riddles.lightriders.transformer.LightridersIOResponseTransformer;
 
-public class TronIOProvider extends AbstractIOProvider implements IOProvider {
+public class LightridersIOProvider extends AbstractIOProvider implements IOProvider {
 	
 	HashMap<PieceColor, Identifier> botList;
 	
-	public TronIOProvider(IOHandler handler) {
+	public LightridersIOProvider(IOHandler handler) {
 		super(handler);
 		
 		botList = new HashMap<>();
@@ -30,10 +30,10 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 	}
 	
 	@Override
-	public TronIOResponse execute(IORequest request) throws IOException, InvalidInputException {
-		TronIORequest r = (TronIORequest) request;
-		if (request.getType() == TronIORequestType.NOOP) {
-			return new TronIOResponse(request, TronIOResponseType.NOOP, "noop");
+	public LightridersIOResponse execute(IORequest request) throws IOException, InvalidInputException {
+		LightridersIORequest r = (LightridersIORequest) request;
+		if (request.getType() == LightridersIORequestType.NOOP) {
+			return new LightridersIOResponse(request, LightridersIOResponseType.NOOP, "noop");
 		} else {
 			System.out.println("sendRequest color: " + r.getColor());
 			String response = handler.sendRequest(botList.get(r.getColor()), request.toString());
@@ -42,7 +42,7 @@ public class TronIOProvider extends AbstractIOProvider implements IOProvider {
 			
 			System.out.println("In: " + response);
 			
-			TronIOResponseTransformer t = new TronIOResponseTransformer();
+			LightridersIOResponseTransformer t = new LightridersIOResponseTransformer();
 			return t.transform(request, response);
 		}
 	}

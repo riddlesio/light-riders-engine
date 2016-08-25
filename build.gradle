@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 apply plugin: 'application'
 
 // Include dependent libraries in archive.
-mainClassName = 'io.riddles.tron.Tron'
+mainClassName = 'io.riddles.lightriders.Lightriders'
 
 sourceCompatibility = 1.8
 version = '1.0.0'
@@ -32,7 +32,7 @@ sourceSets {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Tron Game Engine',
+        attributes 'Implementation-Title': 'Lightriders Game Engine',
                 'Implementation-Version': version,
                 'Main-Class': mainClassName
     }

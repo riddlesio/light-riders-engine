@@ -1,7 +1,7 @@
 package io.riddles.game.exception;
 
 import io.riddles.boardgame.model.Coordinate;
-import io.riddles.tron.TronPiece.PieceColor;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
 
 public class FieldNotEmptyException extends InvalidMoveException {
 	private Coordinate coord;

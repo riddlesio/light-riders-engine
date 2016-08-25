@@ -1,19 +1,19 @@
-package io.riddles.tron.transformer;
+package io.riddles.lightriders.transformer;
 
 import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Move;
 import io.riddles.game.exception.InvalidDataException;
 import io.riddles.game.io.IOResponse;
-import io.riddles.tron.TronState;
-import io.riddles.tron.TronLogic;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.io.TronIOResponseType;
+import io.riddles.lightriders.LightridersState;
+import io.riddles.lightriders.LightridersLogic;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
+import io.riddles.lightriders.io.LightridersIOResponseType;
 
 public class IOResponseToMoveTransformer {
 	
-	public Move transform (TronState state, IOResponse r) throws InvalidDataException {
-		TronLogic logic = new TronLogic();
+	public Move transform (LightridersState state, IOResponse r) throws InvalidDataException {
+		LightridersLogic logic = new LightridersLogic();
 		
 		PieceColor c = state.getActivePieceColor();
 		Coordinate coord1 = null;
@@ -21,7 +21,7 @@ public class IOResponseToMoveTransformer {
 
 		coord1 = logic.getLightcycleCoordinate(c, state);
 		
-		if (r.getType() == TronIOResponseType.MOVE) {
+		if (r.getType() == LightridersIOResponseType.MOVE) {
 			Direction direction = logic.StringToDirectionTranformer(r.getValue());
 			switch (direction) {
 				case UP:
@@ -40,7 +40,7 @@ public class IOResponseToMoveTransformer {
 					coord2 = coord1;
 					break;
 			}
-		} else if (r.getType() == TronIOResponseType.PASS) {
+		} else if (r.getType() == LightridersIOResponseType.PASS) {
 			coord2 = logic.transformCoordinate(coord1, logic.getCurrentDirection(state));
 
 		}

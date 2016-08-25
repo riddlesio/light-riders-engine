@@ -18,13 +18,11 @@
 package io.riddles.game.io;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import io.riddles.tron.player.Player;
+import io.riddles.lightriders.player.Player;
 
 /**
  * IOHandler class

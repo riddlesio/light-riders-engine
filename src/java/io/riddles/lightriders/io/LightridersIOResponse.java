@@ -1,4 +1,4 @@
-package io.riddles.tron.io;
+package io.riddles.lightriders.io;
 
 import io.riddles.game.io.IORequest;
 import io.riddles.game.io.IOResponse;
@@ -6,22 +6,22 @@ import io.riddles.game.io.IOResponse;
 /**
  * io.riddles.chess.io
  * <p>
- * This file is a part of tron
+ * This file is a part of lightriders
  * <p>
  * Copyright 2016 - present Riddles.io
  * For license information see the LICENSE file in the project root
  *
  * @author Niko
  */
-public class TronIOResponse implements IOResponse {
+public class LightridersIOResponse implements IOResponse {
 
     IORequest request;
-    private TronIOResponseType type;
+    private LightridersIOResponseType type;
 
     String value;
     
 
-    public TronIOResponse(IORequest request, TronIOResponseType type, String value) {
+    public LightridersIOResponse(IORequest request, LightridersIOResponseType type, String value) {
         this.request = request;
         this.type = type;
         this.value = value;

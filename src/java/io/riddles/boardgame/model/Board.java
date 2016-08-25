@@ -1,10 +1,5 @@
 package io.riddles.boardgame.model;
 
-import io.riddles.boardgame.model.Coordinate;
-import io.riddles.boardgame.model.Field;
-import io.riddles.game.model.Stateful;
-import io.riddles.tron.TronState;
-
 import java.util.List;
 
 /**

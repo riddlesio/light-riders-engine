@@ -1,10 +1,9 @@
-package io.riddles.tron.visitor;
+package io.riddles.lightriders.visitor;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.riddles.boardgame.model.Board;
@@ -12,15 +11,15 @@ import io.riddles.boardgame.model.Field;
 import io.riddles.boardgame.model.Piece;
 import io.riddles.game.model.Traversible;
 import io.riddles.game.model.Visitor;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.TronPiece.PieceType;
-import io.riddles.tron.TronState;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
+import io.riddles.lightriders.LightridersPiece.PieceType;
+import io.riddles.lightriders.LightridersState;
 
-public class TronStateToJSONVisitor implements Visitor<JSONArray> {
+public class LightridersStateToJSONVisitor implements Visitor<JSONArray> {
 	
 	private JSONArray array;
 	
-	public JSONArray traverse(TronState state) {
+	public JSONArray traverse(LightridersState state) {
 		return state.accept(this);
 	}
 
@@ -29,7 +28,7 @@ public class TronStateToJSONVisitor implements Visitor<JSONArray> {
 		array = new JSONArray();
 
 		JSONArray result = new JSONArray();
-		TronState state = (TronState) traversible;
+		LightridersState state = (LightridersState) traversible;
 		int counter = 0;
 		
 		while (state.hasPreviousState()) {

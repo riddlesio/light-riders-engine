@@ -6,7 +6,7 @@ import io.riddles.game.model.Visitor;
 /**
  * ${PACKAGE_NAME}
  *
- * This file is a part of tron
+ * This file is a part of lightriders
  *
  * Copyright 2016 - present Riddles.io
  * For license information see the LICENSE file in the project root

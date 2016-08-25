@@ -15,23 +15,22 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
-package io.riddles.tron;
+package io.riddles.lightriders;
 
 import io.riddles.game.exception.TerminalException;
 import io.riddles.game.io.IOHandler;
 import io.riddles.platform.AiGamesPlatform;
 import io.riddles.platform.Platform;
 //import io.riddles.platform.RiddlesPlatform;
-import io.riddles.tron.game.TronGameEngine;
-import io.riddles.tron.player.Player;
+import io.riddles.lightriders.game.LightridersGameEngine;
+import io.riddles.lightriders.player.Player;
 
 import java.util.HashMap;
-import java.util.List;
 
 
-public class Tron {
+public class Lightriders {
 	
-	private static TronGameEngine engine;
+	private static LightridersGameEngine engine;
 	private static HashMap<String, Object> configuration;
 	private static IOHandler handler;
 	private final static String PLATFORM = "aigames";
@@ -60,7 +59,7 @@ public class Tron {
 		}
 		
 		handler = platform.getHandler();
-		engine = new TronGameEngine(handler);
+		engine = new LightridersGameEngine(handler);
 	
 		platform.setEngine(engine);
 		platform.preRun();

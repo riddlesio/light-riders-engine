@@ -13,8 +13,8 @@ import io.riddles.game.engine.GameEngine;
 import io.riddles.game.io.AiGamesIOHandler;
 import io.riddles.game.io.IOHandler;
 import io.riddles.game.io.StringIdentifier;
-import io.riddles.tron.TronState;
-import io.riddles.tron.visitor.TronStateToJSONVisitor;
+import io.riddles.lightriders.LightridersState;
+import io.riddles.lightriders.visitor.LightridersStateToJSONVisitor;
 
 public class AiGamesPlatform implements Platform {
 	private String args[];
@@ -50,7 +50,7 @@ public class AiGamesPlatform implements Platform {
 			configuration.put("time_per_move",  "200");
 			configuration.put("playerids",  "1,2");
 			int NUM_TEST_BOTS = 2;
-			String TEST_BOT = "java -cp /home/jim/workspace/light-riders-starter-bot/bin bot.BotStarter";
+			String TEST_BOT = "java -cp /home/jim/workspace/lightriders-starter-bot/bin bot.BotStarter";
 
 			for(int i = 0; i < NUM_TEST_BOTS; i++) {
 				this.engine.addPlayer(TEST_BOT, new StringIdentifier("ID_" + i));
@@ -108,11 +108,11 @@ public class AiGamesPlatform implements Platform {
 
         if(DEV_MODE) { // print the game file when in DEV_MODE
         	/* Get final state from engine */
-        	TronState finalState = (TronState) this.engine.getFinalState();
+        	LightridersState finalState = (LightridersState) this.engine.getFinalState();
             JSONObject output = new JSONObject();
             
             
-            TronStateToJSONVisitor v = new TronStateToJSONVisitor();
+            LightridersStateToJSONVisitor v = new LightridersStateToJSONVisitor();
             v.visit(finalState);
             JSONArray states = v.getJSONArray();
             output.put("states", states);

@@ -1,4 +1,4 @@
-package io.riddles.tron.validator;
+package io.riddles.lightriders.validator;
 
 import io.riddles.boardgame.model.Board;
 import io.riddles.boardgame.model.Move;

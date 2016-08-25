@@ -1,12 +1,11 @@
-package io.riddles.tron;
+package io.riddles.lightriders;
 
-import io.riddles.boardgame.model.Direction;
 import io.riddles.boardgame.model.Piece;
 
-public class TronPiece extends Piece {
+public class LightridersPiece extends Piece {
 
 	
-	public TronPiece(PieceType type, PieceColor color) {
+	public LightridersPiece(PieceType type, PieceColor color) {
 		super(type, color);
 	}
     

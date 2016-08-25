@@ -1,4 +1,4 @@
-package io.riddles.tron;
+package io.riddles.lightriders;
 
 import java.util.Optional;
 
@@ -13,11 +13,11 @@ import io.riddles.boardgame.model.Piece;
  *
  * @author Niko
  */
-public class TronField extends Field {
+public class LightridersField extends Field {
 
     protected Optional<Piece> maybePiece;
 
-    public TronField(Optional<Piece> maybePiece) {
+    public LightridersField(Optional<Piece> maybePiece) {
     	super(maybePiece);
         this.maybePiece = maybePiece;
     }

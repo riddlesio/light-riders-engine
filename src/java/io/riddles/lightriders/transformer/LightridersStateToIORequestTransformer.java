@@ -1,14 +1,14 @@
-package io.riddles.tron.transformer;
+package io.riddles.lightriders.transformer;
 
 import io.riddles.boardgame.model.*;
 import io.riddles.game.io.IORequest;
 import io.riddles.game.transformer.Transformer;
-import io.riddles.tron.TronLogic;
-import io.riddles.tron.TronPiece;
-import io.riddles.tron.TronPiece.PieceColor;
-import io.riddles.tron.TronState;
-import io.riddles.tron.io.TronIORequest;
-import io.riddles.tron.io.TronIORequestType;
+import io.riddles.lightriders.LightridersLogic;
+import io.riddles.lightriders.LightridersPiece;
+import io.riddles.lightriders.LightridersPiece.PieceColor;
+import io.riddles.lightriders.LightridersState;
+import io.riddles.lightriders.io.LightridersIORequest;
+import io.riddles.lightriders.io.LightridersIORequestType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +17,16 @@ import java.util.Optional;
 /**
  * Transforms a ChessState into an IORequest
  */
-public class TronStateToIORequestTransformer implements Transformer<TronState, IORequest> {
+public class LightridersStateToIORequestTransformer implements Transformer<LightridersState, IORequest> {
 
-    public TronStateToIORequestTransformer() {
+    public LightridersStateToIORequestTransformer() {
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public IORequest transform(TronState state) {
+    public IORequest transform(LightridersState state) {
 
         Optional<Move> optionalPreviousMove = state.getMove();
 
@@ -45,19 +45,19 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      * @param state The state upon which to base the next move
      * @return IORequest for the next player to move a piece
      */
-    protected IORequest createMoveRequest(TronState state) {
+    protected IORequest createMoveRequest(LightridersState state) {
 
     	PieceColor colorToMove = null;
     	
     	/* Figure out next player */
     	colorToMove = state.getActivePieceColor();
     	
-    	return new TronIORequest(colorToMove, TronIORequestType.MOVE);
+    	return new LightridersIORequest(colorToMove, LightridersIORequestType.MOVE);
     }
 
-	public PieceColor getColorToMove(TronState state) {
+	public PieceColor getColorToMove(LightridersState state) {
 		
-		List<PieceColor> currentLivingPieceColors = new TronLogic().getLivingPieceColors(state);
+		List<PieceColor> currentLivingPieceColors = new LightridersLogic().getLivingPieceColors(state);
 		
 		if (!state.getPreviousState().isPresent()) {
 			if (currentLivingPieceColors.size() > 1) {
@@ -67,9 +67,9 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
 			}
 		}
 		
-		TronState previousState = state.getPreviousState().get();
+		LightridersState previousState = state.getPreviousState().get();
 		
-		List<PieceColor> livingPieceColors = new TronLogic().getLivingPieceColors(previousState);
+		List<PieceColor> livingPieceColors = new LightridersLogic().getLivingPieceColors(previousState);
     	PieceColor c = state.getActivePieceColor();
     	int i = livingPieceColors.indexOf(c);
     	List<PieceColor> beforePieceColors;
@@ -97,10 +97,10 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      * Creates an IORequest for YELLOW to move a piece (ie. first move of the game)
      * @return IORequest for YELLOW to move a piece
      */
-    protected IORequest createInitialMoveRequest(TronState state) {
+    protected IORequest createInitialMoveRequest(LightridersState state) {
     	
     	PieceColor c = getColorToMove(state);
-        return new TronIORequest(c, TronIORequestType.MOVE);
+        return new LightridersIORequest(c, LightridersIORequestType.MOVE);
     }
 
 
@@ -109,18 +109,18 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      * @param state The state from which to retrieve the last moved piece
      * @return ChessPieceColor of the last moved piece
      */
-    protected PieceColor getColorOfMovedPiece(TronState state) {
+    protected PieceColor getColorOfMovedPiece(LightridersState state) {
 
         Piece piece = getMovedPiece(state);
         return (PieceColor) piece.getColor();
     }
 
     /**
-     * Get the piece which was moved in TronState
+     * Get the piece which was moved in LightridersState
      * @param state The state from which to retrieve the last moved piece
      * @return The last moved piece
      */
-    protected TronPiece getMovedPiece(TronState state) {
+    protected LightridersPiece getMovedPiece(LightridersState state) {
 
         Move move = getLastMove(state);
         Coordinate coordinate = move.getTo();
@@ -134,7 +134,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
             throw new RuntimeException("No piece present at target coordinate");
         }
 
-        return (TronPiece) optionalPiece.get();
+        return (LightridersPiece) optionalPiece.get();
     }
 
     /**
@@ -142,7 +142,7 @@ public class TronStateToIORequestTransformer implements Transformer<TronState, I
      * @param state The state from which to retrieve the last move
      * @return The last executed move
      */
-    protected Move getLastMove(TronState state) {
+    protected Move getLastMove(LightridersState state) {
 
         Optional<Move> optionalPreviousMove = state.getMove();
 

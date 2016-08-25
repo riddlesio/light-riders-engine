@@ -1,4 +1,4 @@
-package io.riddles.tron.validator;
+package io.riddles.lightriders.validator;
 
 import java.util.Optional;
 
@@ -7,8 +7,6 @@ import io.riddles.boardgame.model.Coordinate;
 import io.riddles.boardgame.model.Move;
 import io.riddles.boardgame.model.Piece;
 import io.riddles.game.move.MoveValidator;
-import io.riddles.tron.TronPiece;
-import io.riddles.util.Util;
 
 public class FieldEmptyValidator implements MoveValidator {
 
