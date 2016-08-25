@@ -114,7 +114,15 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
 
     @Override
     public LightridersPlayer getWinner() {
+        int alivePlayers = 0;
+        for (LightridersPlayer player : this.players)
+            if (player.isAlive()) alivePlayers++;
 
+        if (alivePlayers == 1) {
+            /* There is a winner */
+            for (LightridersPlayer player : this.players)
+                if (player.isAlive()) return player;
+        }
         return null;
     }
 
