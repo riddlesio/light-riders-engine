@@ -4,6 +4,7 @@ import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.data.LightridersBoard;
 import io.riddles.lightriders.game.data.Coordinate;
 
+import io.riddles.lightriders.game.data.MoveType;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.lightriders.game.processor.LightridersProcessor;
 import io.riddles.lightriders.game.state.LightridersState;
@@ -46,6 +47,8 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     protected LightridersPlayer createPlayer(int id) {
         LightridersPlayer p = new LightridersPlayer(id);
         p.setColor(Color.values()[nrPlayers]); /* This limits the game to four players */
+        p.setDirection(MoveType.LEFT);
+        if (p.getCoordinate().getX() < getInitialState().getBoard().getWidth()/2) p.setDirection(MoveType.RIGHT);
         nrPlayers++;
         return p;
     }

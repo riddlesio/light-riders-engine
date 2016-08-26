@@ -46,8 +46,7 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
         } catch (InvalidInputException ex) {
             return new LightridersMove(this.player, ex);
         } catch (Exception ex) {
-            return new LightridersMove(
-                this.player, new InvalidInputException("Failed to parse move"));
+            return new LightridersMove(this.player, new InvalidInputException("Failed to parse move"));
         }
     }
 

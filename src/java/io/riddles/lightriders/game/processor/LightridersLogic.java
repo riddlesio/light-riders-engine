@@ -24,19 +24,21 @@ public class LightridersLogic {
         int pId = player.getId();
         LightridersBoard board = state.getBoard();
 
-        switch(move.getMoveType()) {
-            case UP:
-                player.setDirection(move.getMoveType());
-                break;
-            case DOWN:
-                player.setDirection(move.getMoveType());
-                break;
-            case RIGHT:
-                player.setDirection(move.getMoveType());
-                break;
-            case LEFT:
-                player.setDirection(move.getMoveType());
-                break;
+        if (move.getMoveType() != null) { /* MoveType = null when it has an Exception */
+            switch (move.getMoveType()) {
+                case UP:
+                    player.setDirection(move.getMoveType());
+                    break;
+                case DOWN:
+                    player.setDirection(move.getMoveType());
+                    break;
+                case RIGHT:
+                    player.setDirection(move.getMoveType());
+                    break;
+                case LEFT:
+                    player.setDirection(move.getMoveType());
+                    break;
+            }
         }
 
         Coordinate c = player.getCoordinate();
