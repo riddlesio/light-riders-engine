@@ -1,0 +1,95 @@
+move left
+move left
+move left
+move down
+move down
+move down
+move down
+move left
+move left
+left
+left
+left
+left
+left
+left
+left
+left
+up
+up
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass
+left
+left
+left
+left
+left
+up
+up
+weapon
+up
+up
+pass
+pass

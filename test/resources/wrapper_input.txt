@@ -1,0 +1,8 @@
+initialize
+max_rounds 40
+map_width 24
+map_height 16
+bot_ids 1,2,3,4
+start
+details
+game
