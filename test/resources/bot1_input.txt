@@ -1,10 +1,11 @@
-move
+pass
 move down
 move down
 move down
 move right
+pass
 move right
-move right
+move up
 move right
 move right
 move up
@@ -13,67 +14,67 @@ move up
 move up
 move right
 move right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
-up
-up
-up
-up
-right
-right
-down
-right
-down
-down
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move up
+move right
+move right
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move up
+move right
+move right
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move move up
+move right
+move right
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move up
+move right
+move right
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move up
+move right
+move right
+move down
+move right
+move down
+move down
+move up
+move up
+move up
+move up
+move right
+move right
+move down
+move right
+move down
+move down

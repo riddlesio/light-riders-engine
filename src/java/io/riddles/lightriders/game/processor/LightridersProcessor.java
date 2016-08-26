@@ -20,6 +20,7 @@
 package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.riddles.lightriders.Lightriders;
 import io.riddles.lightriders.engine.LightridersEngine;
@@ -133,5 +134,7 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
     public double getScore() {
         return 0;
     }
+
+
 
 }

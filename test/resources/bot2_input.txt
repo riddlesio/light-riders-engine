@@ -7,89 +7,74 @@ move down
 move down
 move left
 move left
-left
-left
-left
-left
-left
-left
-left
-left
-up
-up
-up
-up
+move left
+move left
+move left
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move garbage
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
+move left
+move left
+move left
+move left
+move left
+move up
+move up
+move up
+move up
 pass
 pass
-left
-left
-left
-left
-left
-up
-up
-weapon
-up
-up
-pass
-pass
+move left
