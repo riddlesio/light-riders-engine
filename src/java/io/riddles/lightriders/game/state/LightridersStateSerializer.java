@@ -45,19 +45,19 @@ public class LightridersStateSerializer extends AbstractStateSerializer<Lightrid
 
     private JSONObject visitState(LightridersState state) throws NullPointerException {
         JSONObject stateJson = new JSONObject();
-        stateJson.put("move", state.getRoundNumber());
+        stateJson.put("move", state.getRoundNumber()-1);
 
         LightridersMove move = (LightridersMove) state.getMoves().get(0);
         /* TODO: What if there's multiple moves in a state? */
 
         if (move.getException() == null) {
-            stateJson.put("movetype", move.getMoveType());
+            //stateJson.put("movetype", move.getMoveType());
             stateJson.put("exception", JSONObject.NULL);
-            stateJson.put("board", state.getRepresentationString());
+            stateJson.put("field", state.getRepresentationString());
         } else {
-            stateJson.put("movetype", move.getMoveType());
+            //stateJson.put("movetype", move.getMoveType());
             stateJson.put("exception", move.getException().getMessage());
-            stateJson.put("board", state.getRepresentationString());
+            stateJson.put("field", state.getRepresentationString());
         }
 
         return stateJson;
