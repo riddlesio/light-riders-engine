@@ -60,7 +60,8 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
                 MoveType type = visitAssessment(split[1]);
                 return new LightridersMove(this.player, type);
         }
-        return new LightridersMove(this.player, MoveType.PASS);
+        throw new InvalidInputException("Failed to parse move");
+        //return new LightridersMove(this.player, MoveType.PASS);
     }
 
     public MoveType visitAssessment(String input) throws InvalidInputException {

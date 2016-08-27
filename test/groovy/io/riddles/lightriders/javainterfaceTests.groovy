@@ -22,24 +22,24 @@ class javainterfaceTests extends Specification {
 
         where:
         input   | result
-        "up"        | MoveType.UP
-        "down"      | MoveType.DOWN
-        "right"     | MoveType.RIGHT
-        "left"      | MoveType.LEFT
+        "move up"        | MoveType.UP
+        "move down"      | MoveType.DOWN
+        "move right"     | MoveType.RIGHT
+        "move left"      | MoveType.LEFT
         "pass"      | MoveType.PASS
     }
-//
-//    @Ignore
-//    def "LightridersMoveDeserializer must throw an InvalidInputException when receiving unexpected input"() {
-//
-//        given:
-//        LightridersPlayer player = new LightridersPlayer(1);
-//        LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
-//
-//        when: /* Unexpectedly groovy finds returned value as null, while debugging it seems to result in a Move. */
-//        LightridersMove move = deserializer.traverse("updown");
-//
-//        then:
-//        move.getException() == InvalidInputException;
-//    }
+
+    //@Ignore
+    def "LightridersMoveDeserializer must throw an InvalidInputException when receiving unexpected input"() {
+
+        given:
+        LightridersPlayer player = new LightridersPlayer(1);
+        LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
+
+        when: /* Unexpectedly groovy finds returned value as null, while debugging it seems to result in a Move. */
+        LightridersMove move = deserializer.traverse("updown");
+
+        then:
+        move.getException() == InvalidInputException;
+    }
 }

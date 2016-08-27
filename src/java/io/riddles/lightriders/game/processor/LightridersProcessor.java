@@ -62,7 +62,7 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         LightridersBoard newBoard = state.getBoard();
         for (LightridersPlayer player : this.players) {
 
-            System.out.println(player);
+            //System.out.println(player);
             if (player.isAlive()) {
                 player.sendUpdate("field", player, newBoard.toString());
                 String response = player.requestMove(ActionType.MOVE.toString());
@@ -79,8 +79,8 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
                 try {
                     l.transform(state, player, move);
                 } catch (Exception e) {
-                    //LOGGER.info(String.format("Unknown response: %s", response));
-                    e.printStackTrace();
+                    LOGGER.info(String.format("Unknown response: %s", response));
+                    //e.printStackTrace();
                 }
 
 
@@ -96,7 +96,7 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
 
         nextState.setBoard(newBoard);
         nextState.setRepresentationString(newBoard.toRepresentationString(this.players));
-        newBoard.dump(this.players, nextState);
+        //newBoard.dump(this.players, nextState);
 
         return nextState;
     }
