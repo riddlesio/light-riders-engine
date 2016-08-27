@@ -73,6 +73,9 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     protected LightridersState getInitialState() {
         LightridersState s = new LightridersState();
         LightridersBoard b = new LightridersBoard(configuration.get("board_width"), configuration.get("board_height"));
+        for (LightridersPlayer player : this.players) {
+            b.setFieldAt(player.getCoordinate(), player.getColor().toString().substring(0,1));
+        }
         s.setBoard(b);
         return s;
     }
