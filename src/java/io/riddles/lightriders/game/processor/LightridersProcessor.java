@@ -54,36 +54,28 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
 
     @Override
     public LightridersState playRound(int roundNumber, LightridersState state) {
-        this.roundNumber = roundNumber;
         LOGGER.info(String.format("Playing round %d", roundNumber));
+        this.roundNumber = roundNumber;
 
-        ArrayList<LightridersMove> moves = new ArrayList();
-        LightridersBoard board = state.getBoard();
-        LightridersBoard newBoard = new LightridersBoard(
-                board.getWidth(),
-                board.getHeight(),
-                board.toString());
-
-        LightridersState nextState = new LightridersState(state, moves, roundNumber);
-        nextState.setBoard(newBoard);
+        LightridersLogic logic = new LightridersLogic();
+        LightridersState nextState = state.createNextState(roundNumber);
+        LightridersBoard nextBoard = nextState.getBoard();
 
         for (LightridersPlayer player : this.players) {
 
             if (player.isAlive()) {
-                player.sendUpdate("field", player, newBoard.toString()); /* TODO: Should use playerId's instead of Color letter */
+                player.sendUpdate("field", player, nextBoard.toRepresentationString(this.players));
                 String response = player.requestMove(ActionType.MOVE.toString());
 
                 // parse the response
                 LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
                 LightridersMove move = deserializer.traverse(response);
 
-                // create the next state
-                moves.add(move);
-
-                LightridersLogic l = new LightridersLogic();
+                // create the next move
+                nextState.getMoves().add(move);
 
                 try {
-                    l.transform(nextState, player, move);
+                    logic.transform(nextState, player, move);
                 } catch (Exception e) {
                     LOGGER.info(String.format("Unknown response: %s", response));
                 }
@@ -94,10 +86,9 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
                 }
             }
             nextState.setPlayerData(player);
-
         }
 
-        newBoard.dump(this.players, nextState);
+        //nextBoard.dump(this.players, nextState);
 
         return nextState;
     }

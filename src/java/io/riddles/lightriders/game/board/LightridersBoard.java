@@ -36,59 +36,34 @@ public class LightridersBoard extends Board {
     }
 
     /**
-     * Creates a string with comma separated ints for every cell.
+     * Creates a string with comma separated ints for every field.
      * @param :
-     * @return : String with comma separated ints for every cell.
-     * Format:		 LSB
-     * 0 0 0 0 0 0 0 0
-     * | | | | | | | |_ Yellow
-     * | | | | | | |___ Green
-     * | | | | | |_____ Cyan
-     * | | | | |_______ Purple
-     * | | | |_________ Wall
-     * | | |___________ Lightcycle
-     * | |_____________ Reserved
-     * |_______________ Reserved
+     * @return : String with comma separated ints for every field.
      */
     public String toRepresentationString(ArrayList<LightridersPlayer> players) {
         String s = "";
         int counter = 0;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
-                int b = 0;
-                if (field[x][y].equals("Y")) {
-                    b = b | (1 << 0);
-                } else if (field[x][y].equals("G")) {
-                    b = b | (1 << 1);
-                } else if (field[x][y].equals("C")) {
-                    b = b | (1 << 2);
-                } else if (field[x][y].equals("P")) {
-                    b = b | (1 << 3);
+                String c = "0";
+                if (!isEmpty(new Point(x,y))) {
+                    c = "-1";
                 }
-
-                 for (int i = 0; i < players.size(); i++) {
-                    if (players.get(i).getCoordinate().x == x && players.get(i).getCoordinate().y == y) {
-                        b = b | (1 << 5);
-                    }
-                }
-                if (field[x][y] != ".") {
-                    b = b | (1 << 4);
+                for (LightridersPlayer player : players) {
+                    if (player.getCoordinate().equals(new Point(x, y))) c = Integer.toString(player.getId());
                 }
                 if (counter > 0) s+= ",";
-                s += String.valueOf(b);
+                s += c;
                 counter++;
             }
         }
         return s;
     }
 
-    /* isEmpty doesn't check for players or enemies! */
     public Boolean isEmpty(Point c) {
         if (c.x < 0 || c.y < 0 || c.x >= this.width || c.y >= this.height) {
             return false;
         }
         return (field[c.x][c.y].equals("."));
     }
-
-
 }

@@ -58,6 +58,16 @@ public class LightridersState extends AbstractState<LightridersMove> {
         playerCoordinates = new HashMap<LightridersPlayer, Point> ();
     }
 
+    public LightridersState createNextState(int roundNumber) {
+        LightridersState nextState = new LightridersState(this, new ArrayList<>(), roundNumber);
+        LightridersBoard nextBoard = new LightridersBoard(
+                board.getWidth(),
+                board.getHeight(),
+                board.toString());
+        nextState.setBoard(nextBoard);
+        return nextState;
+    }
+
     public LightridersBoard getBoard() {
         return this.board;
     }
