@@ -20,9 +20,15 @@
 package io.riddles.lightriders.game.state;
 
 import io.riddles.lightriders.game.move.LightridersMove;
+import io.riddles.lightriders.game.player.LightridersPlayer;
+import io.riddles.lightriders.game.processor.LightridersProcessor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import io.riddles.javainterface.game.state.AbstractStateSerializer;
+import org.omg.CORBA.BooleanHolder;
+
+import java.awt.*;
 
 /**
  * io.riddles.catchfrauds.game.state.CatchFraudsStateSerializer - Created on 3-6-16
@@ -32,6 +38,8 @@ import io.riddles.javainterface.game.state.AbstractStateSerializer;
  * @author jim
  */
 public class LightridersStateSerializer extends AbstractStateSerializer<LightridersState> {
+
+    LightridersProcessor processor;
 
     @Override
     public String traverseToString(LightridersState state) {
@@ -43,23 +51,38 @@ public class LightridersStateSerializer extends AbstractStateSerializer<Lightrid
         return visitState(state);
     }
 
+    public void setProcessor(LightridersProcessor p) { this.processor = p; }
+
     private JSONObject visitState(LightridersState state) throws NullPointerException {
         JSONObject stateJson = new JSONObject();
-        stateJson.put("move", state.getRoundNumber()-1);
+        stateJson.put("round", state.getRoundNumber()-1);
 
-        LightridersMove move = (LightridersMove) state.getMoves().get(0);
-        /* TODO: What if there's multiple moves in a state? */
-
-        if (move.getException() == null) {
-            //stateJson.put("movetype", move.getMoveType());
-            stateJson.put("exception", JSONObject.NULL);
-            stateJson.put("field", state.getRepresentationString());
-        } else {
-            //stateJson.put("movetype", move.getMoveType());
-            stateJson.put("exception", move.getException().getMessage());
-            stateJson.put("field", state.getRepresentationString());
+        JSONArray playersJson = new JSONArray();
+        for (LightridersPlayer player : this.processor.getPlayers()) {
+            JSONObject playerJson = new JSONObject();
+            LightridersMove playerMove = getPlayerMove(state, player);
+            boolean hasError = false;
+            if (playerMove != null) {
+                if (playerMove.getException() != null) {
+                    hasError = true;
+                    playerJson.put("error", playerMove.getException().getMessage());
+                }
+            }
+            playerJson.put("hasError", hasError);
+            Point playerCoordinate = state.getPlayerCoordinate(player);
+            playerJson.put("position", playerCoordinate.x + "," + playerCoordinate.y);
+            playerJson.put("isCrashed", !state.isPlayerAlive(player));
+            playerJson.put("id", player.getId());
+            playersJson.put(playerJson);
         }
-
+        stateJson.put("players", playersJson);
         return stateJson;
+    }
+
+    private LightridersMove getPlayerMove(LightridersState state, LightridersPlayer p) {
+        for (LightridersMove move : state.getMoves()) {
+            if (move.getPlayer().getId() == p.getId()) return move;
+        }
+        return null;
     }
 }

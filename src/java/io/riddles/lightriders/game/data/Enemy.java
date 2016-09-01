@@ -19,6 +19,8 @@
 
 package io.riddles.lightriders.game.data;
 
+import java.awt.*;
+
 /**
  * io.riddles.catchfrauds.game.move.Enemy - Created on 3-6-16
  *
@@ -29,22 +31,22 @@ package io.riddles.lightriders.game.data;
 public class Enemy {
 
 
-    private Coordinate coordinate;
-    private Coordinate prevCoordinate;
+    private Point coordinate;
+    private Point prevCoordinate;
     private MoveType direction;
     private boolean killMe = false;
 
-    public Enemy(Coordinate c, MoveType d) {
+    public Enemy(Point c, MoveType d) {
         this.coordinate = c;
         this.direction = d;
     }
 
-    public Coordinate getCoordinate() { return this.coordinate; }
-    public Coordinate getPreviousCoordinate() { return this.prevCoordinate; }
+    public Point getCoordinate() { return this.coordinate; }
+    public Point getPreviousCoordinate() { return this.prevCoordinate; }
 
-    public void setCoordinate(Coordinate c) {
+    public void setCoordinate(Point c) {
         if (prevCoordinate != null) {
-            if (c != prevCoordinate) {
+            if (!c.equals(prevCoordinate)) {
                 prevCoordinate = coordinate;
             }
         } else {

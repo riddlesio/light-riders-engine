@@ -1,14 +1,12 @@
 package io.riddles.lightriders.game.processor;
 
-import io.riddles.lightriders.engine.LightridersEngine;
-import io.riddles.lightriders.game.data.*;
+import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 
 import io.riddles.lightriders.game.move.LightridersMove;
 import io.riddles.lightriders.game.state.LightridersState;
-import io.riddles.javainterface.exception.InvalidInputException;
 
-import java.util.ArrayList;
+import java.awt.*;
 
 /**
  * Created by joost on 3-7-16.
@@ -41,14 +39,14 @@ public class LightridersLogic {
             }
         }
 
-        Coordinate c = player.getCoordinate();
-        Coordinate newC = c;
+        Point c = player.getCoordinate();
+        Point newC = c;
 
         switch(player.getDirection()) {
             case UP:
                 if (c.getY() > 0) {
-                    if (board.isEmpty(new Coordinate(c.getX(), c.getY() - 1))) {
-                        newC = new Coordinate(c.getX(), c.getY() - 1);
+                    if (board.isEmpty(new Point(c.x, c.y - 1))) {
+                        newC = new Point(c.x, c.y - 1);
                     }
                 } else {
                     player.kill();
@@ -56,8 +54,8 @@ public class LightridersLogic {
                 break;
             case DOWN:
                 if (c.getY() < board.getHeight()-1) {
-                    if (board.isEmpty(new Coordinate(c.getX(), c.getY() + 1))) {
-                        newC = new Coordinate(c.getX(), c.getY() + 1);
+                    if (board.isEmpty(new Point(c.x, c.y + 1))) {
+                        newC = new Point(c.x, c.y + 1);
                     }
                 } else {
                     player.kill();
@@ -65,8 +63,8 @@ public class LightridersLogic {
                 break;
             case RIGHT:
                 if (c.getX() < board.getWidth()-1) {
-                    if (board.isEmpty(new Coordinate(c.getX()+1, c.getY()))) {
-                        newC = new Coordinate(c.getX() + 1, c.getY());
+                    if (board.isEmpty(new Point(c.x+1, c.y))) {
+                        newC = new Point(c.x + 1, c.y);
                     }
                 } else {
                     player.kill();
@@ -74,8 +72,8 @@ public class LightridersLogic {
                 break;
             case LEFT:
                 if (c.getX() > 0) {
-                    if (board.isEmpty(new Coordinate(c.getX() - 1, c.getY()))) {
-                        newC = new Coordinate(c.getX() - 1, c.getY());
+                    if (board.isEmpty(new Point(c.x - 1, c.y))) {
+                        newC = new Point(c.x - 1, c.y);
                     }
                 } else {
                     player.kill();

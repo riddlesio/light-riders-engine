@@ -1,6 +1,6 @@
 pass
 move down
-move down
+move garbage
 move down
 move right
 pass

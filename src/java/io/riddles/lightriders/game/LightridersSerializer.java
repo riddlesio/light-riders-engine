@@ -47,10 +47,11 @@ public class LightridersSerializer extends
         // add all states
         JSONArray states = new JSONArray();
         LightridersState state = initialState;
-        LightridersStateSerializer serializer = new LightridersStateSerializer();
+        LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
+        stateSerializer.setProcessor(processor);
         while (state.hasNextState()) {
             state = (LightridersState) state.getNextState();
-            states.put(serializer.traverseToJson(state));
+            states.put(stateSerializer.traverseToJson(state));
         }
         game.put("states", states);
 
@@ -69,6 +70,13 @@ public class LightridersSerializer extends
         players.put("count", processor.getPlayers().size());
         players.put("names", playerNames);
 
+        // add winner
+        Object winner = JSONObject.NULL;
+        if (processor.getWinner() != null) {
+            winner = (String)String.valueOf(processor.getWinner().getId());
+        }
+        players.put("winner", winner);
+
         JSONObject settings = new JSONObject();
         game.put("players", players);
 
@@ -79,16 +87,6 @@ public class LightridersSerializer extends
         settings.put("field", board);
 
         game.put("settings", settings);
-
-        // add winner
-        Object winner = JSONObject.NULL;
-        if (processor.getWinner() != null) {
-            winner = (String)String.valueOf(processor.getWinner().getId());
-        }
-        game.put("winner", winner);
-
-        // add score
-        // game.put("score", processor.getScore());
 
         return game;
     }

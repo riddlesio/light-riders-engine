@@ -21,8 +21,9 @@ package io.riddles.lightriders.game.player;
 
 import io.riddles.javainterface.game.player.AbstractPlayer;
 import io.riddles.lightriders.game.data.Color;
-import io.riddles.lightriders.game.data.Coordinate;
 import io.riddles.lightriders.game.data.MoveType;
+
+import java.awt.*;
 
 /**
  * io.riddles.catchfrauds.game.player.BookingGameMovePlayer - Created on 3-6-16
@@ -33,7 +34,7 @@ import io.riddles.lightriders.game.data.MoveType;
  */
 public class LightridersPlayer extends AbstractPlayer {
 
-    private Coordinate c;
+    private Point c;
     private boolean alive;
     private Color color;
     private MoveType direction;
@@ -41,12 +42,12 @@ public class LightridersPlayer extends AbstractPlayer {
     public LightridersPlayer(int id) {
         super(id);
         this.alive = true;
-        this.c = new Coordinate (0,0);
+        this.c = new Point (0,0);
     }
 
-    public Coordinate getCoordinate() { return this.c; }
+    public Point getCoordinate() { return this.c; }
 
-    public void setCoordinate(Coordinate c) {
+    public void setCoordinate(Point c) {
         this.c = c;
     }
 

@@ -20,10 +20,9 @@
 package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import io.riddles.lightriders.Lightriders;
 import io.riddles.lightriders.engine.LightridersEngine;
+import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.data.*;
 import io.riddles.lightriders.game.move.*;
 import io.riddles.lightriders.game.player.LightridersPlayer;
@@ -59,12 +58,19 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         LOGGER.info(String.format("Playing round %d", roundNumber));
 
         ArrayList<LightridersMove> moves = new ArrayList();
-        LightridersBoard newBoard = state.getBoard();
+        LightridersBoard board = state.getBoard();
+        LightridersBoard newBoard = new LightridersBoard(
+                board.getWidth(),
+                board.getHeight(),
+                board.toString());
+
+        LightridersState nextState = new LightridersState(state, moves, roundNumber);
+        nextState.setBoard(newBoard);
+
         for (LightridersPlayer player : this.players) {
 
-            //System.out.println(player);
             if (player.isAlive()) {
-                player.sendUpdate("field", player, newBoard.toString());
+                player.sendUpdate("field", player, newBoard.toString()); /* TODO: Should use playerId's instead of Color letter */
                 String response = player.requestMove(ActionType.MOVE.toString());
 
                 // parse the response
@@ -77,26 +83,21 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
                 LightridersLogic l = new LightridersLogic();
 
                 try {
-                    l.transform(state, player, move);
+                    l.transform(nextState, player, move);
                 } catch (Exception e) {
                     LOGGER.info(String.format("Unknown response: %s", response));
-                    //e.printStackTrace();
                 }
-
-
 
                 // stop game if bot returns nothing
                 if (response == null) {
                     this.gameOver = true;
                 }
             }
+            nextState.setPlayerData(player);
+
         }
 
-        LightridersState nextState = new LightridersState(state, moves, roundNumber);
-
-        nextState.setBoard(newBoard);
-        nextState.setRepresentationString(newBoard.toRepresentationString(this.players));
-        //newBoard.dump(this.players, nextState);
+        newBoard.dump(this.players, nextState);
 
         return nextState;
     }
@@ -112,7 +113,7 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
 
         if (alivePlayers < 2) returnVal = true;
         if (this.gameOver) returnVal = true;
-        if (this.roundNumber >= LightridersEngine.configuration.get("max_rounds")) returnVal = true;
+        if (this.roundNumber >= LightridersEngine.configuration.getInt("maxRounds")) returnVal = true;
         return returnVal;
     }
 

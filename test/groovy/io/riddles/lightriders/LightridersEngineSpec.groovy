@@ -20,10 +20,6 @@
 package io.riddles.lightriders
 
 import io.riddles.lightriders.engine.LightridersEngine
-import io.riddles.lightriders.game.data.Coordinate
-import io.riddles.lightriders.game.data.Enemy
-import io.riddles.lightriders.game.data.LightridersBoard
-import io.riddles.lightriders.game.data.MoveType
 import io.riddles.javainterface.io.IOHandler
 import io.riddles.lightriders.game.state.LightridersState
 import spock.lang.Specification
@@ -135,6 +131,6 @@ class LightridersEngineSpec extends Specification {
         engine.run()
 
         expect:
-        engine.configuration.get("max_rounds") == 40
+        engine.configuration.getInt("maxRounds") == 40
     }
 }
