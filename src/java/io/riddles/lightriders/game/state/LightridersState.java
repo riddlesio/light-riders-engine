@@ -31,7 +31,7 @@ import java.util.HashMap;
 /**
  * io.riddles.lightriders.game.state.LightridersState - Created on 2-6-16
  *
- * [description]
+ * This State stores Lightriders specific details, such as player coordinates, and the LightridersBoard.
  *
  * @author joost
  */
@@ -45,19 +45,24 @@ public class LightridersState extends AbstractState<LightridersMove> {
         super();
     }
 
-    public LightridersState(LightridersState previousState, LightridersMove move, int roundNumber) {
-        super(previousState, move, roundNumber);
-        playerAlive = new HashMap<LightridersPlayer, Boolean>();
-        playerCoordinates = new HashMap<LightridersPlayer, Point> ();
-
-    }
-
+    /**
+     * the LightridersState that will be the state for the this round.
+     * @param LightridersState previous state to be stored
+     * @param ArrayList<LightridersMove> ArrayList with moves for this round
+     * @param int roundNumber
+     * @return The LightridersState that will be the start of the next round
+     */
     public LightridersState(LightridersState previousState, ArrayList<LightridersMove> moves, int roundNumber) {
         super(previousState, moves, roundNumber);
         playerAlive = new HashMap<LightridersPlayer, Boolean>();
         playerCoordinates = new HashMap<LightridersPlayer, Point> ();
     }
 
+    /**
+     * createNextState creates new objects needed for a new state.
+     * @param int roundNumber
+     * @return New LightridersState based on this state.
+     */
     public LightridersState createNextState(int roundNumber) {
         LightridersState nextState = new LightridersState(this, new ArrayList<>(), roundNumber);
         LightridersBoard nextBoard = new LightridersBoard(
@@ -75,24 +80,37 @@ public class LightridersState extends AbstractState<LightridersMove> {
         this.board = b;
     }
 
-    public boolean isPlayerAlive(LightridersPlayer p) {
-        if (playerAlive.get(p) != null) {
-            return playerAlive.get(p);
-        }
-        return false;
-    }
-
+    /**
+     * setPlayerData takes a LightridersPlayer, stores it's coordinate and aliveness
+     * @param LightridersPlayer
+     */
     public void setPlayerData(LightridersPlayer p) {
         playerAlive.put(p, p.isAlive());
         playerCoordinates.put(p, p.getCoordinate());
     }
 
-
+    /**
+     * getPlayerCoordinate returns player's coordinates.
+     * @param LightridersPlayer concerned
+     * @return Point
+     */
     public Point getPlayerCoordinate(LightridersPlayer p) {
         if (playerCoordinates.get(p) != null) {
             return playerCoordinates.get(p);
         }
         return null;
+    }
+
+    /**
+     * getPlayerCoordinate returns player's aliveness.
+     * @param LightridersPlayer concerned
+     * @return boolean
+     */
+    public boolean isPlayerAlive(LightridersPlayer p) {
+        if (playerAlive.get(p) != null) {
+            return playerAlive.get(p);
+        }
+        return false;
     }
 
 }

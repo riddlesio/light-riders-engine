@@ -9,7 +9,11 @@ import io.riddles.lightriders.game.state.LightridersState;
 import java.awt.*;
 
 /**
- * Created by joost on 3-7-16.
+ * io.riddles.lightriders.game.processor.LightridersLogic - Created on 6/27/16
+ *
+ * Provides logic to transform a LightridersState with a LightridersMove.
+ *
+ * @author Joost - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersLogic {
 
@@ -17,6 +21,16 @@ public class LightridersLogic {
     public LightridersLogic() {
     }
 
+    /**
+     * Takes a LightridersState and transforms it with a LightridersMove.
+     *
+     * Return
+     * Returns nothing, but transforms the given LightridersState.
+     * @param LightridersState The initial state
+     * @param LightridersPlayer The player involved
+     * @param LightridersMove The move of the player
+     * @return
+     */
     public void transform(LightridersState state, LightridersPlayer player, LightridersMove move) {
 
         int pId = player.getId();

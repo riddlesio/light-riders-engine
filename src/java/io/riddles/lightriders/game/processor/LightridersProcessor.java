@@ -52,6 +52,16 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
 
     }
 
+    /**
+     * Play one round of the game. It takes a LightridersState,
+     * asks all living players for a response and delivers a new LightridersState.
+     *
+     * Return
+     * the LightridersState that will be the state for the next round.
+     * @param roundNumber The current round number
+     * @param LightridersState The current state
+     * @return The LightridersState that will be the start of the next round
+     */
     @Override
     public LightridersState playRound(int roundNumber, LightridersState state) {
         LOGGER.info(String.format("Playing round %d", roundNumber));
@@ -88,12 +98,14 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
             nextState.setPlayerData(player);
         }
 
-        //nextBoard.dump(this.players, nextState);
-
         return nextState;
     }
 
-
+    /**
+     * The stopping condition for this game.
+     * @param LightridersState the state to determine whether the game has ended.
+     * @return True if the game is over, false otherwise
+     */
     @Override
     public boolean hasGameEnded(LightridersState state) {
         boolean returnVal = false;
@@ -108,6 +120,10 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         return returnVal;
     }
 
+    /**
+     * Returns the winner of the game, if there is one.
+     * @return null if there is no winner, a LightridersPlayer otherwise
+     */
     @Override
     public LightridersPlayer getWinner() {
         int alivePlayers = 0;
@@ -121,7 +137,10 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         }
         return null;
     }
-
+    /**
+     * GetScore isn't used in Lightriders.
+     * @return always return 0.
+     */
     @Override
     public double getScore() {
         return 0;
