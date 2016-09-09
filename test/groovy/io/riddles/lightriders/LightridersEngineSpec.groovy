@@ -133,4 +133,5 @@ class LightridersEngineSpec extends Specification {
         expect:
         engine.configuration.getInt("maxRounds") == 40
     }
+
 }

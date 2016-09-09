@@ -8,7 +8,6 @@ import spock.lang.Specification
 
 class javainterfaceTests extends Specification {
     def "BookingGameMoveDeserializer must return one of MoveType when receiving valid input"() {
-        println("LightridersMove")
 
         given:
         LightridersPlayer player = new LightridersPlayer(1);
