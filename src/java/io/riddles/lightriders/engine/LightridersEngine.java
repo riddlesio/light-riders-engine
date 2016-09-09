@@ -18,8 +18,6 @@ import java.util.Random;
  */
 public class LightridersEngine extends AbstractEngine<LightridersProcessor, LightridersPlayer, LightridersState> {
 
-    protected Point[] startCoordinates;
-    protected String bot_ids;
     protected int nrPlayers = 0, addedPlayers = 0;
 
     public LightridersEngine() {
@@ -38,7 +36,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     }
 
 
-        @Override
+    @Override
     protected LightridersPlayer createPlayer(int id) {
         LightridersPlayer player = new LightridersPlayer(id);
         player.setColor(Color.values()[addedPlayers]); /* This limits the game to four players */
