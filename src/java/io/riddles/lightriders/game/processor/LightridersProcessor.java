@@ -38,7 +38,6 @@ import io.riddles.javainterface.game.processor.AbstractProcessor;
  */
 public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, LightridersState> {
 
-    private ArrayList<Record> records;
     private int roundNumber;
     private boolean gameOver;
 
