@@ -47,7 +47,7 @@ public abstract class AbstractGameSerializer<P extends AbstractProcessor, S exte
     public abstract String traverseToString(P processor, S initialState);
 
     /**
-     * Method that can be used for (almost) every game type. Will add everything
+     * Method that can be used for (almost) every game type. Will put everything
      * to the output file that every visualizer needs
      * @param game JSONObject that stores the full game output
      * @param processor Processor that is used this game
@@ -55,7 +55,7 @@ public abstract class AbstractGameSerializer<P extends AbstractProcessor, S exte
      */
     protected JSONObject addDefaultJSON(JSONObject game, P processor) {
 
-        // add default settings (player settings)
+        // put default settings (player settings)
         JSONArray playerNames = new JSONArray();
         for (Object obj : processor.getPlayers()) {
             AbstractPlayer player = (AbstractPlayer) obj;
@@ -71,15 +71,15 @@ public abstract class AbstractGameSerializer<P extends AbstractProcessor, S exte
 
         game.put("settings", settings);
 
-        // add winner
-        Object winner = JSONObject.NULL;
+        // put winner
         if (processor.getWinner() != null) {
-            winner = (String)String.valueOf(processor.getWinner().getId());
+            game.put("winner", processor.getWinner().getId());
+        } else {
+            game.put("winner", JSONObject.NULL);
         }
-        game.put("winner", winner);
 
-        // add score
-        //game.put("score", processor.getScore());
+        // put score
+        game.put("score", processor.getScore());
 
         return game;
     }

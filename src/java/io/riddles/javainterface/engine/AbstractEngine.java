@@ -19,20 +19,20 @@
 
 package io.riddles.javainterface.engine;
 
-        import io.riddles.javainterface.configuration.Configuration;
-        import io.riddles.javainterface.exception.TerminalException;
-        import org.json.JSONObject;
+import io.riddles.javainterface.configuration.Configuration;
+import io.riddles.javainterface.exception.TerminalException;
+import org.json.JSONObject;
 
-        import java.io.IOException;
-        import java.util.ArrayList;
-        import java.util.Iterator;
-        import java.util.logging.Level;
-        import java.util.logging.Logger;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-        import io.riddles.javainterface.game.player.AbstractPlayer;
-        import io.riddles.javainterface.game.processor.AbstractProcessor;
-        import io.riddles.javainterface.game.state.AbstractState;
-        import io.riddles.javainterface.io.IOHandler;
+import io.riddles.javainterface.game.player.AbstractPlayer;
+import io.riddles.javainterface.game.processor.AbstractProcessor;
+import io.riddles.javainterface.game.state.AbstractState;
+import io.riddles.javainterface.io.IOHandler;
 
 /**
  * io.riddles.javainterface.engine.AbstractEngine - Created on 2-6-16
