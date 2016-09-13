@@ -44,8 +44,10 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
         try {
             return visitMove(string);
         } catch (InvalidInputException ex) {
+            this.player.sendWarning(ex.getMessage());
             return new LightridersMove(this.player, ex);
         } catch (Exception ex) {
+            this.player.sendWarning(ex.getMessage());
             return new LightridersMove(this.player, new InvalidInputException("Failed to parse move"));
         }
     }
