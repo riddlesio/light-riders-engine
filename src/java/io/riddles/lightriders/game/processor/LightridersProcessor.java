@@ -107,16 +107,11 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
      */
     @Override
     public boolean hasGameEnded(LightridersState state) {
-        boolean returnVal = false;
+        long alivePlayers = this.players.stream().filter(LightridersPlayer::isAlive).count();
+        int maxRounds = LightridersEngine.configuration.getInt("maxRounds");
 
-        int alivePlayers = 0;
-        for (LightridersPlayer player : this.players)
-            if (player.isAlive()) alivePlayers++;
-
-        if (alivePlayers < 2) returnVal = true;
-        if (this.gameOver) returnVal = true;
-        if (this.roundNumber >= LightridersEngine.configuration.getInt("maxRounds")) returnVal = true;
-        return returnVal;
+        return alivePlayers < 2 || this.gameOver ||
+                (maxRounds >= 0 && this.roundNumber >= maxRounds);
     }
 
     /**

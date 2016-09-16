@@ -31,13 +31,9 @@ import io.riddles.javainterface.exception.TerminalException;
  */
 public class Lightriders {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         LightridersEngine engine = new LightridersEngine();
 
-        try {
-            engine.run();
-        } catch (TerminalException e) {
-            System.exit(e.getStatusCode());
-        }
+        engine.run();
     }
 }

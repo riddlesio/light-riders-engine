@@ -30,7 +30,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         setDefaults();
     }
     private void setDefaults() {
-        configuration.put("maxRounds", 40);
+        configuration.put("maxRounds", -1);
         configuration.put("fieldWidth", 16);
         configuration.put("fieldHeight", 16);
     }
