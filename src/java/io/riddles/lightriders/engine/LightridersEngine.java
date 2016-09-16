@@ -59,6 +59,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
     @Override
     protected void sendGameSettings(LightridersPlayer player) {
+        player.sendSetting("your_botid", player.getId());
         player.sendSetting("field_width", configuration.getInt("fieldWidth"));
         player.sendSetting("field_height", configuration.getInt("fieldHeight"));
     }

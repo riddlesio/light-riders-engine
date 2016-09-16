@@ -73,7 +73,8 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
         for (LightridersPlayer player : this.players) {
 
             if (player.isAlive()) {
-                player.sendUpdate("field", player, nextBoard.toRepresentationString(this.players));
+                player.sendUpdate("round", roundNumber);
+                player.sendUpdate("field", nextBoard.toRepresentationString(this.players));
                 String response = player.requestMove(ActionType.MOVE.toString());
 
                 // parse the response

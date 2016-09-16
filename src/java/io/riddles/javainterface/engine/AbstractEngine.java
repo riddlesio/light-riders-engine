@@ -304,8 +304,8 @@ public abstract class AbstractEngine<Pr extends AbstractProcessor,
 
         int halfIndex = (args.length - 1) / 2;
         for (int i = 1; i <= halfIndex; i++) {
-            this.botCommands.add(args[i]);
-            this.mongoIds.add(args[i + halfIndex]);
+            this.mongoIds.add(args[i]);
+            this.botCommands.add(args[i + halfIndex]);
         }
     }
 
