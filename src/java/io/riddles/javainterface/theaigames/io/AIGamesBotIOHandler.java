@@ -120,8 +120,8 @@ public class AIGamesBotIOHandler implements BotIOInterface, Runnable {
 
         if (this.response.equalsIgnoreCase(this.NULL_MOVE1) ||
                 this.response.equalsIgnoreCase(this.NULL_MOVE2)) {
-            this.response = null;
             addToDump(String.format("%s\"%s\"", enginesays, this.response));
+            this.response = null;
             return "";
         }
 

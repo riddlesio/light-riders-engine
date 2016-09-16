@@ -310,8 +310,7 @@ public abstract class AbstractEngine<Pr extends AbstractProcessor,
     }
 
     private Process createBotProcess(int id) throws IOException {
-        String command = String.format(
-                "%s aiplayer%d %s", this.runBotCommand, id, this.botCommands.get(id - 1));
+        String command = String.format("%s ai%s", this.runBotCommand, this.botCommands.get(id - 1));
 
         return Runtime.getRuntime().exec(command);
     }
