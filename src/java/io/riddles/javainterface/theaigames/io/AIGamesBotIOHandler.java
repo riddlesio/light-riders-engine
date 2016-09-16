@@ -42,6 +42,8 @@ public class AIGamesBotIOHandler implements BotIOInterface, Runnable {
         this.errorCounter = 0;
         this.finished = false;
         this.timebank = MAX_TIMEBANK;
+
+        run();
     }
 
     @Override
@@ -192,14 +194,6 @@ public class AIGamesBotIOHandler implements BotIOInterface, Runnable {
         return dump.toString();
     }
 
-    public long getMaxTimebank() {
-        return MAX_TIMEBANK;
-    }
-
-    public long getTimePerMove() {
-        return TIME_PER_MOVE;
-    }
-
     /**
      * Start the communication with the bot
      */
@@ -212,5 +206,13 @@ public class AIGamesBotIOHandler implements BotIOInterface, Runnable {
     private void updateTimeBank(long timeElapsed) {
         this.timebank = Math.max(this.timebank - timeElapsed, 0);
         this.timebank = Math.min(this.timebank + TIME_PER_MOVE, MAX_TIMEBANK);
+    }
+
+    public long getMaxTimebank() {
+        return MAX_TIMEBANK;
+    }
+
+    public long getTimePerMove() {
+        return TIME_PER_MOVE;
     }
 }
