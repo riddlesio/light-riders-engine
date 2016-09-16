@@ -221,6 +221,7 @@ public abstract class AbstractEngine<Pr extends AbstractProcessor,
                         String botMongoId = this.mongoIds.get(id - 1);
 
                         player.setAsAIGamesPlayer(botProcess, botMongoId);
+                        sendAIGamesSettings(player, ids);
                     } else if (this.botInputFiles != null) {
                         player.setInputFile(this.botInputFiles[i]);
                     }
@@ -312,6 +313,21 @@ public abstract class AbstractEngine<Pr extends AbstractProcessor,
         String command = String.format("%s %s", this.runBotCommand, this.botCommands.get(id - 1));
 
         return Runtime.getRuntime().exec(command);
+    }
+
+    private void sendAIGamesSettings(AbstractPlayer player, String[] ids) {
+        String playerNames = "";
+        String connector = "";
+        for (String id : ids) {
+            playerNames += String.format("%splayer%s", connector, id);
+            connector = ",";
+        }
+
+        AIGamesBotIOHandler bot = (AIGamesBotIOHandler) player.getIoHandler();
+        bot.sendMessage(String.format("settings player_names %s", playerNames));
+        bot.sendMessage(String.format("settings your_bot player%d", player.getId()));
+        bot.sendMessage(String.format("settings timebank %d", bot.getMaxTimebank()));
+        bot.sendMessage(String.format("settings time_per_move %d", bot.getTimePerMove()));
     }
 
     private void finishAIGames(S initialState) throws InterruptedException {

@@ -192,6 +192,14 @@ public class AIGamesBotIOHandler implements BotIOInterface, Runnable {
         return dump.toString();
     }
 
+    public long getMaxTimebank() {
+        return MAX_TIMEBANK;
+    }
+
+    public long getTimePerMove() {
+        return TIME_PER_MOVE;
+    }
+
     /**
      * Start the communication with the bot
      */
