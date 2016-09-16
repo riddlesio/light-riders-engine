@@ -89,11 +89,12 @@ public abstract class AbstractEngine<Pr extends AbstractProcessor,
         this.players = new ArrayList<>();
         this.gameLoop = new SimpleGameLoop();
 
+        this.botCommands = new ArrayList<>();
+        this.mongoIds = new ArrayList<>();
+
         parseAIGamesArguments(args);
 
         this.ioHandler = new AIGamesIOHandler((args.length - 1) / 2);
-        this.botCommands = new ArrayList<>();
-        this.mongoIds = new ArrayList<>();
     }
 
     /**

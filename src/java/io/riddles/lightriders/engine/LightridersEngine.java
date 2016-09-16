@@ -25,6 +25,11 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         setDefaults();
     }
 
+    public LightridersEngine(String args[]) throws Exception {
+        super(args);
+        setDefaults();
+    }
+
     public LightridersEngine(String wrapperFile, String[] botFiles) {
         super(wrapperFile, botFiles);
         setDefaults();

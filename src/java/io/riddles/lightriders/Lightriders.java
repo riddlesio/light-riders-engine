@@ -32,7 +32,13 @@ import io.riddles.javainterface.exception.TerminalException;
 public class Lightriders {
 
     public static void main(String[] args) throws Exception {
-        LightridersEngine engine = new LightridersEngine();
+        LightridersEngine engine;
+
+        if (args.length > 0) { // Create aigames engine
+            engine = new LightridersEngine(args);
+        } else {
+            engine = new LightridersEngine();
+        }
 
         engine.run();
     }
