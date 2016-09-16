@@ -47,8 +47,8 @@ repositories {
 }
 
 dependencies {
-	compile "org.mongodb:mongodb-driver:3.2.2"
-	compile "com.amazonaws:aws-java-sdk:1.7.15"
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.7.13'
+    compile 'org.mongodb:mongo-java-driver:2.13.3'
 	compile "org.json:json:20160212"
     compile "org.codehaus.groovy:groovy-all:2.4.1"
     compile "cglib:cglib:2.2"
