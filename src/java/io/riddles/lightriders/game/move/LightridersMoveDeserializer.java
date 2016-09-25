@@ -55,13 +55,16 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
     private LightridersMove visitMove(String input) throws InvalidInputException {
         String[] split = input.split(" ");
 
-        if (split.length <= 1) {
-            return new LightridersMove(this.player, MoveType.PASS);
+        if (split.length == 1 ) {
+            if (split[0].equals("pass")) {
+                return new LightridersMove(this.player, MoveType.PASS);
+            }
         }
-
-        if (split[0].equals("move")) {
-            MoveType type = visitMoveType(split[1]);
-            return new LightridersMove(this.player, type);
+        if (split.length == 2) {
+            if (split[0].equals("move")) {
+                MoveType type = visitMoveType(split[1]);
+                return new LightridersMove(this.player, type);
+            }
         }
 
         throw new InvalidInputException("Failed to parse move");
