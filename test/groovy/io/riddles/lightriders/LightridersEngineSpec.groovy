@@ -40,7 +40,6 @@ import spock.lang.Ignore
 class LightridersEngineSpec extends Specification {
 
     class TestEngine extends LightridersEngine {
-        String finalBoard;
 
         TestEngine(IOHandler ioHandler) {
             super();
@@ -58,12 +57,6 @@ class LightridersEngineSpec extends Specification {
 
         void setup() {
             super.setup();
-        }
-
-        @Override
-        protected void finish(LightridersState initialState) {
-            this.finalBoard = initialState.getBoard().toRepresentationString(players, initialState)
-            super.finish(initialState);
         }
 
         public LightridersState getInitialState() {
@@ -147,7 +140,7 @@ class LightridersEngineSpec extends Specification {
         engine.configuration.getInt("maxRounds") == 40
     }
 
-    //@Ignore
+    @Ignore
     def "test LightridersSerializer functions"() {
         setup:
         String[] botInputs = new String[2]

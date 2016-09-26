@@ -1,5 +1,6 @@
 package io.riddles.lightriders.engine;
 
+import io.riddles.javainterface.exception.TerminalException;
 import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.board.LightridersBoard;
 
@@ -20,17 +21,17 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
     protected int nrPlayers = 0, addedPlayers = 0;
 
-    public LightridersEngine() {
-        super();
+    public LightridersEngine() throws TerminalException {
+        super(new String[0]);
         setDefaults();
     }
 
-    public LightridersEngine(String args[]) throws Exception {
+    public LightridersEngine(String args[]) throws TerminalException {
         super(args);
         setDefaults();
     }
 
-    public LightridersEngine(String wrapperFile, String[] botFiles) {
+    public LightridersEngine(String wrapperFile, String[] botFiles) throws TerminalException {
         super(wrapperFile, botFiles);
         setDefaults();
     }
