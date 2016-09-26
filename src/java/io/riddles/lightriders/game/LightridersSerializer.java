@@ -20,6 +20,7 @@
 package io.riddles.lightriders.game;
 
 import io.riddles.javainterface.game.player.AbstractPlayer;
+import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.lightriders.game.processor.LightridersProcessor;
 import io.riddles.lightriders.game.state.LightridersState;
 import org.json.JSONArray;
@@ -27,6 +28,8 @@ import org.json.JSONObject;
 
 import io.riddles.lightriders.game.state.LightridersStateSerializer;
 import io.riddles.javainterface.game.AbstractGameSerializer;
+
+import java.util.ArrayList;
 
 /**
  * io.riddles.catchfrauds.game.GameSerializer - Created on 8-6-16
@@ -61,24 +64,27 @@ public class LightridersSerializer extends
     protected JSONObject addAdditionalJSON(JSONObject game, LightridersProcessor processor, LightridersState initialState) {
 
         JSONArray playerNames = new JSONArray();
-        for (Object obj : processor.getPlayers()) {
-            AbstractPlayer player = (AbstractPlayer) obj;
-            playerNames.put(player.getName());
+        ArrayList <LightridersPlayer> players = processor.getPlayers();
+        JSONObject playersJSON = new JSONObject();
+        if (players != null) {
+            for (Object obj : players) {
+                AbstractPlayer player = (AbstractPlayer) obj;
+                playerNames.put(player.getName());
+            }
+            playersJSON.put("count", players.size());
         }
 
-        JSONObject players = new JSONObject();
-        players.put("count", processor.getPlayers().size());
-        players.put("names", playerNames);
+        playersJSON.put("names", playerNames);
 
         // add winner
         Object winner = JSONObject.NULL;
         if (processor.getWinner() != null) {
             winner = (String)String.valueOf(processor.getWinner().getId());
         }
-        players.put("winner", winner);
+        playersJSON.put("winner", winner);
 
         JSONObject settings = new JSONObject();
-        game.put("players", players);
+        game.put("players", playersJSON);
 
         JSONObject board = new JSONObject();
         board.put("width", initialState.getBoard().getWidth());

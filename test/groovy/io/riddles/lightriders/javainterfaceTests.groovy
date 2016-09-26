@@ -1,5 +1,6 @@
 package io.riddles.lightriders
 
+import io.riddles.javainterface.exception.InvalidInputException
 import io.riddles.lightriders.game.data.MoveType
 import io.riddles.lightriders.game.move.LightridersMoveDeserializer
 import io.riddles.lightriders.game.move.LightridersMove
@@ -25,7 +26,7 @@ class javainterfaceTests extends Specification {
         "move down"      | MoveType.DOWN
         "move right"     | MoveType.RIGHT
         "move left"      | MoveType.LEFT
-        "pass"      | MoveType.PASS
+        "pass"           | MoveType.PASS
     }
 
     //@Ignore
@@ -35,10 +36,10 @@ class javainterfaceTests extends Specification {
         LightridersPlayer player = new LightridersPlayer(1);
         LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
 
-        when: /* Unexpectedly groovy finds returned value as null, while debugging it seems to result in a Move. */
+        when:
         LightridersMove move = deserializer.traverse("updown");
 
         then:
-        move.getException() == InvalidInputException;
+        move.getException() instanceof InvalidInputException;
     }
 }
