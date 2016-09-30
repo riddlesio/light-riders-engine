@@ -3,7 +3,7 @@ package io.riddles.lightriders.engine;
 import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.board.LightridersBoard;
 
-import io.riddles.lightriders.game.data.MoveType;
+import io.riddles.lightriders.game.move.MoveType;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.lightriders.game.processor.LightridersProcessor;
 import io.riddles.lightriders.game.state.LightridersState;
@@ -17,13 +17,6 @@ import java.util.Random;
  * Created by joost on 6/27/16.
  */
 public class LightridersEngine extends AbstractEngine<LightridersProcessor, LightridersPlayer, LightridersState> {
-
-    protected int nrPlayers = 0, addedPlayers = 0;
-
-    public LightridersEngine() {
-        super();
-        setDefaults();
-    }
 
     public LightridersEngine(String args[]) throws Exception {
         super(args);
@@ -44,11 +37,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
     @Override
     protected LightridersPlayer createPlayer(int id) {
         LightridersPlayer player = new LightridersPlayer(id);
-        player.setColor(Color.values()[addedPlayers]); /* This limits the game to four players */
-        player.setCoordinate(getStartCoordinate(addedPlayers));
-        player.setDirection(MoveType.LEFT);
-        if (player.getCoordinate().getX() < getInitialState().getBoard().getWidth()/2) player.setDirection(MoveType.RIGHT);
-        addedPlayers++;
+        player.setColor(Color.values()[id]); /* This limits the game to four players */
         return player;
     }
 
@@ -77,38 +66,45 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         LightridersBoard b = new LightridersBoard(configuration.getInt("fieldWidth"), configuration.getInt("fieldHeight"));
         b.clear();
         for (LightridersPlayer player : this.players) {
-            b.setFieldAt(player.getCoordinate(), player.getColor().toString().substring(0,1));
+            player.setCoordinate(getStartCoordinate(player.getId(), b.getWidth(), b.getHeight()));
+
+            player.setDirection(MoveType.LEFT);
+            if (player.getCoordinate().getX() < b.getWidth() / 2) {
+                player.setDirection(MoveType.RIGHT);
+            }
+
+            b.setFieldAt(player.getCoordinate(), player.getColor().toString().substring(0, 1));
+
+            s.setPlayerData(player);
         }
         s.setBoard(b);
+
         return s;
     }
 
 
-    protected Point getStartCoordinate(int playerNr) {
-        LightridersBoard b = getInitialState().getBoard();
-
-        int width = b.getWidth();
-        int height = b.getHeight();
-        if (this.nrPlayers == 2) {
+    protected Point getStartCoordinate(int playerNr, int width, int height) {
+        if (this.players.size() == 2) {
             switch (playerNr) {
                 case 0:
-                    return new Point((int) Math.floor(width / 4), height / 2);
+                    return new Point((int) Math.floor(width / 4) - 1, (height / 2) - 1);
                 case 1:
-                    return new Point((int) Math.floor(width / 4) * 3, height / 2);
-            }
-        } else {
-            switch (playerNr) {
-                case 0:
-                    return new Point((int) Math.floor(width / 4), height / 4);
-                case 1:
-                    return new Point((int) Math.floor(width / 4) * 3, height / 4);
-                case 2:
-                    return new Point((int) Math.floor(width / 4), height / 4 * 3);
-                case 3:
-                    return new Point((int) Math.floor(width / 4) * 3, height / 4 * 3);
+                    return new Point((int) Math.floor(width / 4) * 3, (height / 2) - 1);
             }
         }
-        Random r = new Random();
-        return new Point(r.nextInt(width), r.nextInt(height));
+
+        switch (playerNr) {
+            case 0:
+                return new Point((int) Math.floor(width / 4), height / 4);
+            case 1:
+                return new Point((int) Math.floor(width / 4) * 3, height / 4);
+            case 2:
+                return new Point((int) Math.floor(width / 4), height / 4 * 3);
+            case 3:
+                return new Point((int) Math.floor(width / 4) * 3, height / 4 * 3);
+            default:
+                Random r = new Random();
+                return new Point(r.nextInt(width), r.nextInt(height));
+        }
     }
 }

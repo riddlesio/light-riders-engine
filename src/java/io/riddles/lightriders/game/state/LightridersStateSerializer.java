@@ -55,7 +55,7 @@ public class LightridersStateSerializer extends AbstractStateSerializer<Lightrid
 
     private JSONObject visitState(LightridersState state) throws NullPointerException {
         JSONObject stateJson = new JSONObject();
-        stateJson.put("round", state.getRoundNumber()-1);
+        stateJson.put("round", state.getRoundNumber());
 
         JSONArray playersJson = new JSONArray();
         for (LightridersPlayer player : this.processor.getPlayers()) {

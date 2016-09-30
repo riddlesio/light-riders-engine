@@ -81,14 +81,10 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
                 LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
                 LightridersMove move = deserializer.traverse(response);
 
+                move = logic.transform(nextState, player, move);
+
                 // create the next move
                 nextState.getMoves().add(move);
-
-                try {
-                    logic.transform(nextState, player, move);
-                } catch (Exception e) {
-                    LOGGER.info(String.format("Unknown response: %s", response));
-                }
 
                 // stop game if bot returns nothing
                 if (response == null) {

@@ -49,6 +49,9 @@ public class LightridersSerializer extends
         LightridersState state = initialState;
         LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
         stateSerializer.setProcessor(processor);
+
+        states.put(stateSerializer.traverseToJson(initialState));
+
         while (state.hasNextState()) {
             state = (LightridersState) state.getNextState();
             states.put(stateSerializer.traverseToJson(state));

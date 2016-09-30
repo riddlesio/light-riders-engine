@@ -2,8 +2,6 @@ package io.riddles.javainterface.io;
 
 import java.io.IOException;
 
-import io.riddles.javainterface.game.player.AbstractPlayer;
-
 /**
  * io.riddles.javainterface.io.IOInterface - Created on 15-9-16
  *
@@ -11,7 +9,7 @@ import io.riddles.javainterface.game.player.AbstractPlayer;
  *
  * @author Jim van Eeden - jim@riddles.io
  */
-public interface IOInterface {
+public interface IO {
 
     void sendMessage(String message);
     void waitForMessage(String expected);

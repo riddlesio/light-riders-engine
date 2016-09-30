@@ -19,7 +19,6 @@
 
 package io.riddles.lightriders.game.move;
 
-import io.riddles.lightriders.game.data.MoveType;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.javainterface.exception.InvalidInputException;
 import io.riddles.javainterface.serialize.Deserializer;

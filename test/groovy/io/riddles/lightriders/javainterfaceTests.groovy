@@ -1,6 +1,6 @@
 package io.riddles.lightriders
 
-import io.riddles.lightriders.game.data.MoveType
+import io.riddles.lightriders.game.move.MoveType
 import io.riddles.lightriders.game.move.LightridersMoveDeserializer
 import io.riddles.lightriders.game.move.LightridersMove
 import io.riddles.lightriders.game.player.LightridersPlayer

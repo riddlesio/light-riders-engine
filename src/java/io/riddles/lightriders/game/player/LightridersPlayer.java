@@ -21,7 +21,7 @@ package io.riddles.lightriders.game.player;
 
 import io.riddles.javainterface.game.player.AbstractPlayer;
 import io.riddles.lightriders.game.data.Color;
-import io.riddles.lightriders.game.data.MoveType;
+import io.riddles.lightriders.game.move.MoveType;
 
 import java.awt.*;
 

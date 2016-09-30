@@ -34,11 +34,7 @@ public class Lightriders {
     public static void main(String[] args) throws Exception {
         LightridersEngine engine;
 
-        if (args.length > 0) { // Create aigames engine
-            engine = new LightridersEngine(args);
-        } else {
-            engine = new LightridersEngine();
-        }
+        engine = new LightridersEngine(args);
 
         engine.run();
     }

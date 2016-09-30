@@ -19,7 +19,6 @@
 
 package io.riddles.lightriders.game.move;
 
-import io.riddles.lightriders.game.data.MoveType;
 import io.riddles.javainterface.exception.InvalidInputException;
 import io.riddles.javainterface.game.move.AbstractMove;
 import io.riddles.lightriders.game.player.LightridersPlayer;
@@ -40,7 +39,7 @@ public class LightridersMove extends AbstractMove<LightridersPlayer> {
         this.type = type;
     }
 
-    public LightridersMove(LightridersPlayer player, InvalidInputException exception) {
+    public LightridersMove(LightridersPlayer player, Exception exception) {
         super(player, exception);
     }
 
