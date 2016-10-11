@@ -50,7 +50,9 @@ public class Board {
         int counter = 0;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
-                if (counter > 0) s += ",";
+                if (counter > 0) {
+                    s += ",";
+                }
                 s += this.field[x][y];
                 counter ++;
             }

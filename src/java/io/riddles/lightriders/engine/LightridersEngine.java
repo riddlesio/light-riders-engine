@@ -33,7 +33,6 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         configuration.put("fieldHeight", 16);
     }
 
-
     @Override
     protected LightridersPlayer createPlayer(int id) {
         LightridersPlayer player = new LightridersPlayer(id);
@@ -81,7 +80,6 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
         return s;
     }
-
 
     protected Point getStartCoordinate(int playerNr, int width, int height) {
         if (this.players.size() == 2) {

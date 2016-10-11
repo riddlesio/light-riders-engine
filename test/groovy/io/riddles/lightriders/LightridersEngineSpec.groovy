@@ -56,11 +56,11 @@ class LightridersEngineSpec extends Specification {
             super.setup();
         }
 
-        @Override
-        protected void finish(LightridersState initialState) {
-            this.finalBoard = initialState.getBoard().toRepresentationString(players, initialState)
-            super.finish(initialState);
-        }
+//        @Override
+//        protected void finish(LightridersState initialState) {
+//            this.finalBoard = initialState.getBoard().toRepresentationString(players)
+//            super.finish(initialState);
+//        }
     }
 
 

@@ -40,9 +40,9 @@ public class LightridersBoard extends Board {
         int counter = 0;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
-                String c = "0";
+                String c = ".";
                 if (!isEmpty(new Point(x,y))) {
-                    c = "-1";
+                    c = "x";
                 }
                 for (LightridersPlayer player : players) {
                     if (player.getCoordinate().equals(new Point(x, y))) c = Integer.toString(player.getId());
