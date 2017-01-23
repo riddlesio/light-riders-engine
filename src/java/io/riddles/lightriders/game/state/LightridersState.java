@@ -19,6 +19,7 @@
 
 package io.riddles.lightriders.game.state;
 
+import io.riddles.javainterface.game.player.PlayerBound;
 import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.move.LightridersMove;
 import io.riddles.javainterface.game.state.AbstractState;
@@ -35,11 +36,10 @@ import java.util.HashMap;
  *
  * @author joost
  */
-public class LightridersState extends AbstractState<LightridersMove> {
+public class LightridersState extends AbstractState<LightridersPlayerState> implements PlayerBound {
 
     private LightridersBoard board;
-    private HashMap<LightridersPlayer, Boolean> playerAlive;
-    private HashMap<LightridersPlayer, Point> playerCoordinates;
+    private int playerId;
 
     public LightridersState() {
         super();
@@ -48,15 +48,24 @@ public class LightridersState extends AbstractState<LightridersMove> {
     /**
      * the LightridersState that will be the state for the this round.
      * @param LightridersState previous state to be stored
-     * @param ArrayList<LightridersMove> ArrayList with moves for this round
+     * @param ArrayList<LightridersPlayerState> ArrayList with playerStates for this round
      * @param int roundNumber
      * @return The LightridersState that will be the start of the next round
      */
-    public LightridersState(LightridersState previousState, ArrayList<LightridersMove> moves, int roundNumber) {
-        super(previousState, moves, roundNumber);
-        playerAlive = new HashMap<LightridersPlayer, Boolean>();
-        playerCoordinates = new HashMap<LightridersPlayer, Point> ();
+    public LightridersState(LightridersState previousState, ArrayList<LightridersPlayerState> playerStates, int roundNumber) {
+        super(previousState, playerStates, roundNumber);
+        this.board = previousState.getBoard().clone();
+        this.playerId = previousState.getPlayerId();
     }
+
+    public LightridersState(LightridersState previousState, LightridersPlayerState playerState, int roundNumber) {
+        super(previousState, playerState, roundNumber);
+        this.board = previousState.getBoard().clone();
+        this.playerId = previousState.getPlayerId();
+    }
+
+
+
 
     /**
      * createNextState creates new objects needed for a new state.
@@ -113,4 +122,8 @@ public class LightridersState extends AbstractState<LightridersMove> {
         return false;
     }
 
+    public int getPlayerId() { return this.playerId; }
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
 }

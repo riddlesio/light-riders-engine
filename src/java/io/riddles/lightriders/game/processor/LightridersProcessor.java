@@ -21,11 +21,14 @@ package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
 
+import io.riddles.javainterface.game.processor.PlayerResponseProcessor;
+import io.riddles.javainterface.io.PlayerResponse;
 import io.riddles.lightriders.engine.LightridersEngine;
 import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.data.*;
 import io.riddles.lightriders.game.move.*;
 import io.riddles.lightriders.game.player.LightridersPlayer;
+import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
 import io.riddles.javainterface.game.processor.AbstractProcessor;
 
@@ -36,24 +39,14 @@ import io.riddles.javainterface.game.processor.AbstractProcessor;
  *
  * @author jim
  */
-public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, LightridersState> {
+public class LightridersProcessor implements PlayerResponseProcessor<LightridersPlayer, LightridersState> {
 
-    private int roundNumber;
-    private boolean gameOver;
-
-    public LightridersProcessor(ArrayList<LightridersPlayer> players) {
-        super(players);
-        this.gameOver = false;
-    }
-
-    @Override
-    public void preGamePhase() {
-
+    public LightridersProcessor() {
+        super();
     }
 
     /**
-     * Play one round of the game. It takes a LightridersState,
-     * asks all living players for a response and delivers a new LightridersState.
+     *
      *
      * Return
      * the LightridersState that will be the state for the next round.
@@ -62,45 +55,49 @@ public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, L
      * @return The LightridersState that will be the start of the next round
      */
     @Override
-    public LightridersState playRound(int roundNumber, LightridersState state) {
-        LOGGER.info(String.format("Playing round %d", roundNumber));
-        this.roundNumber = roundNumber;
+    public LightridersState processInput(LightridersState state, int roundNumber, PlayerResponse input) {
+
+        /* Clone playerStates for next State */
+        ArrayList<LightridersPlayerState> nextPlayerStates = clonePlayerStates(state.getPlayerStates());
 
         LightridersLogic logic = new LightridersLogic();
         LightridersState nextState = state.createNextState(roundNumber);
+        nextState.setPlayerId(input.getPlayerId());
+        LightridersPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
+        playerState.setPlayerId(input.getPlayerId());
+
+
         LightridersBoard nextBoard = nextState.getBoard();
 
-        for (LightridersPlayer player : this.players) {
+        // parse the response
+        LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer();
+        LightridersMove move = deserializer.traverse(input.getValue());
 
-            if (player.isAlive()) {
-                player.sendUpdate("round", roundNumber);
-                player.sendUpdate("field", nextBoard.toRepresentationString(this.players));
-                String response = player.requestMove(ActionType.MOVE.toString());
 
-                // parse the response
-                LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
-                LightridersMove move = deserializer.traverse(response);
+        // create the next move
 
-                // create the next move
-                nextState.getMoves().add(move);
-
-                try {
-                    logic.transform(nextState, player, move);
-                } catch (Exception e) {
-                    LOGGER.info(String.format("Unknown response: %s", response));
-                }
-
-                // stop game if bot returns nothing
-                if (response == null) {
-                    this.gameOver = true;
-                }
-            }
-            nextState.setPlayerData(player);
+        try {
+            logic.transform(nextState, playerState);
+        } catch (Exception e) {
+            //LOGGER.info(String.format("Unknown response: %s", response));
         }
-
         return nextState;
     }
 
+    private ArrayList<LightridersPlayerState> clonePlayerStates(ArrayList<LightridersPlayerState> playerStates) {
+        ArrayList<LightridersPlayerState> nextPlayerStates = new ArrayList<>();
+        for (LightridersPlayerState playerState : playerStates) {
+            LightridersPlayerState nextPlayerState = playerState.clone();
+            nextPlayerStates.add(nextPlayerState);
+        }
+        return nextPlayerStates;
+    }
+
+    @Override
+    public void sendUpdates(LightridersState state, LightridersPlayer player) {
+        player.sendUpdate("round", state.getRoundNumber());
+        player.sendUpdate("field", state.getBoard().toString()); /* TODO: Need a representationstring? */
+    }
     /**
      * The stopping condition for this game.
      * @param LightridersState the state to determine whether the game has ended.

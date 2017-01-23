@@ -31,17 +31,17 @@ import io.riddles.lightriders.game.player.LightridersPlayer;
  *
  * @author jim
  */
-public class LightridersMove extends AbstractMove<LightridersPlayer> {
+public class LightridersMove extends AbstractMove {
 
     private MoveType type;
 
-    public LightridersMove(LightridersPlayer player, MoveType type) {
-        super(player);
+    public LightridersMove(MoveType type) {
+        super();
         this.type = type;
     }
 
-    public LightridersMove(LightridersPlayer player, InvalidInputException exception) {
-        super(player, exception);
+    public LightridersMove(Exception exception) {
+        super(exception);
     }
 
     public MoveType getMoveType() {

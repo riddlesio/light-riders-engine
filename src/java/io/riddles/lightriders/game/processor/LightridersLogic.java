@@ -1,9 +1,8 @@
 package io.riddles.lightriders.game.processor;
 
 import io.riddles.lightriders.game.board.LightridersBoard;
-import io.riddles.lightriders.game.player.LightridersPlayer;
-
 import io.riddles.lightriders.game.move.LightridersMove;
+import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
 
 import java.awt.*;
@@ -31,24 +30,26 @@ public class LightridersLogic {
      * @param LightridersMove The move of the player
      * @return
      */
-    public void transform(LightridersState state, LightridersPlayer player, LightridersMove move) {
+    public void transform(LightridersState state, LightridersPlayerState playerState) {
+        LightridersMove move = playerState.getMove();
 
-        int pId = player.getId();
+        int pId = playerState.getPlayerId();
+
         LightridersBoard board = state.getBoard();
 
         if (move.getMoveType() != null) { /* MoveType = null when it has an Exception */
             switch (move.getMoveType()) {
                 case UP:
-                    player.setDirection(move.getMoveType());
+                    playerState.setDirection(move.getMoveType());
                     break;
                 case DOWN:
-                    player.setDirection(move.getMoveType());
+                    playerState.setDirection(move.getMoveType());
                     break;
                 case RIGHT:
-                    player.setDirection(move.getMoveType());
+                    playerState.setDirection(move.getMoveType());
                     break;
                 case LEFT:
-                    player.setDirection(move.getMoveType());
+                    playerState.setDirection(move.getMoveType());
                     break;
             }
         }

@@ -1,3 +1,9 @@
+plugins {
+    id "com.jfrog.artifactory" version "4.4.0"
+}
+
+group 'io.riddles'
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'application'
@@ -8,14 +14,19 @@ mainClassName = 'io.riddles.lightriders.Lightriders'
 sourceCompatibility = 1.8
 version = '1.0.0'
 
+artifactory {
+    resolve {
+        contextUrl = 'http://artifactory.dev.riddles.io/artifactory'
+        repoKey = 'libs-release-local'
+        username = "joost"
+        password = ""
+    }
+}
+
 sourceSets {
     main {
         java {
             srcDir 'src/java'
-        }
-
-        resources {
-            srcDir 'src/resources'
         }
     }
 
@@ -48,10 +59,11 @@ repositories {
 
 dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.7.13'
+    compile group: 'io.riddles', name: 'javainterface', version: '1.0.0'
     compile 'org.mongodb:mongo-java-driver:2.13.3'
 	compile "org.json:json:20160212"
     compile "org.codehaus.groovy:groovy-all:2.4.1"
     compile "cglib:cglib:2.2"
     testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
-
+    compile group: 'org.objenesis', name: 'objenesis', version: '1.2'
 }
