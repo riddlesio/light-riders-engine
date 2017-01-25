@@ -1,17 +1,26 @@
 package io.riddles.lightriders.engine;
 
+import io.riddles.javainterface.configuration.CheckedConfiguration;
+import io.riddles.javainterface.configuration.Configuration;
+import io.riddles.javainterface.engine.GameLoop;
+import io.riddles.javainterface.engine.TurnBasedGameLoop;
 import io.riddles.javainterface.exception.TerminalException;
+import io.riddles.javainterface.game.data.Point;
+import io.riddles.javainterface.game.player.PlayerProvider;
+import io.riddles.javainterface.io.BotIO;
+import io.riddles.javainterface.io.IO;
 import io.riddles.lightriders.game.data.Color;
 import io.riddles.lightriders.game.board.LightridersBoard;
 
 import io.riddles.lightriders.game.data.MoveType;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.lightriders.game.processor.LightridersProcessor;
+import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
 import io.riddles.javainterface.engine.AbstractEngine;
 import io.riddles.lightriders.game.LightridersSerializer;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -19,50 +28,51 @@ import java.util.Random;
  */
 public class LightridersEngine extends AbstractEngine<LightridersProcessor, LightridersPlayer, LightridersState> {
 
-    protected int nrPlayers = 0, addedPlayers = 0;
+    protected int nrPlayers = 0;
 
-    public LightridersEngine() throws TerminalException {
-        super(new String[0]);
-        setDefaults();
+    public LightridersEngine(PlayerProvider<LightridersPlayer> playerProvider, IO ioHandler) throws TerminalException {
+        super(playerProvider, ioHandler);
     }
-
-    public LightridersEngine(String args[]) throws TerminalException {
-        super(args);
-        setDefaults();
-    }
-
-    public LightridersEngine(String wrapperFile, String[] botFiles) throws TerminalException {
-        super(wrapperFile, botFiles);
-        setDefaults();
-    }
-    private void setDefaults() {
-        configuration.put("maxRounds", -1);
-        configuration.put("fieldWidth", 16);
-        configuration.put("fieldHeight", 16);
-    }
-
 
     @Override
-    protected LightridersPlayer createPlayer(int id) {
+    protected CheckedConfiguration getConfiguration() {
+        CheckedConfiguration cc = new CheckedConfiguration();
+        cc.addRequiredKey("maxRounds");
+        cc.addRequiredKey("fieldWidth");
+        cc.addRequiredKey("fieldHeight");
+
+        cc.put("maxRounds", 10);
+        cc.put("fieldWidth", 19);
+        cc.put("fieldHeight", 19);
+
+        return cc;
+    }
+
+    @Override
+    protected LightridersPlayer createPlayer(int id, BotIO ioHandler) {
         LightridersPlayer player = new LightridersPlayer(id);
-        player.setColor(Color.values()[addedPlayers]); /* This limits the game to four players */
-        player.setCoordinate(getStartCoordinate(addedPlayers));
-        player.setDirection(MoveType.LEFT);
-        if (player.getCoordinate().getX() < getInitialState().getBoard().getWidth()/2) player.setDirection(MoveType.RIGHT);
-        addedPlayers++;
+        player.setIoHandler(ioHandler);
         return player;
     }
 
     @Override
     protected LightridersProcessor createProcessor() {
-        return new LightridersProcessor(this.players);
+
+        return new LightridersProcessor();
     }
 
     @Override
-    protected void sendGameSettings(LightridersPlayer player) {
+    protected GameLoop createGameLoop() {
+
+        return new TurnBasedGameLoop(this.playerProvider);
+    }
+
+    @Override
+    protected void sendSettingsToPlayer(LightridersPlayer player, Configuration configuration) {
         player.sendSetting("your_botid", player.getId());
         player.sendSetting("field_width", configuration.getInt("fieldWidth"));
         player.sendSetting("field_height", configuration.getInt("fieldHeight"));
+        player.sendSetting("max_rounds", configuration.getInt("maxRounds"));
     }
 
     @Override
@@ -73,23 +83,44 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
 
     @Override
-    protected LightridersState getInitialState() {
+    protected LightridersState getInitialState(Configuration configuration) {
         LightridersState s = new LightridersState();
-        LightridersBoard b = new LightridersBoard(configuration.getInt("fieldWidth"), configuration.getInt("fieldHeight"));
-        b.clear();
-        for (LightridersPlayer player : this.players) {
-            b.setFieldAt(player.getCoordinate(), player.getColor().toString().substring(0,1));
+
+
+
+
+        int fieldWidth = configuration.getInt("fieldWidth");
+        int fieldHeight = configuration.getInt("fieldHeight");
+
+        LightridersBoard board = new LightridersBoard(fieldWidth, fieldHeight);
+        board.clear();
+
+        ArrayList<LightridersPlayerState> playerStates = new ArrayList<>();
+        int counter = 0;
+
+        for (LightridersPlayer player : this.playerProvider.getPlayers()) {
+            LightridersPlayerState playerState = new LightridersPlayerState();
+            playerState.setPlayerId(player.getId());
+            playerState.setColor(Color.values()[counter]); /* This limits the game to four players */
+
+            playerState.setCoordinate(getStartCoordinate(counter, 4, fieldWidth, fieldHeight));
+
+            playerState.setDirection(MoveType.LEFT);
+            if (playerState.getCoordinate().getX() < fieldWidth/2) playerState.setDirection(MoveType.RIGHT);
+
+            playerStates.add(playerState);
+            board.setFieldAt(playerState.getCoordinate(), String.valueOf(playerState.getPlayerId()));
+
+            counter++;
         }
-        s.setBoard(b);
+
+        s.setBoard(board);
         return s;
     }
 
 
-    protected Point getStartCoordinate(int playerNr) {
-        LightridersBoard b = getInitialState().getBoard();
+    protected Point getStartCoordinate(int playerNr, int nrPlayers, int width, int height) {
 
-        int width = b.getWidth();
-        int height = b.getHeight();
         if (this.nrPlayers == 2) {
             switch (playerNr) {
                 case 0:

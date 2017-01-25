@@ -19,8 +19,12 @@
 
 package io.riddles.lightriders;
 
+import io.riddles.javainterface.game.player.PlayerProvider;
+import io.riddles.javainterface.io.IOHandler;
 import io.riddles.lightriders.engine.LightridersEngine;
 import io.riddles.javainterface.exception.TerminalException;
+import io.riddles.lightriders.game.player.LightridersPlayer;
+import io.riddles.lightriders.game.state.LightridersState;
 
 /**
  * io.riddles.lightriders.Lightriders - Created on 2-6-16
@@ -34,12 +38,11 @@ public class Lightriders {
     public static void main(String[] args) throws Exception {
         LightridersEngine engine;
 
-        if (args.length > 0) { // Create aigames engine
-            engine = new LightridersEngine(args);
-        } else {
-            engine = new LightridersEngine();
-        }
+        engine = new LightridersEngine(new PlayerProvider<LightridersPlayer>(), new IOHandler());
 
-        engine.run();
+        //new LifecycleRunner().run(engine);
+        LightridersState state = engine.willRun();
+        state = engine.run(state);
+        engine.didRun(state);
     }
 }

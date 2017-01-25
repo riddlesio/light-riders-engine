@@ -1,6 +1,12 @@
-plugins {
-    id "com.jfrog.artifactory" version "4.4.0"
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0"
+    }
 }
+apply plugin: "com.jfrog.artifactory"
 
 group 'io.riddles'
 
@@ -19,7 +25,7 @@ artifactory {
         contextUrl = 'http://artifactory.dev.riddles.io/artifactory'
         repoKey = 'libs-release-local'
         username = "joost"
-        password = ""
+        password = "5aT7UjyahqsUHBZx"
     }
 }
 
@@ -59,7 +65,7 @@ repositories {
 
 dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.7.13'
-    compile group: 'io.riddles', name: 'javainterface', version: '1.0.0'
+    compile(group: 'io.riddles', name: 'javainterface', version: '1.0.1')
     compile 'org.mongodb:mongo-java-driver:2.13.3'
 	compile "org.json:json:20160212"
     compile "org.codehaus.groovy:groovy-all:2.4.1"

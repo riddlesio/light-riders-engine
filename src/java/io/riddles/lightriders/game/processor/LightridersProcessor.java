@@ -21,6 +21,7 @@ package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
 
+import io.riddles.javainterface.game.player.PlayerBound;
 import io.riddles.javainterface.game.processor.PlayerResponseProcessor;
 import io.riddles.javainterface.io.PlayerResponse;
 import io.riddles.lightriders.engine.LightridersEngine;
@@ -134,10 +135,14 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
      * @return always return 0.
      */
     @Override
-    public double getScore() {
-        return 0;
+    public double getScore(LightridersState state) {
+        return state.getRoundNumber();
     }
 
+    @Override
+    public Enum getActionRequest(LightridersState intermediateState, PlayerBound playerState) {
+        return ActionType.MOVE;
+    }
 
 
 }

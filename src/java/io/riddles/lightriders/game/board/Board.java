@@ -1,6 +1,7 @@
 package io.riddles.lightriders.game.board;
 
-import java.awt.*;
+
+import io.riddles.javainterface.game.data.Point;
 
 /**
  * io.riddles.bookinggame.game.board.Board - Created on 29-6-16
