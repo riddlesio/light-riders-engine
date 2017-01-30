@@ -77,7 +77,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
     @Override
     protected String getPlayedGame(LightridersState initialState) {
-        LightridersSerializer serializer = new LightridersSerializer();
+        LightridersSerializer serializer = new LightridersSerializer(this.playerProvider);
         return serializer.traverseToString(this.processor, initialState);
     }
 

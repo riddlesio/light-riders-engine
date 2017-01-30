@@ -1,12 +1,10 @@
 package io.riddles.lightriders.game.processor;
 
+import io.riddles.javainterface.game.data.Point;
 import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.move.LightridersMove;
 import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
-
-import java.awt.*;
-
 /**
  * io.riddles.lightriders.game.processor.LightridersLogic - Created on 6/27/16
  *
@@ -26,8 +24,7 @@ public class LightridersLogic {
      * Return
      * Returns nothing, but transforms the given LightridersState.
      * @param LightridersState The initial state
-     * @param LightridersPlayer The player involved
-     * @param LightridersMove The move of the player
+     * @param LightridersPlayerState The playerState involved
      * @return
      */
     public void transform(LightridersState state, LightridersPlayerState playerState) {
@@ -54,17 +51,17 @@ public class LightridersLogic {
             }
         }
 
-        Point c = player.getCoordinate();
+        Point c = playerState.getCoordinate();
         Point newC = c;
 
-        switch(player.getDirection()) {
+        switch(playerState.getDirection()) {
             case UP:
                 if (c.getY() > 0) {
                     if (board.isEmpty(new Point(c.x, c.y - 1))) {
                         newC = new Point(c.x, c.y - 1);
                     }
                 } else {
-                    player.kill();
+                    playerState.kill();
                 }
                 break;
             case DOWN:
@@ -73,7 +70,7 @@ public class LightridersLogic {
                         newC = new Point(c.x, c.y + 1);
                     }
                 } else {
-                    player.kill();
+                    playerState.kill();
                 }
                 break;
             case RIGHT:
@@ -82,7 +79,7 @@ public class LightridersLogic {
                         newC = new Point(c.x + 1, c.y);
                     }
                 } else {
-                    player.kill();
+                    playerState.kill();
                 }
                 break;
             case LEFT:
@@ -91,16 +88,16 @@ public class LightridersLogic {
                         newC = new Point(c.x - 1, c.y);
                     }
                 } else {
-                    player.kill();
+                    playerState.kill();
                 }
                 break;
         }
 
         if (board.isEmpty(newC)) {
-            board.setFieldAt(newC, player.getColor().toString().substring(0,1));
-            player.setCoordinate(newC);
+            board.setFieldAt(newC, playerState.getColor().toString().substring(0,1));
+            playerState.setCoordinate(newC);
         } else {
-            player.kill();
+            playerState.kill();
         }
     }
 }

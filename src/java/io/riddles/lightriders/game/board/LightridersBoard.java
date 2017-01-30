@@ -1,11 +1,10 @@
 package io.riddles.lightriders.game.board;
 
+import io.riddles.javainterface.game.data.Point;
 import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.lightriders.game.state.LightridersState;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by joost on 7/11/16.
@@ -40,7 +39,7 @@ public class LightridersBoard extends Board {
      * @param :
      * @return : String with comma separated ints for every field.
      */
-    public String toRepresentationString(ArrayList<LightridersPlayer> players) {
+    public String toRepresentationString() {
         String s = "";
         int counter = 0;
         for (int y = 0; y < this.height; y++) {
@@ -49,9 +48,7 @@ public class LightridersBoard extends Board {
                 if (!isEmpty(new Point(x,y))) {
                     c = "-1";
                 }
-                for (LightridersPlayer player : players) {
-                    if (player.getCoordinate().equals(new Point(x, y))) c = Integer.toString(player.getId());
-                }
+                /* TODO: this function isn't implemented */
                 if (counter > 0) s+= ",";
                 s += c;
                 counter++;
@@ -65,5 +62,17 @@ public class LightridersBoard extends Board {
             return false;
         }
         return (field[c.x][c.y].equals("."));
+    }
+
+    public LightridersBoard clone() {
+        LightridersBoard cBoard = new LightridersBoard(this.width, this.height);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Point p = new Point(x, y);
+                cBoard.setFieldAt(p, getFieldAt(p));
+            }
+        }
+        return cBoard;
     }
 }

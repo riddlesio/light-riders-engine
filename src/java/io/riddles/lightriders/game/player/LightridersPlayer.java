@@ -26,7 +26,7 @@ import io.riddles.lightriders.game.data.MoveType;
 import java.awt.*;
 
 /**
- * io.riddles.catchfrauds.game.player.BookingGameMovePlayer - Created on 3-6-16
+ * io.riddles.lightriders.game.player.LightridersPlayer - Created on 3-6-16
  *
  * [description]
  *
@@ -38,8 +38,6 @@ public class LightridersPlayer extends AbstractPlayer {
 
     public LightridersPlayer(int id) {
         super(id);
-        this.alive = true;
-        this.c = new Point (0,0);
     }
 
 

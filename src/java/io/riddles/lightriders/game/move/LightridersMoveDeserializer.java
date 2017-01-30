@@ -33,10 +33,8 @@ import io.riddles.javainterface.serialize.Deserializer;
  */
 public class LightridersMoveDeserializer implements Deserializer<LightridersMove> {
 
-    private LightridersPlayer player;
+    public LightridersMoveDeserializer() {
 
-    public LightridersMoveDeserializer(LightridersPlayer player) {
-        this.player = player;
     }
 
     @Override
@@ -44,11 +42,11 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
         try {
             return visitMove(string);
         } catch (InvalidInputException ex) {
-            this.player.sendWarning(ex.getMessage());
-            return new LightridersMove(this.player, ex);
+            //this.player.sendWarning(ex.getMessage()); TODO: This moves to TurnBasedGameLoop
+            return new LightridersMove(ex);
         } catch (Exception ex) {
-            this.player.sendWarning(ex.getMessage());
-            return new LightridersMove(this.player, new InvalidInputException("Failed to parse move"));
+            //this.player.sendWarning("Failed to parse move"); TODO: This moves to TurnBasedGameLoop
+            return new LightridersMove(new InvalidInputException("Failed to parse move"));
         }
     }
 
@@ -57,13 +55,13 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
 
         if (split.length == 1 ) {
             if (split[0].equals("pass")) {
-                return new LightridersMove(this.player, MoveType.PASS);
+                return new LightridersMove(MoveType.PASS);
             }
         }
         if (split.length == 2) {
             if (split[0].equals("move")) {
                 MoveType type = visitMoveType(split[1]);
-                return new LightridersMove(this.player, type);
+                return new LightridersMove(type);
             }
         }
 

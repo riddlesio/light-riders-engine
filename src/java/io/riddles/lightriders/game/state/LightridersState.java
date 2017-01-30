@@ -89,38 +89,6 @@ public class LightridersState extends AbstractState<LightridersPlayerState> impl
         this.board = b;
     }
 
-    /**
-     * setPlayerData takes a LightridersPlayer, stores it's coordinate and aliveness
-     * @param LightridersPlayer
-     */
-    public void setPlayerData(LightridersPlayer p) {
-        playerAlive.put(p, p.isAlive());
-        playerCoordinates.put(p, p.getCoordinate());
-    }
-
-    /**
-     * getPlayerCoordinate returns player's coordinates.
-     * @param LightridersPlayer concerned
-     * @return Point
-     */
-    public Point getPlayerCoordinate(LightridersPlayer p) {
-        if (playerCoordinates.get(p) != null) {
-            return playerCoordinates.get(p);
-        }
-        return null;
-    }
-
-    /**
-     * getPlayerCoordinate returns player's aliveness.
-     * @param LightridersPlayer concerned
-     * @return boolean
-     */
-    public boolean isPlayerAlive(LightridersPlayer p) {
-        if (playerAlive.get(p) != null) {
-            return playerAlive.get(p);
-        }
-        return false;
-    }
 
     public int getPlayerId() { return this.playerId; }
     public void setPlayerId(int playerId) {

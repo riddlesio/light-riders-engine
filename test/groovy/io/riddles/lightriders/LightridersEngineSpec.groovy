@@ -19,6 +19,9 @@
 
 package io.riddles.lightriders
 
+import io.riddles.javainterface.game.player.PlayerProvider
+import io.riddles.javainterface.game.state.AbstractState
+import io.riddles.javainterface.io.FileIOHandler
 import io.riddles.lightriders.engine.LightridersEngine
 import io.riddles.javainterface.io.IOHandler
 import io.riddles.lightriders.game.LightridersSerializer
@@ -26,6 +29,7 @@ import io.riddles.lightriders.game.board.LightridersBoard
 import io.riddles.lightriders.game.player.LightridersPlayer
 import io.riddles.lightriders.game.processor.LightridersProcessor
 import io.riddles.lightriders.game.state.LightridersState
+import javafx.scene.effect.Light
 import spock.lang.Specification
 import spock.lang.Ignore
 
@@ -41,88 +45,49 @@ class LightridersEngineSpec extends Specification {
 
     class TestEngine extends LightridersEngine {
 
-        TestEngine(IOHandler ioHandler) {
-            super();
-            this.ioHandler = ioHandler;
-        }
-
-        TestEngine(String wrapperFile, String[] botFiles) {
-            super(wrapperFile, botFiles)
-        }
-
-
-        IOHandler getIOHandler() {
-            return this.ioHandler;
-        }
-
-        void setup() {
-            super.setup();
-        }
-
-        public LightridersState getInitialState() {
-            LightridersState s = new LightridersState();
-            LightridersBoard b = new LightridersBoard(configuration.getInt("fieldWidth"), configuration.getInt("fieldHeight"));
-            b.clear();
-            for (LightridersPlayer player : this.players) {
-                b.setFieldAt(player.getCoordinate(), player.getColor().toString().substring(0,1));
-            }
-            s.setBoard(b);
-            return s;
+        TestEngine(PlayerProvider<LightridersEngine> playerProvider, String wrapperInput) {
+            super(playerProvider, null);
+            this.ioHandler = new FileIOHandler(wrapperInput);
         }
     }
-
-
-    class StandardTestEngine extends LightridersEngine {
-
-        StandardTestEngine(IOHandler ioHandler) {
-            super();
-            this.ioHandler = ioHandler;
-        }
-
-        StandardTestEngine(String wrapperFile, String[] botFiles) {
-            super(wrapperFile, botFiles)
-        }
-
-        IOHandler getIOHandler() {
-            return this.ioHandler;
-        }
-
-        void setup() {
-            super.setup();
-        }
-
-        void finish() {
-            super.finish();
-        }
-    }
-
-    def engine = new TestEngine(Mock(IOHandler));
 
 
 
     //@Ignore
     def "test engine setup"() {
-        println("test engine setup")
+        println("test a standard game")
 
         setup:
-        engine.getIOHandler().getNextMessage() >>> ["initialize", "bot_ids 1,2", "start"]
+        String[] botInputs = new String[2]
+        def wrapperInput = "./test/resources/wrapper_input.txt"
+        botInputs[0] = "./test/resources/bot1_input.txt"
+        botInputs[1] = "./test/resources/bot2_input.txt"
 
-        when:
-        engine.setup()
+        PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
+        LightridersPlayer player1 = new LightridersPlayer(1); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
+        LightridersPlayer player2 = new LightridersPlayer(2); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
 
-        then:
-        1 * engine.getIOHandler().sendMessage("ok")
+        def engine = new TestEngine(playerProvider, wrapperInput)
+
+        AbstractState state = engine.willRun()
+        state = engine.run(state);
+        /* Fast forward to final state */
+        while (state.hasNextState()) state = state.getNextState();
+
+        //state.getBoard().dumpBoard();
+        LightridersProcessor processor = engine.getProcessor();
 
         expect:
-        engine.getPlayers().size() == 2
-        engine.getPlayers().get(0).getId() == 1
-        engine.getPlayers().get(1).getId() == 2
+        state instanceof LightridersState;
+        state.getBoard().toString() == "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+        processor.getWinnerId(state) == null;
     }
 
 
 
 
     //@Ignore
+    /*
     def "test running of standard game"() {
         setup:
         String[] botInputs = new String[4]
@@ -161,6 +126,6 @@ class LightridersEngineSpec extends Specification {
         expect:
         result == '{"settings":{"field":{"width":16,"height":16}},"players":{"names":["player1","player2"],"winner":"2","count":2},"states":[{"round":0,"players":[{"isCrashed":false,"hasError":false,"position":"5,4","id":1},{"isCrashed":false,"hasError":false,"position":"11,4","id":2}]},{"round":1,"players":[{"isCrashed":false,"hasError":false,"position":"5,5","id":1},{"isCrashed":false,"hasError":false,"position":"10,4","id":2}]},{"round":2,"players":[{"isCrashed":false,"hasError":true,"position":"5,6","id":1,"error":"Invalid input: Move isn\'t valid"},{"isCrashed":false,"hasError":false,"position":"9,4","id":2}]},{"round":3,"players":[{"isCrashed":false,"hasError":false,"position":"5,7","id":1},{"isCrashed":false,"hasError":false,"position":"9,5","id":2}]},{"round":4,"players":[{"isCrashed":false,"hasError":false,"position":"6,7","id":1},{"isCrashed":false,"hasError":false,"position":"9,6","id":2}]},{"round":5,"players":[{"isCrashed":false,"hasError":false,"position":"7,7","id":1},{"isCrashed":false,"hasError":false,"position":"9,7","id":2}]},{"round":6,"players":[{"isCrashed":false,"hasError":false,"position":"8,7","id":1},{"isCrashed":false,"hasError":false,"position":"9,8","id":2}]},{"round":7,"players":[{"isCrashed":false,"hasError":false,"position":"8,6","id":1},{"isCrashed":false,"hasError":false,"position":"8,8","id":2}]},{"round":8,"players":[{"isCrashed":true,"hasError":false,"position":"8,6","id":1},{"isCrashed":false,"hasError":false,"position":"7,8","id":2}]}]}';
     }
-
+*/
 
 }

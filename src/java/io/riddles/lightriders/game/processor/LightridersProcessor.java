@@ -51,8 +51,10 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
      *
      * Return
      * the LightridersState that will be the state for the next round.
-     * @param roundNumber The current round number
      * @param LightridersState The current state
+     * @param roundNumber The current round number
+     * @param input The input to process.
+
      * @return The LightridersState that will be the start of the next round
      */
     @Override
@@ -106,27 +108,26 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
      */
     @Override
     public boolean hasGameEnded(LightridersState state) {
-        long alivePlayers = this.players.stream().filter(LightridersPlayer::isAlive).count();
-        int maxRounds = LightridersEngine.configuration.getInt("maxRounds");
+        long alivePlayers = state.getPlayerStates().stream().filter(LightridersPlayerState::isAlive).count();
+        int maxRounds = 25; /* TODO: Get this from configuration or do this in game loop */
 
-        return alivePlayers < 2 || this.gameOver ||
-                (maxRounds >= 0 && this.roundNumber >= maxRounds);
+        return alivePlayers < 2 ||
+                (maxRounds >= 0 && state.getRoundNumber() >= maxRounds);
     }
 
     /**
      * Returns the winner of the game, if there is one.
      * @return null if there is no winner, a LightridersPlayer otherwise
      */
+    /* Returns winner playerId, or null if there's no winner. */
     @Override
-    public LightridersPlayer getWinner() {
-        int alivePlayers = 0;
-        for (LightridersPlayer player : this.players)
-            if (player.isAlive()) alivePlayers++;
+    public Integer getWinnerId(LightridersState state) {
+        long alivePlayers = state.getPlayerStates().stream().filter(LightridersPlayerState::isAlive).count();
 
         if (alivePlayers == 1) {
             /* There is a winner */
-            for (LightridersPlayer player : this.players)
-                if (player.isAlive()) return player;
+            for (LightridersPlayerState playerState : state.getPlayerStates())
+                if (playerState.isAlive()) return playerState.getPlayerId();
         }
         return null;
     }
@@ -142,6 +143,13 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
     @Override
     public Enum getActionRequest(LightridersState intermediateState, PlayerBound playerState) {
         return ActionType.MOVE;
+    }
+
+    private LightridersPlayerState getActivePlayerState(ArrayList<LightridersPlayerState> playerStates, int id) {
+        for (LightridersPlayerState playerState : playerStates) {
+            if (playerState.getPlayerId() == id) { return playerState; }
+        }
+        return null;
     }
 
 
