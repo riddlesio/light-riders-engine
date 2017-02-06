@@ -94,7 +94,7 @@ public class LightridersLogic {
         }
 
         if (board.isEmpty(newC)) {
-            board.setFieldAt(newC, playerState.getColor().toString().substring(0,1));
+            board.setFieldAt(newC, String.valueOf(playerState.getPlayerId()));
             playerState.setCoordinate(newC);
         } else {
             playerState.kill();

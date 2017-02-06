@@ -34,29 +34,6 @@ public class LightridersBoard extends Board {
                 field[x][y] = ".";
     }
 
-    /**
-     * Creates a string with comma separated ints for every field.
-     * @param :
-     * @return : String with comma separated ints for every field.
-     */
-    public String toRepresentationString() {
-        String s = "";
-        int counter = 0;
-        for (int y = 0; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
-                String c = "0";
-                if (!isEmpty(new Point(x,y))) {
-                    c = "-1";
-                }
-                /* TODO: this function isn't implemented */
-                if (counter > 0) s+= ",";
-                s += c;
-                counter++;
-            }
-        }
-        return s;
-    }
-
     public Boolean isEmpty(Point c) {
         if (c.x < 0 || c.y < 0 || c.x >= this.width || c.y >= this.height) {
             return false;

@@ -44,6 +44,9 @@ public class LightridersMove extends AbstractMove {
         super(exception);
     }
 
+    public void setMoveType(MoveType type) {
+        this.type = type;
+    }
     public MoveType getMoveType() {
         return this.type;
     }

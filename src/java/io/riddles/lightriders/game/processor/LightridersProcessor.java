@@ -21,6 +21,7 @@ package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
 
+import io.riddles.javainterface.exception.InvalidMoveException;
 import io.riddles.javainterface.game.player.PlayerBound;
 import io.riddles.javainterface.game.processor.PlayerResponseProcessor;
 import io.riddles.javainterface.io.PlayerResponse;
@@ -65,25 +66,40 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
 
         LightridersLogic logic = new LightridersLogic();
         LightridersState nextState = state.createNextState(roundNumber);
+
         nextState.setPlayerId(input.getPlayerId());
+
         LightridersPlayerState playerState = getActivePlayerState(nextPlayerStates, input.getPlayerId());
-        playerState.setPlayerId(input.getPlayerId());
-
-
-        LightridersBoard nextBoard = nextState.getBoard();
 
         // parse the response
         LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer();
         LightridersMove move = deserializer.traverse(input.getValue());
-
-
-        // create the next move
-
-        try {
-            logic.transform(nextState, playerState);
-        } catch (Exception e) {
-            //LOGGER.info(String.format("Unknown response: %s", response));
+        if (move.getMoveType() == MoveType.PASS) {
+            move.setMoveType(playerState.getDirection());
         }
+
+        if (move.getException() != null) {
+            //System.out.println("EXCEPTION '" + input.getValue() + "' " + move.getException().toString());
+        }
+        playerState.setMove(move);
+
+        if (playerState.isAlive()) {
+            try {
+                logic.transform(nextState, playerState);
+            } catch (Exception e) {
+                move.setException(new InvalidMoveException("Error transforming move."));
+            }
+        }
+
+        nextState.setPlayerstates((ArrayList)nextPlayerStates);
+        //System.out.println("id" + playerState.getPlayerId() + " " + playerState.getDirection().toString());
+        for (LightridersPlayerState ps : nextPlayerStates) {
+            //System.out.print(ps.getPlayerId() + " " + ps.isAlive()+ " " );
+
+        }
+        //System.out.print(" \n");
+
+        //nextState.getBoard().dump();
         return nextState;
     }
 
@@ -99,7 +115,10 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
     @Override
     public void sendUpdates(LightridersState state, LightridersPlayer player) {
         player.sendUpdate("round", state.getRoundNumber());
-        player.sendUpdate("field", state.getBoard().toString()); /* TODO: Need a representationstring? */
+        LightridersPlayerState ps = getActivePlayerState(state.getPlayerStates(), player.getId());
+
+        player.sendUpdate("alive", String.valueOf(ps.isAlive()));
+        player.sendUpdate("field", state.getBoard().toString());
     }
     /**
      * The stopping condition for this game.
@@ -109,10 +128,8 @@ public class LightridersProcessor implements PlayerResponseProcessor<Lightriders
     @Override
     public boolean hasGameEnded(LightridersState state) {
         long alivePlayers = state.getPlayerStates().stream().filter(LightridersPlayerState::isAlive).count();
-        int maxRounds = 25; /* TODO: Get this from configuration or do this in game loop */
 
-        return alivePlayers < 2 ||
-                (maxRounds >= 0 && state.getRoundNumber() >= maxRounds);
+        return alivePlayers < 2;
     }
 
     /**

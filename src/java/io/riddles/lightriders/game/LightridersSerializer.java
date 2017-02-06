@@ -53,15 +53,20 @@ public class LightridersSerializer extends
 
         game = addDefaultJSON(initialState, game, processor);
 
+
         // add all states
         JSONArray states = new JSONArray();
         LightridersState state = initialState;
         LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
+
         while (state.hasNextState()) {
             state = (LightridersState) state.getNextState();
             states.put(stateSerializer.traverseToJson(state));
         }
         game.put("states", states);
+        JSONObject field = new JSONObject();
+        field.put()
+        game.put("field", field);
 
         return game.toString();
     }

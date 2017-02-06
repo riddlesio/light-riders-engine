@@ -42,10 +42,8 @@ public class LightridersMoveDeserializer implements Deserializer<LightridersMove
         try {
             return visitMove(string);
         } catch (InvalidInputException ex) {
-            //this.player.sendWarning(ex.getMessage()); TODO: This moves to TurnBasedGameLoop
             return new LightridersMove(ex);
         } catch (Exception ex) {
-            //this.player.sendWarning("Failed to parse move"); TODO: This moves to TurnBasedGameLoop
             return new LightridersMove(new InvalidInputException("Failed to parse move"));
         }
     }

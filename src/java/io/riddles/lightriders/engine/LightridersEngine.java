@@ -113,6 +113,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
             counter++;
         }
+        s.setPlayerstates(playerStates);
 
         s.setBoard(board);
         return s;

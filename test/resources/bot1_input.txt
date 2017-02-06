@@ -1,4 +1,3 @@
-pass
 move down
 move garbage
 move down

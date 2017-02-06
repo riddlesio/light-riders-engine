@@ -19,16 +19,25 @@ public class LightridersPlayerState extends AbstractPlayerState {
     private io.riddles.lightriders.game.data.Color color;
     private MoveType direction;
 
-    public LightridersPlayerState() {}
+    public LightridersPlayerState() {
+
+        this.alive = true;
+    }
 
     public LightridersPlayerState(LightridersMove move) {
+
         super(move);
+        this.alive = true;
     }
 
 
     public LightridersPlayerState clone() {
         LightridersPlayerState psClone = new LightridersPlayerState();
         psClone.setPlayerId(this.playerId);
+        psClone.setColor(this.color);
+        psClone.setCoordinate(new Point(this.getCoordinate().getX(), this.getCoordinate().getY()));
+        psClone.setDirection(this.direction);
+        psClone.setAlive(this.alive);
         return psClone;
     }
 
@@ -65,6 +74,10 @@ public class LightridersPlayerState extends AbstractPlayerState {
 
     public String toString() {
         return "PlayerState p" + this.getPlayerId() + " " + this.color + " coord " + this.getCoordinate() + " alive " + this.alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public boolean isAlive() { return this.alive; }
