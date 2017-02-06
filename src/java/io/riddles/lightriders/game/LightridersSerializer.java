@@ -30,7 +30,6 @@ import org.json.JSONObject;
 import io.riddles.lightriders.game.state.LightridersStateSerializer;
 import io.riddles.javainterface.game.AbstractGameSerializer;
 
-import java.util.ArrayList;
 
 /**
  * io.riddles.catchfrauds.game.GameSerializer - Created on 8-6-16
@@ -64,11 +63,58 @@ public class LightridersSerializer extends
             states.put(stateSerializer.traverseToJson(state));
         }
         game.put("states", states);
-        JSONObject field = new JSONObject();
-        field.put()
-        game.put("field", field);
+
 
         return game.toString();
+    }
+
+    /**
+     * Method that can be used for (almost) every game type. Will put everything
+     * to the output file that every visualizer needs
+     * @param game JSONObject that stores the full game output
+     * @param processor Processor that is used this game
+     * @return Updated JSONObject with added stuff
+     */
+    protected JSONObject addDefaultJSON(LightridersState state, JSONObject game, LightridersProcessor processor) {
+
+        // put default settings (player settings)
+        JSONArray playerNames = new JSONArray();
+        for (Object player : playerProvider.getPlayers()) {
+            LightridersPlayer p = (LightridersPlayer)player;
+            playerNames.put(p.getName());
+        }
+
+        JSONObject players = new JSONObject();
+        players.put("count", playerProvider.getPlayers().size());
+        players.put("names", playerNames);
+        players.put("winner", 1); /* TODO: get this value */
+
+        JSONObject settings = new JSONObject();
+        settings.put("players", players);
+
+        JSONObject field = new JSONObject();
+        field.put("width", 16); /* TODO: get this value */
+        field.put("height", 16); /* TODO: get this value */
+        settings.put("field", field);
+
+        game.put("settings", settings);
+
+        // Fast forward to last state
+        LightridersState finalState = state;
+        while (finalState.hasNextState()) {
+            finalState = (LightridersState)finalState.getNextState();
+        }
+
+        if (processor.getWinnerId(finalState) != null) {
+            game.put("winner", processor.getWinnerId(finalState));
+        } else {
+            game.put("winner", JSONObject.NULL);
+        }
+
+        // put score
+        game.put("score", processor.getScore(finalState));
+
+        return game;
     }
 
 }

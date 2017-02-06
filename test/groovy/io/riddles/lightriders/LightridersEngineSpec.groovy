@@ -123,14 +123,18 @@ class LightridersEngineSpec extends Specification {
     //@Ignore
     def "test LightridersSerializer functions"() {
         setup:
-        String[] botInputs = new String[2]
+        String[] botInputs = new String[4]
         def wrapperInput = "./test/resources/wrapper_input.txt"
         botInputs[0] = "./test/resources/bot1_input.txt"
         botInputs[1] = "./test/resources/bot2_input.txt"
+        botInputs[2] = "./test/resources/bot3_input.txt"
+        botInputs[3] = "./test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
         LightridersPlayer player2 = new LightridersPlayer(1); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
+        LightridersPlayer player3 = new LightridersPlayer(8); player3.setIoHandler(new FileIOHandler(botInputs[2])); playerProvider.add(player3);
+        LightridersPlayer player4 = new LightridersPlayer(9); player4.setIoHandler(new FileIOHandler(botInputs[3])); playerProvider.add(player4);
 
         def engine = new TestEngine(playerProvider, wrapperInput)
 

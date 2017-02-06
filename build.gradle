@@ -65,7 +65,7 @@ repositories {
 
 dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.7.13'
-    compile(group: 'io.riddles', name: 'javainterface', version: '1.0.1')
+    compile(group: 'io.riddles', name: 'javainterface', version: '1.0.3')
     compile 'org.mongodb:mongo-java-driver:2.13.3'
 	compile "org.json:json:20160212"
     compile "org.codehaus.groovy:groovy-all:2.4.1"
