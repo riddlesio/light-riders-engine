@@ -60,6 +60,7 @@ public class LightridersSerializer extends
 
         while (state.hasNextState()) {
             state = (LightridersState) state.getNextState();
+          //  if (state.hasNextState()) state = (LightridersState) state.getNextState(); /* TODO: check */
             states.put(stateSerializer.traverseToJson(state));
         }
         game.put("states", states);
