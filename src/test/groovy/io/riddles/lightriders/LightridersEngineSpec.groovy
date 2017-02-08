@@ -58,9 +58,9 @@ class LightridersEngineSpec extends Specification {
 
         setup:
         String[] botInputs = new String[2]
-        def wrapperInput = "./test/resources/wrapper_input.txt"
-        botInputs[0] = "./test/resources/bot1_input.txt"
-        botInputs[1] = "./test/resources/bot2_input.txt"
+        def wrapperInput = "./src/test/resources/wrapper_input.txt"
+        botInputs[0] = "./src/test/resources/bot1_input.txt"
+        botInputs[1] = "./src/test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(1); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
@@ -85,16 +85,16 @@ class LightridersEngineSpec extends Specification {
 
 
 
-    @Ignore
+    //@Ignore
     def "test engine setup 4 players"() {
 
         setup:
         String[] botInputs = new String[4]
-        def wrapperInput = "./test/resources/wrapper_input.txt"
-        botInputs[0] = "./test/resources/bot1_input.txt"
-        botInputs[1] = "./test/resources/bot2_input.txt"
-        botInputs[2] = "./test/resources/bot3_input.txt"
-        botInputs[3] = "./test/resources/bot2_input.txt"
+        def wrapperInput = "./src/test/resources/wrapper_input.txt"
+        botInputs[0] = "./src/test/resources/bot1_input.txt"
+        botInputs[1] = "./src/test/resources/bot2_input.txt"
+        botInputs[2] = "./src/test/resources/bot3_input.txt"
+        botInputs[3] = "./src/test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
@@ -106,6 +106,8 @@ class LightridersEngineSpec extends Specification {
 
         AbstractState state = engine.willRun()
         state = engine.run(state);
+        engine.didRun(state);
+
         /* Fast forward to final state */
         while (state.hasNextState()) state = state.getNextState();
 
@@ -116,6 +118,7 @@ class LightridersEngineSpec extends Specification {
         state instanceof LightridersState;
         state.getBoard().toString() == ".,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,.,.,0,.,.,.,.,1,1,1,1,.,.,.,.,8,.,.,0,.,.,.,.,1,.,.,.,.,.,.,.,8,.,.,0,.,.,0,0,1,.,.,.,.,.,.,.,8,.,.,0,0,0,0,.,1,.,.,.,.,.,.,.,8,1,1,1,1,1,1,1,1,.,.,.,.,.,.,.,8,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,8,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,8,.,.,.,.,9,9,9,9,.,.,.,.,.,.,.,.,.,.,.,.,9,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,9,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,9,.,.,.,.,.,.";
         processor.getWinnerId(state) == 8;
+
     }
 
 
@@ -124,9 +127,9 @@ class LightridersEngineSpec extends Specification {
     def "test LightridersSerializer functions"() {
         setup:
         String[] botInputs = new String[2]
-        def wrapperInput = "./test/resources/wrapper_input.txt"
-        botInputs[0] = "./test/resources/bot1_input.txt"
-        botInputs[1] = "./test/resources/bot2_input.txt"
+        def wrapperInput = "./src/test/resources/wrapper_input.txt"
+        botInputs[0] = "./src/test/resources/bot1_input.txt"
+        botInputs[1] = "./src/test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
@@ -145,13 +148,13 @@ class LightridersEngineSpec extends Specification {
         output == "{\"settings\":{\"players\":{\"names\":[\"player0\",\"player1\"],\"count\":2}},\"score\":9,\"winner\":1,\"states\":[{\"round\":0,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,5\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"12,4\",\"id\":1}]},{\"round\":0,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,5\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"11,4\",\"id\":1}]},{\"round\":1,\"players\":[{\"isCrashed\":false,\"hasError\":true,\"position\":\"4,6\",\"id\":0,\"error\":\"Invalid input: Move isn't valid\"},{\"isCrashed\":false,\"hasError\":false,\"position\":\"11,4\",\"id\":1}]},{\"round\":1,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"10,4\",\"id\":1}]},{\"round\":2,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"10,4\",\"id\":1}]},{\"round\":2,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,4\",\"id\":1}]},{\"round\":3,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"5,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,4\",\"id\":1}]},{\"round\":3,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"5,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,5\",\"id\":1}]},{\"round\":4,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"6,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,5\",\"id\":1}]},{\"round\":4,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"6,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,6\",\"id\":1}]},{\"round\":5,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,6\",\"id\":1}]},{\"round\":5,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,7\",\"id\":1}]},{\"round\":6,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,7\",\"id\":1}]},{\"round\":6,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,8\",\"id\":1}]},{\"round\":7,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,8\",\"id\":1}]},{\"round\":7,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,8\",\"id\":1}]},{\"round\":8,\"players\":[{\"isCrashed\":true,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,8\",\"id\":1}]}]}";
     }
 
-    //@Ignore
+    @Ignore
     def "test LightridersSerializer JSON Output"() {
         setup:
         String[] botInputs = new String[2]
-        def wrapperInput = "./test/resources/wrapper_input.txt"
-        botInputs[0] = "./test/resources/bot1_input.txt"
-        botInputs[1] = "./test/resources/bot2_input.txt"
+        def wrapperInput = "./src/test/resources/wrapper_input.txt"
+        botInputs[0] = "./src/test/resources/bot1_input.txt"
+        botInputs[1] = "./src/test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
@@ -161,10 +164,11 @@ class LightridersEngineSpec extends Specification {
 
         AbstractState state = engine.willRun()
         state = engine.run(state);
+
+        when:
         state = engine.didRun(state);
 
-        /* Fast forward to final state */
-        expect:
-        1 * engine.didRun(state)
+        then:
+        1 * engine.didRun()
     }
 }

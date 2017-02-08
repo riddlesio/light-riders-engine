@@ -58,10 +58,15 @@ public class LightridersSerializer extends
         LightridersState state = initialState;
         LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
 
+        int currentRoundNumber = state.getRoundNumber();
         while (state.hasNextState()) {
-            state = (LightridersState) state.getNextState();
-          //  if (state.hasNextState()) state = (LightridersState) state.getNextState(); /* TODO: check */
+            int tries = 0;
+            while (state.getRoundNumber() == currentRoundNumber && tries < 4) { /* Max 4 players */
+                if (state.hasNextState()) state = (LightridersState) state.getNextState();
+                tries++;
+            }
             states.put(stateSerializer.traverseToJson(state));
+            currentRoundNumber = state.getRoundNumber();
         }
         game.put("states", states);
 

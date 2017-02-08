@@ -28,8 +28,6 @@ import java.util.Random;
  */
 public class LightridersEngine extends AbstractEngine<LightridersProcessor, LightridersPlayer, LightridersState> {
 
-    protected int nrPlayers = 0;
-
     public LightridersEngine(PlayerProvider<LightridersPlayer> playerProvider, IO ioHandler) throws TerminalException {
         super(playerProvider, ioHandler);
     }
@@ -103,7 +101,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
             playerState.setPlayerId(player.getId());
             playerState.setColor(Color.values()[counter]); /* This limits the game to four players */
 
-            playerState.setCoordinate(getStartCoordinate(counter, 4, fieldWidth, fieldHeight));
+            playerState.setCoordinate(getStartCoordinate(counter, this.playerProvider.getPlayers().size(), fieldWidth, fieldHeight));
 
             playerState.setDirection(MoveType.LEFT);
             if (playerState.getCoordinate().getX() < fieldWidth/2) playerState.setDirection(MoveType.RIGHT);
@@ -121,8 +119,9 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
 
     protected Point getStartCoordinate(int playerNr, int nrPlayers, int width, int height) {
+        System.out.println(nrPlayers);
 
-        if (this.nrPlayers == 2) {
+        if (nrPlayers == 2) {
             switch (playerNr) {
                 case 0:
                     return new Point((int) Math.floor(width / 4), height / 2);
