@@ -120,7 +120,7 @@ class LightridersEngineSpec extends Specification {
 
 
 
-    //@Ignore
+    @Ignore
     def "test LightridersSerializer functions"() {
         setup:
         String[] botInputs = new String[2]
@@ -140,9 +140,31 @@ class LightridersEngineSpec extends Specification {
         /* Fast forward to final state */
         LightridersSerializer serializer = new LightridersSerializer(playerProvider);
         String output = serializer.traverseToString(engine.getProcessor(), state);
-System.out.println(output);
+        System.out.println(output);
         expect:
         output == "{\"settings\":{\"players\":{\"names\":[\"player0\",\"player1\"],\"count\":2}},\"score\":9,\"winner\":1,\"states\":[{\"round\":0,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,5\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"12,4\",\"id\":1}]},{\"round\":0,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,5\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"11,4\",\"id\":1}]},{\"round\":1,\"players\":[{\"isCrashed\":false,\"hasError\":true,\"position\":\"4,6\",\"id\":0,\"error\":\"Invalid input: Move isn't valid\"},{\"isCrashed\":false,\"hasError\":false,\"position\":\"11,4\",\"id\":1}]},{\"round\":1,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"10,4\",\"id\":1}]},{\"round\":2,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"10,4\",\"id\":1}]},{\"round\":2,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"4,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,4\",\"id\":1}]},{\"round\":3,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"5,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,4\",\"id\":1}]},{\"round\":3,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"5,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,5\",\"id\":1}]},{\"round\":4,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"6,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,5\",\"id\":1}]},{\"round\":4,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"6,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,6\",\"id\":1}]},{\"round\":5,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,6\",\"id\":1}]},{\"round\":5,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,7\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,7\",\"id\":1}]},{\"round\":6,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,7\",\"id\":1}]},{\"round\":6,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"7,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,8\",\"id\":1}]},{\"round\":7,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"9,8\",\"id\":1}]},{\"round\":7,\"players\":[{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,8\",\"id\":1}]},{\"round\":8,\"players\":[{\"isCrashed\":true,\"hasError\":false,\"position\":\"8,6\",\"id\":0},{\"isCrashed\":false,\"hasError\":false,\"position\":\"8,8\",\"id\":1}]}]}";
     }
 
+    //@Ignore
+    def "test LightridersSerializer JSON Output"() {
+        setup:
+        String[] botInputs = new String[2]
+        def wrapperInput = "./test/resources/wrapper_input.txt"
+        botInputs[0] = "./test/resources/bot1_input.txt"
+        botInputs[1] = "./test/resources/bot2_input.txt"
+
+        PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
+        LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
+        LightridersPlayer player2 = new LightridersPlayer(1); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
+
+        def engine = new TestEngine(playerProvider, wrapperInput)
+
+        AbstractState state = engine.willRun()
+        state = engine.run(state);
+        state = engine.didRun(state);
+
+        /* Fast forward to final state */
+        expect:
+        1 * engine.didRun(state)
+    }
 }
