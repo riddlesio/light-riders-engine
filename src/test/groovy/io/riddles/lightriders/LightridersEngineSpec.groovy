@@ -53,7 +53,7 @@ class LightridersEngineSpec extends Specification {
 
 
 
-    @Ignore
+    //@Ignore
     def "test engine setup 2 players"() {
 
         setup:
@@ -70,6 +70,8 @@ class LightridersEngineSpec extends Specification {
 
         AbstractState state = engine.willRun()
         state = engine.run(state);
+        engine.didRun(state);
+
         /* Fast forward to final state */
         while (state.hasNextState()) state = state.getNextState();
 
@@ -85,7 +87,7 @@ class LightridersEngineSpec extends Specification {
 
 
 
-    //@Ignore
+    @Ignore
     def "test engine setup 4 players"() {
 
         setup:
@@ -99,8 +101,8 @@ class LightridersEngineSpec extends Specification {
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
         LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
         LightridersPlayer player2 = new LightridersPlayer(1); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
-        LightridersPlayer player3 = new LightridersPlayer(8); player3.setIoHandler(new FileIOHandler(botInputs[2])); playerProvider.add(player3);
-        LightridersPlayer player4 = new LightridersPlayer(9); player4.setIoHandler(new FileIOHandler(botInputs[3])); playerProvider.add(player4);
+        LightridersPlayer player3 = new LightridersPlayer(2); player3.setIoHandler(new FileIOHandler(botInputs[2])); playerProvider.add(player3);
+        LightridersPlayer player4 = new LightridersPlayer(3); player4.setIoHandler(new FileIOHandler(botInputs[3])); playerProvider.add(player4);
 
         def engine = new TestEngine(playerProvider, wrapperInput)
 

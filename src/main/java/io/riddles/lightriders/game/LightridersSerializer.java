@@ -83,6 +83,12 @@ public class LightridersSerializer extends
      */
     protected JSONObject addDefaultJSON(LightridersState state, JSONObject game, LightridersProcessor processor) {
 
+        // Fast forward to last state
+        LightridersState finalState = state;
+        while (finalState.hasNextState()) {
+            finalState = (LightridersState)finalState.getNextState();
+        }
+
         // put default settings (player settings)
         JSONArray playerNames = new JSONArray();
         for (Object player : playerProvider.getPlayers()) {
@@ -93,7 +99,12 @@ public class LightridersSerializer extends
         JSONObject players = new JSONObject();
         players.put("count", playerProvider.getPlayers().size());
         players.put("names", playerNames);
-        players.put("winner", 1); /* TODO: get this value */
+        if (processor.getWinnerId(finalState) != null) {
+            players.put("winner", processor.getWinnerId(finalState));
+        } else {
+            players.put("winner", JSONObject.NULL);
+        }
+
 
         JSONObject settings = new JSONObject();
         settings.put("players", players);
@@ -105,17 +116,9 @@ public class LightridersSerializer extends
 
         game.put("settings", settings);
 
-        // Fast forward to last state
-        LightridersState finalState = state;
-        while (finalState.hasNextState()) {
-            finalState = (LightridersState)finalState.getNextState();
-        }
 
-        if (processor.getWinnerId(finalState) != null) {
-            game.put("winner", processor.getWinnerId(finalState));
-        } else {
-            game.put("winner", JSONObject.NULL);
-        }
+
+
 
         // put score
         game.put("score", processor.getScore(finalState));
