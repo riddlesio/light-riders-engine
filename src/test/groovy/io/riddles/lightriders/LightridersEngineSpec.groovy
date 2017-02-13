@@ -63,8 +63,8 @@ class LightridersEngineSpec extends Specification {
         botInputs[1] = "./src/test/resources/bot2_input.txt"
 
         PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
-        LightridersPlayer player1 = new LightridersPlayer(1); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
-        LightridersPlayer player2 = new LightridersPlayer(2); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
+        LightridersPlayer player1 = new LightridersPlayer(0); player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
+        LightridersPlayer player2 = new LightridersPlayer(1); player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
 
         def engine = new TestEngine(playerProvider, wrapperInput)
 
