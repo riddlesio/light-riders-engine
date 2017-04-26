@@ -20,53 +20,17 @@
 package io.riddles.lightriders.game.player;
 
 import io.riddles.javainterface.game.player.AbstractPlayer;
-import io.riddles.lightriders.game.data.Color;
-import io.riddles.lightriders.game.move.MoveType;
-
-import java.awt.*;
 
 /**
- * io.riddles.catchfrauds.game.player.BookingGameMovePlayer - Created on 3-6-16
+ * io.riddles.lightriders.game.player.LightridersPlayer
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersPlayer extends AbstractPlayer {
 
-    private Point c;
-    private boolean alive;
-    private Color color;
-    private MoveType direction;
-
     public LightridersPlayer(int id) {
         super(id);
-        this.alive = true;
-        this.c = new Point (0,0);
     }
-
-    public Point getCoordinate() { return this.c; }
-
-    public void setCoordinate(Point c) {
-        this.c = c;
-    }
-
-    public Color getColor() { return this.color; }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public MoveType getDirection() { return this.direction; }
-
-    public void setDirection(MoveType direction) {
-        this.direction = direction;
-    }
-
-    public String toString() {
-        return "Player " + this.getId() + " " + this.color + " coord " + this.getCoordinate() + " alive " + this.alive;
-    }
-
-    public boolean isAlive() { return this.alive; }
-    public void kill() { this.alive = false; }
 }

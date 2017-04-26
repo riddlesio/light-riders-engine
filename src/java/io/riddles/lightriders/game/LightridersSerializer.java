@@ -29,68 +29,38 @@ import io.riddles.lightriders.game.state.LightridersStateSerializer;
 import io.riddles.javainterface.game.AbstractGameSerializer;
 
 /**
- * io.riddles.catchfrauds.game.GameSerializer - Created on 8-6-16
+ * io.riddles.lightriders.game.LightridersSerializer
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersSerializer extends
         AbstractGameSerializer<LightridersProcessor, LightridersState> {
 
     @Override
     public String traverseToString(LightridersProcessor processor, LightridersState initialState) {
+        LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
         JSONObject game = new JSONObject();
 
-        game = addAdditionalJSON(game, processor, initialState);
+        game = addDefaultJSON(initialState, game, processor);
 
-        // add all states
+        JSONObject field = new JSONObject();
+        field.put("width", initialState.getBoard().getWidth());
+        field.put("height", initialState.getBoard().getHeight());
+        game.getJSONObject("settings").put("field", field);
+
         JSONArray states = new JSONArray();
-        LightridersState state = initialState;
-        LightridersStateSerializer stateSerializer = new LightridersStateSerializer();
-        stateSerializer.setProcessor(processor);
-
         states.put(stateSerializer.traverseToJson(initialState));
 
+        LightridersState state = initialState;
         while (state.hasNextState()) {
             state = (LightridersState) state.getNextState();
             states.put(stateSerializer.traverseToJson(state));
         }
+
         game.put("states", states);
 
         return game.toString();
-    }
-
-    protected JSONObject addAdditionalJSON(JSONObject game, LightridersProcessor processor, LightridersState initialState) {
-
-        JSONArray playerNames = new JSONArray();
-        for (Object obj : processor.getPlayers()) {
-            AbstractPlayer player = (AbstractPlayer) obj;
-            playerNames.put(player.getName());
-        }
-
-        JSONObject players = new JSONObject();
-        players.put("count", processor.getPlayers().size());
-        players.put("names", playerNames);
-
-        // add winner
-        Object winner = JSONObject.NULL;
-        if (processor.getWinner() != null) {
-            winner = (String)String.valueOf(processor.getWinner().getId());
-        }
-        players.put("winner", winner);
-
-        JSONObject settings = new JSONObject();
-        game.put("players", players);
-
-        JSONObject board = new JSONObject();
-        board.put("width", initialState.getBoard().getWidth());
-        board.put("height", initialState.getBoard().getHeight());
-
-        settings.put("field", board);
-
-        game.put("settings", settings);
-
-        return game;
     }
 }

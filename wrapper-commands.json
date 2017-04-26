@@ -1,0 +1,19 @@
+{
+  "wrapper": {
+    "timebankMax": 10000,
+    "timePerMove": 200,
+    "maxTimeouts": 0,
+    "resultFile": "./resultfile.json",
+    "debug": true
+  },
+  "match": {
+    "bots": [{
+      "command": "java -jar /home/jim/workspace/lightriders-starterbot-java/build/libs/lightriders-starterbot-java-1.0.0.jar"
+    },{
+      "command": "java -jar /home/jim/workspace/lightriders-starterbot-java/build/libs/lightriders-starterbot-java-1.0.0.jar"
+    }],
+    "engine": {
+      "command": "java -jar /home/jim/workspace/light-riders-engine/build/libs/lightriders-engine-java-1.0.0.jar"
+    }
+  }
+}

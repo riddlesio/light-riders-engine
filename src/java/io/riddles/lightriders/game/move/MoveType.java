@@ -19,6 +19,15 @@
 
 package io.riddles.lightriders.game.move;
 
+import java.awt.*;
+
+/**
+ * io.riddles.lightriders.game.move.MoveType
+ *
+ * [description]
+ *
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
+ */
 public enum MoveType {
     UP,
     DOWN,
@@ -27,7 +36,7 @@ public enum MoveType {
     PASS;
 
     public MoveType getOpposite() {
-        switch(this) {
+        switch (this) {
             case UP:
                 return DOWN;
             case DOWN:
@@ -36,8 +45,23 @@ public enum MoveType {
                 return RIGHT;
             case RIGHT:
                 return LEFT;
-            default:
-                return this;
         }
+
+        return this;
+    }
+
+    public Point getDirection() {
+        switch (this) {
+            case UP:
+                return new Point(0, -1);
+            case DOWN:
+                return new Point(0, 1);
+            case LEFT:
+                return new Point(-1, 0);
+            case RIGHT:
+                return new Point(1, 0);
+        }
+
+        return new Point(0, 0);
     }
 }

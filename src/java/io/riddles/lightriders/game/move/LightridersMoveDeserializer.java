@@ -24,50 +24,32 @@ import io.riddles.javainterface.exception.InvalidInputException;
 import io.riddles.javainterface.serialize.Deserializer;
 
 /**
- * io.riddles.catchfrauds.game.move.LightridersMoveDeserializer - Created on 8-6-16
+ * io.riddles.lightriders.game.move.LightridersMoveDeserializer
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersMoveDeserializer implements Deserializer<LightridersMove> {
-
-    private LightridersPlayer player;
-
-    public LightridersMoveDeserializer(LightridersPlayer player) {
-        this.player = player;
-    }
 
     @Override
     public LightridersMove traverse(String string) {
         try {
             return visitMove(string);
         } catch (InvalidInputException ex) {
-            this.player.sendWarning(ex.getMessage());
-            return new LightridersMove(this.player, ex);
+            return new LightridersMove(ex);
         } catch (Exception ex) {
-            this.player.sendWarning(ex.getMessage());
-            return new LightridersMove(this.player, new InvalidInputException("Failed to parse move"));
+            return new LightridersMove(new InvalidInputException("Failed to parse move"));
         }
     }
 
     private LightridersMove visitMove(String input) throws InvalidInputException {
-        String[] split = input.split(" ");
-
-        if (split.length <= 1) {
-            return new LightridersMove(this.player, MoveType.PASS);
-        }
-
-        if (split[0].equals("move")) {
-            MoveType type = visitMoveType(split[1]);
-            return new LightridersMove(this.player, type);
-        }
-
-        throw new InvalidInputException("Failed to parse move");
+        MoveType type = visitMoveType(input);
+        return new LightridersMove(type);
     }
 
     private MoveType visitMoveType(String input) throws InvalidInputException {
-        switch (input) {
+        switch (input.toLowerCase()) {
             case "up":
                 return MoveType.UP;
             case "down":

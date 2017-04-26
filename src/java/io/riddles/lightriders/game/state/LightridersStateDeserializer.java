@@ -29,11 +29,11 @@ import io.riddles.lightriders.game.player.LightridersPlayer;
 import io.riddles.javainterface.game.state.AbstractStateDeserializer;
 
 /**
- * io.riddles.catchfrauds.game.state.CatchFraudsStateDeserializer - Created on 3-6-16
+ * io.riddles.lightriders.game.state.LightridersStateDeserializer
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersStateDeserializer extends
         AbstractStateDeserializer<LightridersPlayer, LightridersState> {

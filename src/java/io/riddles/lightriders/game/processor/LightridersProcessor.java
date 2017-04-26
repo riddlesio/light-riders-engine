@@ -21,122 +21,87 @@ package io.riddles.lightriders.game.processor;
 
 import java.util.ArrayList;
 
+import io.riddles.javainterface.game.player.PlayerProvider;
+import io.riddles.javainterface.game.processor.SimpleProcessor;
 import io.riddles.lightriders.engine.LightridersEngine;
-import io.riddles.lightriders.game.board.LightridersBoard;
-import io.riddles.lightriders.game.data.*;
 import io.riddles.lightriders.game.move.*;
 import io.riddles.lightriders.game.player.LightridersPlayer;
+import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
-import io.riddles.javainterface.game.processor.AbstractProcessor;
 
 /**
- * io.riddles.catchfrauds.interface.LightridersProcessor - Created on 2-6-16
+ * io.riddles.lightriders.game.processor.LightridersProcessor
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
-public class LightridersProcessor extends AbstractProcessor<LightridersPlayer, LightridersState> {
+public class LightridersProcessor extends SimpleProcessor<LightridersState, LightridersPlayer> {
 
-    private int roundNumber;
-    private boolean gameOver;
+    private LightridersMoveDeserializer moveDeserializer;
 
-    public LightridersProcessor(ArrayList<LightridersPlayer> players) {
-        super(players);
-        this.gameOver = false;
+    public LightridersProcessor(PlayerProvider<LightridersPlayer> playerProvider) {
+        super(playerProvider);
+        this.moveDeserializer = new LightridersMoveDeserializer();
     }
 
     @Override
-    public void preGamePhase() {
+    public boolean hasGameEnded(LightridersState state) {
+        int maxRounds = LightridersEngine.configuration.getInt("maxRounds");
+        long alivePlayers = state.getPlayerStates().stream()
+                .filter(LightridersPlayerState::isAlive)
+                .count();
 
+        return alivePlayers <= 1 || (maxRounds > 0 && state.getRoundNumber() >= maxRounds);
     }
 
-    /**
-     * Play one round of the game. It takes a LightridersState,
-     * asks all living players for a response and delivers a new LightridersState.
-     *
-     * Return
-     * the LightridersState that will be the state for the next round.
-     * @param roundNumber The current round number
-     * @param LightridersState The current state
-     * @return The LightridersState that will be the start of the next round
-     */
     @Override
-    public LightridersState playRound(int roundNumber, LightridersState state) {
-        LOGGER.info(String.format("Playing round %d", roundNumber));
-        this.roundNumber = roundNumber;
+    public Integer getWinnerId(LightridersState state) {
+        ArrayList<Integer> alivePlayerIds = state.getAlivePlayerIds();
 
-        LightridersLogic logic = new LightridersLogic();
-        LightridersState nextState = state.createNextState(roundNumber);
-        LightridersBoard nextBoard = nextState.getBoard();
-
-        for (LightridersPlayer player : this.players) {
-
-            if (player.isAlive()) {
-                player.sendUpdate("round", roundNumber);
-                player.sendUpdate("field", nextBoard.toRepresentationString(this.players));
-                String response = player.requestMove(ActionType.MOVE.toString());
-
-                // parse the response
-                LightridersMoveDeserializer deserializer = new LightridersMoveDeserializer(player);
-                LightridersMove move = deserializer.traverse(response);
-
-                move = logic.transform(nextState, player, move);
-
-                // create the next move
-                nextState.getMoves().add(move);
-
-                // stop game if bot returns nothing
-                if (response == null) {
-                    this.gameOver = true;
-                }
-            }
-            nextState.setPlayerData(player);
+        if (alivePlayerIds.size() == 1) {
+            return alivePlayerIds.get(0);
         }
+
+        return null;
+    }
+
+    @Override
+    public double getScore(LightridersState state) {
+        return state.getRoundNumber();
+    }
+
+    @Override
+    public LightridersState createNextState(LightridersState inputState, int roundNumber) {
+        LightridersState nextState = inputState.createNextState(roundNumber);
+
+        for (LightridersPlayerState playerState : nextState.getPlayerStates()) {
+            LightridersPlayer player = this.getPlayer(playerState.getPlayerId());
+
+            if (!playerState.isAlive()) continue;
+
+            sendUpdatesToPlayer(inputState, player);
+            LightridersMove move = getPlayerMove(player);
+
+            playerState.setMove(move);
+        }
+
+        LightridersLogic.transform(nextState);
 
         return nextState;
     }
 
-    /**
-     * The stopping condition for this game.
-     * @param LightridersState the state to determine whether the game has ended.
-     * @return True if the game is over, false otherwise
-     */
-    @Override
-    public boolean hasGameEnded(LightridersState state) {
-        long alivePlayers = this.players.stream().filter(LightridersPlayer::isAlive).count();
-        int maxRounds = LightridersEngine.configuration.getInt("maxRounds");
-
-        return alivePlayers < 2 || this.gameOver ||
-                (maxRounds >= 0 && this.roundNumber >= maxRounds);
+    private void sendUpdatesToPlayer(LightridersState state, LightridersPlayer player) {
+        player.sendUpdate("round", state.getRoundNumber());
+        player.sendUpdate("field", state.getBoard().toString());
     }
 
-    /**
-     * Returns the winner of the game, if there is one.
-     * @return null if there is no winner, a LightridersPlayer otherwise
-     */
-    @Override
-    public LightridersPlayer getWinner() {
-        int alivePlayers = 0;
-        for (LightridersPlayer player : this.players)
-            if (player.isAlive()) alivePlayers++;
-
-        if (alivePlayers == 1) {
-            /* There is a winner */
-            for (LightridersPlayer player : this.players)
-                if (player.isAlive()) return player;
-        }
-        return null;
-    }
-    /**
-     * GetScore isn't used in Lightriders.
-     * @return always return 0.
-     */
-    @Override
-    public double getScore() {
-        return 0;
+    private LightridersMove getPlayerMove(LightridersPlayer player) {
+        String response = player.requestMove(ActionType.MOVE);
+        return this.moveDeserializer.traverse(response);
     }
 
-
-
+    private LightridersPlayer getPlayer(int id) {
+        return this.playerProvider.getPlayerById(id);
+    }
 }

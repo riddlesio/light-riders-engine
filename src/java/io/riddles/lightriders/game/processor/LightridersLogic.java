@@ -1,93 +1,107 @@
+/*
+ * Copyright 2016 riddles.io (developers@riddles.io)
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *     For the full copyright and license information, please view the LICENSE
+ *     file that was distributed with this source code.
+ */
+
 package io.riddles.lightriders.game.processor;
 
 import io.riddles.javainterface.exception.InvalidMoveException;
 import io.riddles.lightriders.game.board.LightridersBoard;
 import io.riddles.lightriders.game.move.MoveType;
-import io.riddles.lightriders.game.player.LightridersPlayer;
 
 import io.riddles.lightriders.game.move.LightridersMove;
+import io.riddles.lightriders.game.state.LightridersPlayerState;
 import io.riddles.lightriders.game.state.LightridersState;
 
 import java.awt.*;
 
 /**
- * io.riddles.lightriders.game.processor.LightridersLogic - Created on 6/27/16
+ * io.riddles.lightriders.game.processor.LightridersLogic
  *
- * Provides logic to transform a LightridersState with a LightridersMove.
+ * [description]
  *
- * @author Joost - joost@riddles.io, Jim van Eeden - jim@riddles.io
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public class LightridersLogic {
 
+    /**
+     * Takes a LightridersState and transforms it with a LightridersMove.
+     * @param state The initial state
+     */
+    public static void transform(LightridersState state) {
+        LightridersBoard board = state.getBoard();
 
-    public LightridersLogic() {
+        for (LightridersPlayerState playerState : state.getPlayerStates()) {
+            if (!playerState.isAlive()) continue;
+
+            board.setBlocked(playerState.getCoordinate());
+
+            Point newCoordinate = getNewPlayerCoordinate(playerState, state.getRoundNumber());
+            playerState.setCoordinate(newCoordinate);
+        }
+
+        setPlayersOnBoard(state);
+    }
+
+    private static Point getNewPlayerCoordinate(LightridersPlayerState playerState, int roundNumber) {
+        LightridersMove move = playerState.getMove();
+        MoveType moveType = move.getMoveType();
+
+        if (moveType != null && moveType != MoveType.PASS) {
+            if (roundNumber > 1 && moveType.getOpposite() == playerState.getDirection()) {
+                move.setException(new InvalidMoveException(
+                        "Can't move opposite of current direction"));
+            } else {
+                playerState.setDirection(moveType);
+            }
+        }
+
+        Point playerCoordinate = playerState.getCoordinate();
+        Point direction = playerState.getDirection().getDirection();
+
+        return new Point(playerCoordinate.x + direction.x, playerCoordinate.y + direction.y);
     }
 
     /**
-     * Takes a LightridersState and transforms it with a LightridersMove.
-     *
-     * Return
-     * Returns nothing, but transforms the given LightridersState.
-     * @param state The initial state
-     * @param player The player involved
-     * @param move The move of the player
-     * @return
+     * Stores the player on the board and kills the player if
+     * it crashed
      */
-    public LightridersMove transform(LightridersState state, LightridersPlayer player, LightridersMove move) {
-
+    private static void setPlayersOnBoard(LightridersState state) {
         LightridersBoard board = state.getBoard();
-        MoveType moveType = move.getMoveType();
 
-        if (moveType != null && moveType != MoveType.PASS) { /* MoveType = null when it has an Exception */
-            if (state.getRoundNumber() > 1 && moveType.getOpposite() == player.getDirection()) { // Can't do opposite move
-                String warning = "Can't move opposite of current direction.";
-                player.sendWarning(warning);
-                move = new LightridersMove(player, new InvalidMoveException(warning));
-                moveType = MoveType.PASS;
-            }
+        for (LightridersPlayerState playerState : state.getPlayerStates()) {
+            if (!playerState.isAlive()) continue;
 
-            switch (moveType) {
-                case UP:
-                    player.setDirection(moveType);
-                    break;
-                case DOWN:
-                    player.setDirection(moveType);
-                    break;
-                case RIGHT:
-                    player.setDirection(moveType);
-                    break;
-                case LEFT:
-                    player.setDirection(moveType);
-                    break;
+            Point coordinate = playerState.getCoordinate();
+            long count = state.getPlayerStates().stream()
+                    .filter(otherPlayerState ->
+                            otherPlayerState.getCoordinate().equals(coordinate))
+                    .count();
+
+            // player is on same coordinate as other player or non-empty/outside field
+            if (count > 1 || !board.isEmpty(coordinate)) {
+                playerState.kill();
+
+                if (count > 1) {
+                    board.setBlocked(coordinate);
+                }
+            } else {
+                board.setFieldAt(coordinate, playerState.getPlayerId() + "");
             }
         }
-
-        Point c = player.getCoordinate();
-        Point newC = c;
-
-        switch (player.getDirection()) {
-            case UP:
-                newC = new Point(c.x, c.y - 1);
-                break;
-            case DOWN:
-                newC = new Point(c.x, c.y + 1);
-                break;
-            case RIGHT:
-                newC = new Point(c.x + 1, c.y);
-                break;
-            case LEFT:
-                newC = new Point(c.x - 1, c.y);
-                break;
-        }
-
-        player.setCoordinate(newC);
-
-        if (board.isEmpty(newC)) {
-            board.setFieldAt(newC, player.getColor().toString().substring(0,1));
-        } else {
-            player.kill();
-        }
-
-        return move;
     }
 }

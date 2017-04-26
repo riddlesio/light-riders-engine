@@ -19,28 +19,25 @@
 
 package io.riddles.lightriders.game.move;
 
-import io.riddles.javainterface.exception.InvalidInputException;
 import io.riddles.javainterface.game.move.AbstractMove;
-import io.riddles.lightriders.game.player.LightridersPlayer;
 
 /**
- * io.riddles.lightriders.game.move.LightridersMove - Created on 2-6-16
+ * io.riddles.lightriders.game.move.LightridersMove
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
-public class LightridersMove extends AbstractMove<LightridersPlayer> {
+public class LightridersMove extends AbstractMove {
 
     private MoveType type;
 
-    public LightridersMove(LightridersPlayer player, MoveType type) {
-        super(player);
+    public LightridersMove(MoveType type) {
         this.type = type;
     }
 
-    public LightridersMove(LightridersPlayer player, Exception exception) {
-        super(player, exception);
+    public LightridersMove(Exception exception) {
+        super(exception);
     }
 
     public MoveType getMoveType() {
@@ -50,5 +47,4 @@ public class LightridersMove extends AbstractMove<LightridersPlayer> {
     public String toString() {
         return "LightridersMove " + this.type;
     }
-
 }

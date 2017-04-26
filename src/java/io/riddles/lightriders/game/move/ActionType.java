@@ -20,11 +20,11 @@
 package io.riddles.lightriders.game.move;
 
 /**
- * io.riddles.catchfrauds.game.move.ActionTypes - Created on 6-6-16
+ * io.riddles.lightriders.game.move.ActionType
  *
  * [description]
  *
- * @author jim
+ * @author Joost de Meij - joost@riddles.io, Jim van Eeden - jim@riddles.io
  */
 public enum ActionType {
     MOVE;
