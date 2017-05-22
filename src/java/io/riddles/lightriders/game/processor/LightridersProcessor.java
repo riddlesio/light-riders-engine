@@ -88,6 +88,16 @@ public class LightridersProcessor extends SimpleProcessor<LightridersState, Ligh
 
         LightridersLogic.transform(nextState);
 
+        // Send exceptions to players
+        for (LightridersPlayerState playerState : nextState.getPlayerStates()) {
+            LightridersPlayer player = this.getPlayer(playerState.getPlayerId());
+            LightridersMove move = playerState.getMove();
+
+            if (move.getException() != null) {
+                player.sendWarning(move.getException().getMessage());
+            }
+        }
+
         return nextState;
     }
 
