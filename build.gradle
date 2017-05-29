@@ -23,8 +23,7 @@ artifactory {
     resolve {
         contextUrl = 'http://artifactory.dev.riddles.io/artifactory'
         repoKey = 'libs-release-local'
-        username = "joost"
-        password = "5aT7UjyahqsUHBZx"
+        username = "anonymous"
     }
 }
 
