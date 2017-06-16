@@ -32,4 +32,5 @@ hs_err_pid*
 .idea/
 *.iml
 
-!game-wrapper-*.jar
+!match-wrapper-*.jar
+*resultfile.json

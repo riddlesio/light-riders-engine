@@ -36,7 +36,10 @@ import io.riddles.javainterface.engine.AbstractEngine;
 import io.riddles.lightriders.game.LightridersSerializer;
 
 import java.awt.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * io.riddles.lightriders.engine.LightridersEngine
@@ -51,6 +54,8 @@ import java.util.ArrayList;
  */
 public class LightridersEngine extends AbstractEngine<LightridersProcessor, LightridersPlayer, LightridersState> {
 
+    public static SecureRandom RANDOM;
+
     public LightridersEngine(PlayerProvider<LightridersPlayer> playerProvider, IOHandler ioHandler) throws TerminalException {
         super(playerProvider, ioHandler);
     }
@@ -62,6 +67,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         config.put("maxRounds", -1);
         config.put("fieldWidth", 16);
         config.put("fieldHeight", 16);
+        config.put("seed", UUID.randomUUID().toString());
 
         return config;
     }
@@ -102,6 +108,8 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
     @Override
     protected LightridersState getInitialState() {
+        setRandomSeed();
+
         int width = configuration.getInt("fieldWidth");
         int height = configuration.getInt("fieldHeight");
 
@@ -116,9 +124,12 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
 
         // Create initial state
         LightridersState state = new LightridersState(playerStates, board);
+        ArrayList<Point> startCoordinates = getStartCoordinates(width, height);
+
+        System.err.println(startCoordinates);
 
         for (LightridersPlayerState playerState : state.getPlayerStates()) {
-            Point startCoordinate = getStartCoordinate(playerState.getPlayerId(), width, height);
+            Point startCoordinate = startCoordinates.get(playerState.getPlayerId());
 
             state.setPlayerCoordinate(playerState.getPlayerId(), startCoordinate);
             playerState.setDirection(getStartDirection(startCoordinate, width));
@@ -127,28 +138,37 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         return state;
     }
 
-    private Point getStartCoordinate(int playerNr, int width, int height) {
-        if (this.playerProvider.getPlayers().size() == 2) {
-            switch (playerNr) {
-                case 0:
-                    return new Point((int) Math.floor(width / 4) - 1, (height / 2) - 1);
-                case 1:
-                    return new Point((int) Math.floor(width / 4) * 3, (height / 2) - 1);
-            }
-        }
+    /**
+     * Gets a random starting point for the first player, then gets rotational
+     * symmetric points for the other players. 2 or 4 players possible.
+     * @param width Field width
+     * @param height Field height
+     * @return Starting coordinates for each player
+     */
+    private ArrayList<Point> getStartCoordinates(int width, int height) {
+        ArrayList<Point> startCoordinates = new ArrayList<>();
 
-        switch (playerNr) {
-            case 0:
-                return new Point((int) Math.floor(width / 4), height / 4);
-            case 1:
-                return new Point((int) Math.floor(width / 4) * 3, height / 4);
+        int initialX = RANDOM.nextInt((width / 2) - 2) + 1;
+        int initialY;
+
+        switch (this.playerProvider.getPlayers().size()) {
             case 2:
-                return new Point((int) Math.floor(width / 4), height / 4 * 3);
-            case 3:
-                return new Point((int) Math.floor(width / 4) * 3, height / 4 * 3);
+                initialY = RANDOM.nextInt(height - 2) + 1;
+                startCoordinates.add(new Point(initialX, initialY));
+                startCoordinates.add(new Point((width - 1) - initialX, (height - 1) - initialY));
+                break;
+            case 4:
+                initialY = RANDOM.nextInt((height / 2) - 2) + 1;
+                startCoordinates.add(new Point(initialX, initialY));
+                startCoordinates.add(new Point((width - 1) - initialX, initialY));
+                startCoordinates.add(new Point((width - 1) - initialX, (height - 1) - initialY));
+                startCoordinates.add(new Point(initialX, (height - 1) - initialY));
+                break;
+            default:
+                throw new RuntimeException("Can only run this game with 2 or 4 players");
         }
 
-        throw new RuntimeException("Can't run engine with more than 4 players");
+        return startCoordinates;
     }
 
     private MoveType getStartDirection(Point coordinate, int boardWidth) {
@@ -157,5 +177,17 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
         }
 
         return MoveType.LEFT;
+    }
+
+    private void setRandomSeed() {
+        try {
+            RANDOM = SecureRandom.getInstance("SHA1PRNG");
+        } catch (NoSuchAlgorithmException ex) {
+            LOGGER.severe("Not able to use SHA1PRNG, using default algorithm");
+            RANDOM = new SecureRandom();
+        }
+        String seed = configuration.getString("seed");
+        LOGGER.info("RANDOM SEED IS: " + seed);
+        RANDOM.setSeed(seed.getBytes());
     }
 }

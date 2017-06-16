@@ -40,9 +40,9 @@ is run twice, plus the command for the engine built in the previous step.
  
 To run the GameWrapper, use the following command (Linux):
 ````
-java -jar game-wrapper-*.jar "$(cat wrapper-commands.json)"
+java -jar match-wrapper-*.jar "$(cat wrapper-commands.json)"
 ````
 Or run `run_wrapper.sh`, which contains the same command.
 
 *Note: if running on other systems, find how to put the content of wrapper-commands.json as
-argument when running the game-wrapper.jar*
+argument when running the match-wrapper.jar*
