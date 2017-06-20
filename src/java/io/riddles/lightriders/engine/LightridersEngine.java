@@ -155,7 +155,7 @@ public class LightridersEngine extends AbstractEngine<LightridersProcessor, Ligh
             case 2:
                 initialY = RANDOM.nextInt(height - 2) + 1;
                 startCoordinates.add(new Point(initialX, initialY));
-                startCoordinates.add(new Point((width - 1) - initialX, (height - 1) - initialY));
+                startCoordinates.add(new Point((width - 1) - initialX, initialY));
                 break;
             case 4:
                 initialY = RANDOM.nextInt((height / 2) - 2) + 1;
