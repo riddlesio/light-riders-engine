@@ -45,9 +45,11 @@ public enum MoveType {
                 return RIGHT;
             case RIGHT:
                 return LEFT;
+            default:
+                return this;
         }
 
-        return this;
+
     }
 
     public Point getDirection() {
@@ -60,8 +62,10 @@ public enum MoveType {
                 return new Point(-1, 0);
             case RIGHT:
                 return new Point(1, 0);
+            default:
+                return new Point(0, 0);
         }
 
-        return new Point(0, 0);
+
     }
 }
