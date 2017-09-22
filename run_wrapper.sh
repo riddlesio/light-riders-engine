@@ -1,4 +1,4 @@
 #!/bin/bash
 
-BASEDIR=`pwd`
+BASEDIR=$(pwd)
 java -jar $BASEDIR/match-wrapper-*.jar "$(cat wrapper-commands.json)"
