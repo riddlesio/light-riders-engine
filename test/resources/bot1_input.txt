@@ -1,80 +1,80 @@
 pass
-move down
-move garbage
-move down
-move right
+down
+garbage
+down
+right
 pass
-move right
-move up
-move right
-move right
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
-move up
-move up
-move up
-move up
-move right
-move right
-move down
-move right
-move down
-move down
+right
+up
+right
+right
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down
+up
+up
+up
+up
+right
+right
+down
+right
+down
+down

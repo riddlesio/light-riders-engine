@@ -93,7 +93,7 @@ public class LightridersProcessor extends SimpleProcessor<LightridersState, Ligh
             LightridersPlayer player = this.getPlayer(playerState.getPlayerId());
             LightridersMove move = playerState.getMove();
 
-            if (move.getException() != null) {
+            if (move!= null && move.getException() != null) {
                 player.sendWarning(move.getException().getMessage());
             }
         }

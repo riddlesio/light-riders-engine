@@ -1,80 +1,80 @@
-move left
-move left
-move left
-move down
-move down
-move down
-move down
-move left
-move left
-move left
-move left
-move left
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move up
-move up
+left
+left
+left
+down
+down
+down
+down
+left
+left
+left
+left
+left
+left
+left
+left
+left
+left
+up
+up
+up
+up
 pass
 pass
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move garbage
-move up
-move up
+left
+left
+left
+left
+left
+up
+up
+garbage
+up
+up
 pass
 pass
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move up
-move up
+left
+left
+left
+left
+left
+up
+up
+up
+up
 pass
 pass
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move up
-move up
+left
+left
+left
+left
+left
+up
+up
+up
+up
 pass
 pass
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move up
-move up
+left
+left
+left
+left
+left
+up
+up
+up
+up
 pass
 pass
-move left
-move left
-move left
-move left
-move left
-move up
-move up
-move up
-move up
+left
+left
+left
+left
+left
+up
+up
+up
+up
 pass
 pass
-move left
+left

@@ -19,8 +19,13 @@
 
 package io.riddles.lightriders
 
+import io.riddles.javainterface.game.player.PlayerProvider
+import io.riddles.javainterface.game.state.AbstractState
+import io.riddles.javainterface.io.FileIOHandler
 import io.riddles.lightriders.engine.LightridersEngine
 import io.riddles.javainterface.io.IOHandler
+import io.riddles.lightriders.game.player.LightridersPlayer
+import io.riddles.lightriders.game.processor.LightridersProcessor
 import io.riddles.lightriders.game.state.LightridersState
 import spock.lang.Specification
 import spock.lang.Ignore
@@ -35,103 +40,48 @@ import spock.lang.Ignore
 
 class LightridersEngineSpec extends Specification {
 
-    class TestEngine extends LightridersEngine {
-        String finalBoard;
+    public static class TestEngine extends LightridersEngine {
 
-        TestEngine(IOHandler ioHandler) {
-            super();
-            this.ioHandler = ioHandler;
-        }
-
-        TestEngine(String wrapperFile, String[] botFiles) {
-            super(wrapperFile, botFiles)
-        }
-
-
-        IOHandler getIOHandler() {
-            return this.ioHandler;
-        }
-
-        void setup() {
-            super.setup();
-        }
-
-//        @Override
-//        protected void finish(LightridersState initialState) {
-//            this.finalBoard = initialState.getBoard().toRepresentationString(players)
-//            super.finish(initialState);
-//        }
-    }
-
-
-    class StandardTestEngine extends LightridersEngine {
-
-        StandardTestEngine(IOHandler ioHandler) {
-            super();
-            this.ioHandler = ioHandler;
-        }
-
-        StandardTestEngine(String wrapperFile, String[] botFiles) {
-            super(wrapperFile, botFiles)
-        }
-
-        IOHandler getIOHandler() {
-            return this.ioHandler;
-        }
-
-        void setup() {
-            super.setup();
-        }
-
-        void finish() {
-            super.finish();
+        TestEngine(PlayerProvider<LightridersEngine> playerProvider, String wrapperInput) {
+            super(playerProvider, null);
+            this.ioHandler = new FileIOHandler(wrapperInput);
         }
     }
 
-    def engine = new TestEngine(Mock(IOHandler));
-
-
-
-    @Ignore
-    def "test engine setup"() {
-        println("test engine setup")
+    def "test a standard game"() {
+        println("test a standard game")
 
         setup:
-        engine.getIOHandler().getNextMessage() >>> ["initialize", "bot_ids 1,2", "start"]
-
-        when:
-        engine.setup()
-
-        then:
-        1 * engine.getIOHandler().sendMessage("ok")
-
-        expect:
-        engine.getPlayers().size() == 2
-        engine.getPlayers().get(0).getId() == 1
-        engine.getPlayers().get(1).getId() == 2
-    }
-
-
-
-
-    //@Ignore
-    def "test running of standard game"() {
-        println("test running of standard game")
-
-        setup:
-        String[] botInputs = new String[4]
-
+        String[] botInputs = new String[2]
         def wrapperInput = "./test/resources/wrapper_input.txt"
         botInputs[0] = "./test/resources/bot1_input.txt"
         botInputs[1] = "./test/resources/bot2_input.txt"
-        botInputs[2] = "./test/resources/bot1_input.txt"
-        botInputs[3] = "./test/resources/bot2_input.txt"
-        def engine = new StandardTestEngine(wrapperInput, botInputs)
 
-        engine.run()
+        PlayerProvider<LightridersPlayer> playerProvider = new PlayerProvider<>();
+        LightridersPlayer player1 = new LightridersPlayer(0);
+        player1.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player1);
+        LightridersPlayer player2 = new LightridersPlayer(1);
+        player2.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player2);
+        LightridersPlayer player3 = new LightridersPlayer(2);
+        player3.setIoHandler(new FileIOHandler(botInputs[0])); playerProvider.add(player3);
+        LightridersPlayer player4 = new LightridersPlayer(3);
+        player4.setIoHandler(new FileIOHandler(botInputs[1])); playerProvider.add(player4);
+        def engine = new TestEngine(playerProvider, wrapperInput)
+
+        AbstractState state = engine.willRun()
+        state = engine.run(state);
+        /* Fast forward to final state */
+        while (state.hasNextState()) state = state.getNextState();
+
+        state.getBoard().dump();
+        LightridersProcessor processor = engine.getProcessor();
 
         expect:
-        engine.configuration.getInt("maxRounds") == 40
+        state instanceof LightridersState;
+        //state.getBoard().toString() == ".,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,1,1,1,1,1,1,1,1,.,.,.,.,.,.,.,.,.,.,.,1,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,1,.,0,0,0,0,0,0,0,.,.,.,.,.,.,.,.,.,.,1,.,0,0,0,0,0,0,0,.,.,.,.,.,.,.,.,.,.,1,.,0,0,0,0,0,0,0,.,.,.,.,.,.,.,.,.,0,1,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,1,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,1,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,1,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.";
+        processor.getWinnerId(state) == 1;
+
     }
+
 
 }
