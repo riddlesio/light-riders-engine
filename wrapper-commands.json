@@ -13,7 +13,8 @@
       "command": "java -jar /home/jim/workspace/lightriders-starterbot-java/build/libs/lightriders-starterbot-java-1.0.0.jar"
     }],
     "engine": {
-      "command": "java -jar /home/jim/workspace/light-riders-engine/build/libs/lightriders-engine-java-1.1.0.jar"
+      "command": "java -jar /home/jim/workspace/light-riders-engine/build/libs/lightriders-engine-java-1.1.0.jar",
+      "configuration": {}
     }
   }
 }
